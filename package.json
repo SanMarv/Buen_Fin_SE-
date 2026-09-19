@@ -1,0 +1,27 @@
+{
+  "name": "buen-fin-app",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/heic-convert": "^2.1.1",
+    "@types/node": "^26.6.1",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^5.0.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "scripts": {
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1131.0",
+    "blurhash": "^2.0.5",
+    "drizzle-orm": "^0.45.2",
+    "fast-blurhash": "^1.2.0",
+    "heic-convert": "^2.1.0",
+    "sharp": "^0.35.4",
+    "zod": "^4.5.4"
+  }
+}
