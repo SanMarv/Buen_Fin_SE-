@@ -1,0 +1,43 @@
+import { S3ServiceException } from "@aws-sdk/client-s3";
+import { sendS3Comand } from "../client.ts";
+import { BUCKET_NAMES, BUCKET_OPTIONS, type BucketName } from "../config.ts";
+import { fail, success, type Result } from "@app/types";
+import { BucketError } from "./error/BucketError.ts";
+type PropsGenerateUrl = {
+  bucket: BucketName;
+  key: string;
+  format: string;
+};
+export const generatePathKey = ({ bucket, format, key }: PropsGenerateUrl) =>
+  `${BUCKET_NAMES[bucket]}/${key}.${format}`;
+
+export const generateBucketUrl = (param: PropsGenerateUrl) =>
+  `${BUCKET_OPTIONS.S3_URL}/${generatePathKey(param)}`;
+
+export const concatBucketPath = (path: string) =>
+  `${BUCKET_OPTIONS.S3_URL}/${path}`;
+
+type NormalErrorRequest = {
+  error: string;
+  status: number;
+  requestId?: string;
+};
+export async function sendCommandWithResult(
+  command: any,
+): Promise<Result<{ status: number }, NormalErrorRequest>> {
+  try {
+    const res = await sendS3Comand(command as any);
+    return success({ status: res.$metadata.httpStatusCode ?? 200 });
+  } catch (e) {
+    if (e instanceof S3ServiceException) {
+      const errStatus = e?.$metadata?.httpStatusCode ?? 500;
+      const { message, status } = new BucketError(errStatus);
+      return fail({
+        error: message,
+        status,
+        requestId: e.$metadata.requestId,
+      });
+    }
+    throw new Error(`Unexpeted Error ${e}`);
+  }
+}

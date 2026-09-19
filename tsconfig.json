@@ -1,0 +1,23 @@
+{
+  "$schema": "https://www.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "module": "nodenext",
+    "target": "es2024",
+    "types": ["node"],
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    // Environment setup & latest features
+    "baseUrl": "./src",
+    "paths": {
+      "@images/types": ["services/image-service/types.ts"],
+      "@images/*": ["services/image-service/src/images/*"],
+      "@bucket/*": ["services/image-service/src/bucket/*"],
+      "@images-service/*": ["services/image-service/*"],
+      "@images-service": ["services/image-service/index.ts"],
+      "@db/*": ["services/db/*"],
+      "@app/types": ["types/types.ts"],
+      "@env": ["config/index.ts"],
+    },
+  },
+}
