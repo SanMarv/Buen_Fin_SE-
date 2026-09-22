@@ -38,3 +38,6 @@ package-lock.json
 yarn.lock
 pnpm-lock.yaml
 bun.lock
+
+# Ignore DB Data
+**/db/.data

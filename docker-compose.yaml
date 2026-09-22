@@ -1,0 +1,19 @@
+networks:
+  db:
+    driver: bridge
+
+services:
+  postress:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - ${DB_PORT}:5432
+    networks:
+      - db
+    volumes:
+      - ${PWD}src/services/db/.data:/data/postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /data/postgres
+      POSTGRES_DB: ${DB_NAME}
