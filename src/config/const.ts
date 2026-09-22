@@ -1,0 +1,6 @@
+export const DEFAULT_CONFIG = {
+  MINIMUM_PASSWORD_SIZE: 4,
+  MINIMUM_DB_NAME_SIZE: 4,
+  DEFAULT_DB_PORT: 5432,
+  DB_DIALECT: "postgres",
+} as const;

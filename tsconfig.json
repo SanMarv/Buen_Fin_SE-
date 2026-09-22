@@ -17,6 +17,7 @@
       "@images-service": ["services/image-service/index.ts"],
       "@db/*": ["services/db/*"],
       "@app/types": ["types/types.ts"],
+      "@env": ["config/index.ts"],
     },
   },
 }

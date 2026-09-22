@@ -3,11 +3,11 @@ networks:
     driver: bridge
 
 services:
-  postress:
-    image: postgres
+  postres:
+    image: postgres:18
     restart: unless-stopped
     ports:
-      - ${DB_PORT}:5432
+      - "${DB_HOST}:${DB_PORT}:5432"
     networks:
       - db
     volumes:

@@ -1,4 +1,4 @@
-import { DEFAULT_DESCRIPTION } from "@db/const";
+import { DEFAULT_DESCRIPTION } from "@db/const.js";
 import { pgTable, uuid, varchar, integer, jsonb } from "drizzle-orm/pg-core";
 
 export const products = pgTable("produts", {
