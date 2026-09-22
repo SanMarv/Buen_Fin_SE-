@@ -1,4 +1,4 @@
-import type { ImageProduct, WithMimeType } from "@images/intefaces/image";
+import type { ImageProduct, WithMimeType } from "@images/intefaces/image.js";
 
 export class ImageObject {
   public image: WithMimeType<ImageProduct>;

@@ -1,5 +1,5 @@
-import { validateBuckets } from "../validate_buckets";
-import { ImageBucket } from "./abstract/ImageBucket";
+import { validateBuckets } from "../validate_buckets.ts";
+import { ImageBucket } from "./abstract/ImageBucket.ts";
 
 await validateBuckets();
 export class PostBucket extends ImageBucket {

@@ -9,15 +9,15 @@ import type {
   ImageProduct,
   ImageProductWithHash,
   ImageObject as ImageObjectType,
-} from "../intefaces/image";
-import { config } from "../config";
+} from "../intefaces/image.ts";
+import { config } from "../config.ts";
 import type {
   ImageProcesor as ImageProcesorI,
   OptimeResult,
   OptimeNoHashResult,
-} from "../intefaces/procesor";
-import { ImageObject, ImageWithHash } from "../outputs";
-import { DEFAULT_IMAGE } from "./const";
+} from "../intefaces/procesor.ts";
+import { ImageObject, ImageWithHash } from "../outputs/index.ts";
+import { DEFAULT_IMAGE } from "./const.ts";
 export class ImageProcessor implements ImageProcesorI {
   protected file: SharpInput;
   public lastModified?: Date;

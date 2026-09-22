@@ -1,4 +1,4 @@
-import type { Config } from "@images/intefaces/config";
+import type { Config } from "@images/intefaces/config.js";
 
 export const config = {
   MAX_IMAGE_SIZE: 5e6, // Bytes

@@ -1,7 +1,7 @@
 import { HeadBucketCommand } from "@aws-sdk/client-s3";
-import { sendCommandWithResult } from "./Bucket/utils";
-import { BUCKET_NAMES } from "./config";
-import { BucketError } from "./Bucket/error/BucketError";
+import { sendCommandWithResult } from "./Bucket/utils.ts";
+import { BUCKET_NAMES } from "./config.ts";
+import { BucketError } from "./Bucket/error/BucketError.ts";
 
 async function validateBucket(bucket: string) {
   const command = new HeadBucketCommand({ Bucket: bucket });

@@ -1,2 +1,2 @@
-export * from "./ImageObject";
-export * from "./ImageWithHash";
+export * from "./ImageObject.ts";
+export * from "./ImageWithHash.ts";

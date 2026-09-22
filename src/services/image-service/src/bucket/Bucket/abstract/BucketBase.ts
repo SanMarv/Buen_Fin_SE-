@@ -5,8 +5,8 @@ import {
   PutObjectCommand,
   S3ServiceException,
 } from "@aws-sdk/client-s3";
-import { sendS3Comand } from "../../client";
-import { BUCKET_NAMES, type BucketName } from "@bucket/config";
+import { sendS3Comand } from "../../client.ts";
+import { BUCKET_NAMES, type BucketName } from "@bucket/config.js";
 import type {
   AvalibleOptionsStreamingOptions,
   DeleteOneObject,
@@ -15,18 +15,20 @@ import type {
   PutOneObjectBase,
   PutOneResult,
   S3Error,
-} from "../types";
-import { fail, success, type Result } from "@types";
+} from "../types.ts";
+import { fail, success, type Result } from "@app/types";
 import {
   concatBucketPath,
   generatePathKey,
   sendCommandWithResult,
-} from "../utils";
-import { BucketError } from "../error/BucketError";
+} from "../utils.ts";
+import { BucketError } from "../error/BucketError.ts";
 
 export abstract class BucketBase {
   protected readonly bucket: string;
-  constructor(public readonly bucket_name: BucketName) {
+  public readonly bucket_name: BucketName;
+  constructor(bucket_name: BucketName) {
+    this.bucket_name = bucket_name;
     this.bucket = BUCKET_NAMES[this.bucket_name];
   }
   public abstract readonly file_type: string;

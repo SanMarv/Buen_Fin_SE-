@@ -1,4 +1,4 @@
-import type { SuportedFormats } from "./image";
+import type { SuportedFormats } from "./image.ts";
 
 export interface Config {
   MAX_IMAGE_SIZE: number;

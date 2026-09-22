@@ -1,5 +1,5 @@
 import type { Readable } from "node:stream";
-import type { Result } from "@types";
+import type { Result } from "@app/types";
 
 type S3ObjectSucess = {
   id: string;

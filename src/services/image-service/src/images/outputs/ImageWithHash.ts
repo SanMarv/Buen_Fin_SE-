@@ -1,7 +1,7 @@
 import type {
   ImageProductWithHash,
   WithMimeType,
-} from "@images/intefaces/image";
+} from "@images/intefaces/image.js";
 
 export class ImageWithHash {
   public image: WithMimeType<ImageProductWithHash>;

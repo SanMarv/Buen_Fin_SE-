@@ -1,4 +1,4 @@
-import type { ImageObject, ImageWithHash } from "@images/outputs";
+import type { ImageObject, ImageWithHash } from "@images/outputs/index.js";
 
 export type OptimeResult = Promise<ImageWithHash>;
 export type OptimeNoHashResult = Promise<ImageObject>;

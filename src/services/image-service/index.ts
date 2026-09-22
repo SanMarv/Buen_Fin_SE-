@@ -1,3 +1,3 @@
-export * from "./src/bucket";
-export * from "./src/images";
-export * from "./src/images/utils";
+export * from "./src/bucket/index.ts";
+export * from "./src/images/index.ts";
+export * from "./src/images/utils.ts";

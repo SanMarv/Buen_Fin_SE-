@@ -1,1 +1,1 @@
-export { PostBucket } from "./Bucket";
+export { PostBucket } from "./Bucket/index.ts";

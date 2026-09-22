@@ -1,8 +1,8 @@
 import sharp from "sharp";
-import type { ImageProductWithHash } from "@images/intefaces/image";
-import { ImageProcessor } from "./ImageProcesor";
-import type { OptimeResult } from "@images/intefaces/procesor";
-import { ImageWithHash } from "@images/outputs";
+import type { ImageProductWithHash } from "@images/intefaces/image.js";
+import { ImageProcessor } from "./ImageProcesor.ts";
+import type { OptimeResult } from "@images/intefaces/procesor.js";
+import { ImageWithHash } from "@images/outputs/index.js";
 
 export class ImageOnlyHash extends ImageProcessor {
   override async optimize(): OptimeResult {

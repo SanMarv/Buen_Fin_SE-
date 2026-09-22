@@ -1,8 +1,8 @@
 import { S3ServiceException } from "@aws-sdk/client-s3";
-import { sendS3Comand } from "../client";
-import { BUCKET_NAMES, BUCKET_OPTIONS, type BucketName } from "../config";
-import { fail, success, type Result } from "@types";
-import { BucketError } from "./error/BucketError";
+import { sendS3Comand } from "../client.ts";
+import { BUCKET_NAMES, BUCKET_OPTIONS, type BucketName } from "../config.ts";
+import { fail, success, type Result } from "@app/types";
+import { BucketError } from "./error/BucketError.ts";
 type PropsGenerateUrl = {
   bucket: BucketName;
   key: string;

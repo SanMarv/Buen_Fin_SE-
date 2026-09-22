@@ -1,5 +1,5 @@
-import type { PutOneJson, PutOneResult } from "../types";
-import { BucketBase } from "./BucketBase";
+import type { PutOneJson, PutOneResult } from "../types.ts";
+import { BucketBase } from "./BucketBase.ts";
 
 export abstract class JsonBucket extends BucketBase {
   public file_type: string = "application";

@@ -1,11 +1,12 @@
 import sharp from "sharp";
-import { type SharpInput } from "sharp";
-import { SUPORTED_FORMATS, type ImageOptions } from "../intefaces/image";
-import { ImageProcessor } from "./ImageProcesor";
-import { ImageOnlyHash } from "./ImageOnlyHash";
-import { isHeic } from "../utils";
 import heic from "heic-convert";
-import { DEFAULT_IMAGE } from "./const";
+import { type SharpInput } from "sharp";
+
+import { SUPORTED_FORMATS, type ImageOptions } from "../intefaces/image.ts";
+import { ImageProcessor } from "./ImageProcesor.ts";
+import { ImageOnlyHash } from "./ImageOnlyHash.ts";
+import { isHeic } from "../utils.ts";
+import { DEFAULT_IMAGE } from "./const.ts";
 
 function isSameTypeOutput(mimeType: string, output_format?: string) {
   const outputMime = `image/${output_format ?? DEFAULT_IMAGE.format}`;
