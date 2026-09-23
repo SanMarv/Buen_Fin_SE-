@@ -2,8 +2,10 @@ networks:
   db:
     driver: bridge
 
+name: buen-fin-app
+
 services:
-  postres:
+  db-postgres:
     image: postgres:18
     restart: unless-stopped
     ports:

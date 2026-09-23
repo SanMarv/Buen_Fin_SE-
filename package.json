@@ -15,7 +15,12 @@
     "typescript": "^5"
   },
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "db:up": "docker compose --env-file .env up -d",
+    "db:down": "docker compose down",
+    "db:stop": "docker compose stop",
+    "db:restart": "docker compose restart",
+    "db:migration": "drizzle-kit push"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",
