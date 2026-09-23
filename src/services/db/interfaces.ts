@@ -7,6 +7,6 @@ export interface ImageStoreInput {
   hash?: string;
 }
 
-export interface ImageDBMetadata {
+export interface ProductMetadata {
   user_provided_id?: string;
 }

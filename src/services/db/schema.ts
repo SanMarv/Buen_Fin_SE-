@@ -1,6 +1,7 @@
 export { images } from "./models/image.model.ts";
 export { products } from "./models/products.model.ts";
 export { users } from "./models/users.model.ts";
+export { validation_table } from "./models/validation.model.ts";
 export { companies } from "./models/companies.model.ts";
 export { jobs } from "./models/jobs.model.ts";
 export { locations } from "./models/locations.model.ts";
