@@ -12,7 +12,7 @@ async function validateBucket(bucket: string) {
   }
 }
 
-const BUCKETS = Object.values(BUCKET_NAMES).map((bucket) =>
+const BUCKETS = Object.values(BUCKET_NAMES).map(async (bucket) =>
   validateBucket(bucket),
 );
 

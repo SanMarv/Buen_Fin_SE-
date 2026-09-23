@@ -34,16 +34,15 @@ export type S3Error = {
 };
 export type PutOneObject = {
   id: string;
-  body: Buffer | string;
+  body: string | Buffer;
   format: string;
 };
 export interface PutOneObjectBase extends PutOneObject {
   metatada?: Record<string, string>;
 }
-
 export interface PutOneJson {
   id: string;
-  body: Object;
+  body: Record<string, unknown>;
 }
 export type DeleteOneObject = {
   key: string;

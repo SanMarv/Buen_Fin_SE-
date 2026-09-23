@@ -23,6 +23,7 @@ import {
   sendCommandWithResult,
 } from "../utils.ts";
 import { BucketError } from "../error/BucketError.ts";
+import { UnexpectedError } from "../error/UnextedError.ts";
 
 export abstract class BucketBase {
   protected readonly bucket: string;
@@ -83,7 +84,7 @@ export abstract class BucketBase {
       throw e;
     }
   }
-  async putOne({
+  protected async putRaw({
     id,
     body,
     format,
@@ -109,7 +110,7 @@ export abstract class BucketBase {
 
       return success({ id, ...metadata });
     } catch (error) {
-      throw new Error(`Unexpected Error in PutOne: error ${error}`);
+      throw new UnexpectedError(`Unexpected Error in PutOne: error ${error}`);
     }
   }
   async deleteOne({ key }: DeleteOneObject): DeleteOneResult {
@@ -133,12 +134,12 @@ export abstract class BucketBase {
       console.error(`${error.requestId}: Error trying to DeleteOne`);
       return fail({ error: error.error, status: error.status, key });
     } catch (e) {
-      throw new Error(`Unexpected Error in DeleteOne ${e}`);
+      throw new UnexpectedError(`Unexpected Error in DeleteOne ${e}`);
     }
   }
   async deleteMany(ids: { key: string }[]): Promise<S3Error[]> {
-    const map = ids.map((key) =>
-      this.deleteOne(key).catch((e) =>
+    const map = ids.map(async (key) =>
+      this.deleteOne(key).catch(() =>
         fail({
           error: `Unexpected error in key ${key.key}`,
           status: 500,
@@ -176,19 +177,21 @@ export abstract class BucketBase {
       Key: key,
     });
     try {
-      const res = await sendS3Comand(command);
+      await sendS3Comand(command);
       return success({ status: 200 });
     } catch (e) {
       if (e instanceof S3ServiceException) {
         const status = e?.$metadata?.httpStatusCode;
         if (!status)
-          throw new Error(`No status code after sending head command ${e}`);
+          throw new UnexpectedError(
+            `No status code after sending head command ${e}`,
+          );
         if (status !== 200 && status !== 204) {
           const { status: code, message: error } = new BucketError(status);
           return fail({ error, status: code });
         }
       }
-      throw new Error(`${e}`);
+      throw new UnexpectedError(`${e}`);
     }
   }
 }

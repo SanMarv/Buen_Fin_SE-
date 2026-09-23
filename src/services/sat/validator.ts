@@ -21,7 +21,7 @@ export class SatValidator {
     let certification: Credential;
     try {
       certification = Credential.create(cer, key, password);
-    } catch (e: any) {
+    } catch {
       return fail({
         status: 400,
         error: ERROR_SIGNATURE_MESSAGES["PROCESSING_ERROR"],

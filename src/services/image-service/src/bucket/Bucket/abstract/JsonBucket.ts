@@ -3,8 +3,8 @@ import { BucketBase } from "./BucketBase.ts";
 
 export abstract class JsonBucket extends BucketBase {
   public file_type: string = "application";
-  override putOne({ id, body: data }: PutOneJson): PutOneResult {
+  async putOne({ id, body: data }: PutOneJson): PutOneResult {
     const body = JSON.stringify(data);
-    return super.putOne({ body, format: "json", id });
+    return super.putRaw({ body, format: "json", id });
   }
 }

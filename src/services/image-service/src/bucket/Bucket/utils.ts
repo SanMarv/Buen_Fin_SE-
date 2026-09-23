@@ -3,6 +3,7 @@ import { sendS3Comand } from "../client.ts";
 import { BUCKET_NAMES, BUCKET_OPTIONS, type BucketName } from "../config.ts";
 import { fail, success, type Result } from "@app/types";
 import { BucketError } from "./error/BucketError.ts";
+import { UnexpectedError } from "./error/UnextedError.ts";
 type PropsGenerateUrl = {
   bucket: BucketName;
   key: string;
@@ -22,11 +23,12 @@ type NormalErrorRequest = {
   status: number;
   requestId?: string;
 };
+type Command = Parameters<typeof sendS3Comand>[0];
 export async function sendCommandWithResult(
-  command: any,
+  command: unknown,
 ): Promise<Result<{ status: number }, NormalErrorRequest>> {
   try {
-    const res = await sendS3Comand(command as any);
+    const res = await sendS3Comand(command as Command);
     return success({ status: res.$metadata.httpStatusCode ?? 200 });
   } catch (e) {
     if (e instanceof S3ServiceException) {
@@ -38,6 +40,6 @@ export async function sendCommandWithResult(
         requestId: e.$metadata.requestId,
       });
     }
-    throw new Error(`Unexpeted Error ${e}`);
+    throw new UnexpectedError(`Unexpeted Error ${e}`);
   }
 }
