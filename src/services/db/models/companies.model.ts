@@ -8,5 +8,6 @@ export const companies = pgTable("company", {
   user_id: uuid("user_id")
     .references(() => users.id)
     .notNull(),
+  RFC: varchar({ length: 13 }).notNull(),
   validation_id: integer().references(() => validation_table.id),
 });
