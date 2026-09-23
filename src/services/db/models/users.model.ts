@@ -1,5 +1,4 @@
-import { pgTable, uuid } from "drizzle-orm/pg-core";
-import { varchar } from "drizzle-orm/singlestore-core";
+import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid().primaryKey().notNull(),

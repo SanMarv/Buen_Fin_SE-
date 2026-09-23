@@ -1,3 +1,12 @@
 export { images } from "./models/image.model.ts";
 export { products } from "./models/products.model.ts";
 export { users } from "./models/users.model.ts";
+export { companies } from "./models/companies.model.ts";
+export { jobs } from "./models/jobs.model.ts";
+export { locations } from "./models/locations.model.ts";
+export { categories } from "./models/categories.model.ts";
+export { wishlists } from "./models/wishlist.model.ts";
+export { premises } from "./models/premises.model.ts";
+export { wishlistProducts } from "./models/wishlist_product.model.ts";
+export { imageProducts } from "./models/image_product.model.ts";
+export { category_product } from "./models/category_product.model.ts";
