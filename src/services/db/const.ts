@@ -1,5 +1,3 @@
-import { ListObjectAnnotations$ } from "@aws-sdk/client-s3";
-
 export const TABLE_NAMES = {
   CATEGORIES: "categories",
   PRODUCTS: "products",

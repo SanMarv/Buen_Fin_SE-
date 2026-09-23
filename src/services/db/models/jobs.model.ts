@@ -1,7 +1,7 @@
 import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 import { locations } from "./locations.model.ts";
 import { companies } from "./companies.model.ts";
-import { TABLE_NAMES } from "@db/const.ts";
+import { TABLE_NAMES } from "@db/const.js";
 
 export const jobs = pgTable(TABLE_NAMES.JOBS, {
   id: uuid().primaryKey().notNull(),

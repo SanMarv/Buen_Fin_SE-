@@ -4,16 +4,22 @@
   "type": "module",
   "private": true,
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/heic-convert": "^2.1.1",
     "@types/luxon": "^3.7.5",
     "@types/node": "^26.6.1",
     "@types/pg": "^8.23.1",
+    "@typescript-eslint/eslint-plugin": "^8.70.1",
+    "@typescript-eslint/parser": "^8.70.1",
     "drizzle-kit": "^0.31.11",
+    "eslint": "^10.11.0",
+    "tsx": "^4.23.15",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^5.0.1"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "typescript": "npm:@typescript/typescript6"
   },
   "scripts": {
     "test": "vitest",
@@ -21,7 +27,11 @@
     "db:down": "docker compose down",
     "db:stop": "docker compose stop",
     "db:restart": "docker compose restart",
-    "db:migration": "drizzle-kit push"
+    "db:migration": "drizzle-kit push",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc && tsc-alias",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",
@@ -33,6 +43,7 @@
     "heic-convert": "^2.1.0",
     "pg": "^8.23.0",
     "sharp": "^0.35.4",
+    "tsc-alias": "^1.9.5",
     "zod": "^4.6.5"
   }
 }

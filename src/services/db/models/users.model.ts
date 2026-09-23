@@ -1,9 +1,5 @@
 import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
-import { defineRelations } from "drizzle-orm";
-import { companies } from "./companies.model.ts";
-import { wishlists } from "./wishlist.model.ts";
-import { images } from "./image.model.ts";
-import { TABLE_NAMES } from "@db/const.ts";
+import { TABLE_NAMES } from "@db/const.js";
 
 export const users = pgTable(TABLE_NAMES.USERS, {
   id: uuid().primaryKey().notNull(),

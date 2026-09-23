@@ -1,7 +1,5 @@
-import { date, integer, pgTable, text, varchar } from "drizzle-orm/pg-core";
-import { defineRelations } from "drizzle-orm/relations";
-import { companies } from "./companies.model.ts";
-import { TABLE_NAMES } from "@db/const.ts";
+import { date, integer, pgTable, text } from "drizzle-orm/pg-core";
+import { TABLE_NAMES } from "@db/const.js";
 
 export const validation_table = pgTable(TABLE_NAMES.VALIDATION, {
   id: integer().generatedAlwaysAsIdentity().primaryKey(),

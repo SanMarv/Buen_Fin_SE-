@@ -1,7 +1,7 @@
-import { pgTable, uuid, varchar, integer, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, uuid, varchar, integer } from "drizzle-orm/pg-core";
 import { DEFAULT_ALT } from "../const.ts";
 import { users } from "./users.model.ts";
-import { TABLE_NAMES } from "@db/const.ts";
+import { TABLE_NAMES } from "@db/const.js";
 
 export const images = pgTable(TABLE_NAMES.IMAGES, {
   id: uuid().primaryKey(),

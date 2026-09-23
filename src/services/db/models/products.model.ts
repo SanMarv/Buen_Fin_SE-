@@ -1,8 +1,7 @@
-import { DEFAULT_DESCRIPTION } from "@db/const.js";
+import { DEFAULT_DESCRIPTION, TABLE_NAMES } from "@db/const.js";
 import { pgTable, uuid, varchar, integer, jsonb } from "drizzle-orm/pg-core";
 import type { ProductMetadata } from "../interfaces.ts";
 import { companies } from "./companies.model.ts";
-import { TABLE_NAMES } from "@db/const.ts";
 
 export const products = pgTable(TABLE_NAMES.PRODUCTS, {
   id: uuid().primaryKey(),
