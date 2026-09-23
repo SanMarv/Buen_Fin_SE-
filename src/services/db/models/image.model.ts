@@ -1,8 +1,9 @@
 import { pgTable, uuid, varchar, integer, jsonb } from "drizzle-orm/pg-core";
 import { DEFAULT_ALT } from "../const.ts";
 import { users } from "./users.model.ts";
+import { TABLE_NAMES } from "@db/const.ts";
 
-export const images = pgTable("images", {
+export const images = pgTable(TABLE_NAMES.IMAGES, {
   id: uuid().primaryKey(),
   alt: varchar({ length: 150 }).default(DEFAULT_ALT),
   width: integer().notNull(),

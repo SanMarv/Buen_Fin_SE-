@@ -11,3 +11,4 @@ export { premises } from "./models/premises.model.ts";
 export { wishlistProducts } from "./models/wishlist_product.model.ts";
 export { imageProducts } from "./models/image_product.model.ts";
 export { category_product } from "./models/category_product.model.ts";
+export * from "./models/relations.ts";

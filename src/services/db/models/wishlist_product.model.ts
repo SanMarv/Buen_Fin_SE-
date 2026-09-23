@@ -1,8 +1,10 @@
 import { pgTable, uuid } from "drizzle-orm/pg-core";
 import { wishlists } from "./wishlist.model.ts";
 import { products } from "./products.model.ts";
+import { defineRelations } from "drizzle-orm";
+import { TABLE_NAMES } from "@db/const.ts";
 
-export const wishlistProducts = pgTable("wishlist_products", {
+export const wishlistProducts = pgTable(TABLE_NAMES.WISHLIST_PRODUCTS, {
   id: uuid().primaryKey().notNull(),
   wishlist_id: uuid()
     .references(() => wishlists.id)

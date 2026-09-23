@@ -28,7 +28,7 @@
     "@nodecfdi/credentials": "^3.2.0",
     "@nodecfdi/rfc": "^2.0.6",
     "blurhash": "^2.0.5",
-    "drizzle-orm": "^0.45.3",
+    "drizzle-orm": "^1.0.0-rc.4",
     "fast-blurhash": "^1.2.0",
     "heic-convert": "^2.1.0",
     "pg": "^8.23.0",
