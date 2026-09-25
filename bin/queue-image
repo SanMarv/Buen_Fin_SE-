@@ -1,0 +1,8 @@
+#!/bin/env bash
+
+npm run build
+
+docker build \
+  -t buen-fin-image-process \
+  -f process-queue.Dockerfile \
+  .

@@ -5,8 +5,9 @@
   "private": true,
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/express": "^5.0.6",
     "@types/heic-convert": "^2.1.1",
-    "@types/luxon": "^3.7.5",
+    "@types/luxon": "3.4.2",
     "@types/node": "^26.6.1",
     "@types/pg": "^8.23.1",
     "@typescript-eslint/eslint-plugin": "^8.70.1",
@@ -15,11 +16,11 @@
     "eslint": "^10.11.0",
     "globals": "^17.12.0",
     "tsx": "^4.23.15",
+    "typescript7": "npm:typescript@^7.0.2",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^5.0.1"
   },
   "peerDependencies": {
-    "@typescript/native": "npm:typescript@^7.0.2",
     "typescript": "npm:@typescript/typescript6"
   },
   "scripts": {
@@ -32,14 +33,18 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc && tsc-alias",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "image:process-image": "bash bin/queue-image",
+    "process-image:start": "bash bin/queue-start",
+    "process-image:stop": " docker stop buen-fin-image-process && docker rm buen-fin-image-process"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",
-    "@nodecfdi/credentials": "^3.2.0",
-    "@nodecfdi/rfc": "^2.0.6",
+    "@nodecfdi/credentials": "github:nasa14119/nodecfdi-credentials#main",
+    "@nodecfdi/rfc": "github:nasa14119/nodecfdi-rfc#main",
     "blurhash": "^2.0.5",
     "drizzle-orm": "^1.0.0-rc.4",
+    "express": "^5.2.1",
     "fast-blurhash": "^1.2.0",
     "heic-convert": "^2.1.0",
     "pg": "^8.23.0",

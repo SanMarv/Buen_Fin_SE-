@@ -1,0 +1,15 @@
+#!/bin/env bash
+set -e
+
+PORT="${!#}"
+
+if [[ ! "$PORT" =~ ^[0-9]+$ ]]; then
+    printf '\033[31mError: port forward undefined\033[0m\n'
+    exit 1
+fi
+
+docker run -d \
+  --name buen-fin-image-process \
+  --publish "${PORT}:80" \
+  --env-file .env \
+  buen-fin-image-process
