@@ -16,5 +16,6 @@ export const ConfigSchema = z.object({
   DB_PORT: z.coerce.number().default(DEFAULT_DB_PORT),
   DB_USER: z.string().default(DB_DIALECT),
   DB_HOST: z.string(),
+  DB_URL: z.url(),
 });
 export type Config = z.infer<typeof ConfigSchema>;
