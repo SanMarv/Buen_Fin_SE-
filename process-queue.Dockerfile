@@ -2,16 +2,14 @@ FROM node:24
 
 WORKDIR /app
 
-COPY ./package* .
+COPY dist .
 
-COPY ./dist/services/image-service image-service
+COPY package.json .
 
-COPY ./dist/services/process-queue .
+RUN npm install
 
 ENV PORT=80
 
 EXPOSE 80
 
-RUN npm install --legacy-peer-deps
-
-CMD [ "node", "./init.js"]
+CMD [ "node", "services/process-queue/init.js"]
