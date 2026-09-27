@@ -8,6 +8,7 @@
     "@types/express": "^5.0.6",
     "@types/heic-convert": "^2.1.1",
     "@types/luxon": "3.4.2",
+    "@types/multer": "^2.2.0",
     "@types/node": "^26.6.1",
     "@types/pg": "^8.23.1",
     "@typescript-eslint/eslint-plugin": "^8.70.1",
@@ -25,10 +26,13 @@
   },
   "scripts": {
     "test": "vitest",
-    "db:up": "docker compose --env-file .env up -d",
-    "db:down": "docker compose down",
-    "db:stop": "docker compose stop",
-    "db:restart": "docker compose restart",
+    "dev:up": "docker compose --env-file .env up -d",
+    "dev:down": "docker compose down",
+    "dev:stop": "docker compose stop",
+    "db:up": "docker compose --project-directory . -f src/services/db/image.docker-compose.yaml --env-file .env up -d",
+    "db:down": "docker compose -f src/services/db/image.docker-compose.yaml down",
+    "db:stop": "docker compose -f src/services/db/image.docker-compose.yaml stop",
+    "db:restart": "docker compose -f src/services/db/image.docker-compose.yaml restart",
     "db:migration": "drizzle-kit push",
     "typecheck": "tsc --noEmit",
     "build": "tsc && tsc-alias",
@@ -47,9 +51,11 @@
     "express": "^5.2.1",
     "fast-blurhash": "^1.2.0",
     "heic-convert": "^2.1.0",
+    "multer": "^2.4.0",
     "pg": "^8.23.0",
     "sharp": "^0.35.4",
     "tsc-alias": "^1.9.5",
+    "uuid": "^14.0.2",
     "zod": "^4.6.5"
   }
 }

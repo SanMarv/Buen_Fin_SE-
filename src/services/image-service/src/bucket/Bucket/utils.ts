@@ -10,7 +10,7 @@ type PropsGenerateUrl = {
   format: string;
 };
 export const generatePathKey = ({ bucket, format, key }: PropsGenerateUrl) =>
-  `${BUCKET_NAMES[bucket]}/${key}.${format}`;
+  `/${BUCKET_NAMES[bucket]}/${key}.${format}`;
 
 export const generateBucketUrl = (param: PropsGenerateUrl) =>
   `${BUCKET_OPTIONS.S3_URL}/${generatePathKey(param)}`;

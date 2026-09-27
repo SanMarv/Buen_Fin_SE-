@@ -14,6 +14,7 @@
       "@images-service": ["./src/services/image-service/index.ts"],
       "@images-service/*": ["./src/services/image-service/*"],
       "@db/*": ["./src/services/db/*"],
+      "@auth/*": ["./src/services/auth/*"],
       "@app/types": ["./src/types/types.js"],
       "@env": ["./src/config/index.js"],
     },

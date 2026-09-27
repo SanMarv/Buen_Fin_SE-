@@ -97,7 +97,10 @@ export abstract class BucketBase {
         Body: body,
         Key: `${id}.${format}`,
         ContentType: this.mimeType(format),
-        Metadata: { ...paramMetadata, uploadedAt: metadata.uploadedAt },
+        Metadata: {
+          ...paramMetadata,
+          uploadedAt: metadata.uploadedAt.toISOString(),
+        },
       });
 
       const { success: ok, error } = await sendCommandWithResult(command);
@@ -159,7 +162,7 @@ export abstract class BucketBase {
       format: format,
       key: id,
     });
-    const now = new Date().toISOString();
+    const now = new Date();
     const url = concatBucketPath(path);
     return {
       uploadedAt: now,

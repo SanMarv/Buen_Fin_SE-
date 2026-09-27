@@ -3,7 +3,7 @@ import type { Result } from "@app/types";
 
 type S3ObjectSucess = {
   id: string;
-  uploadedAt: string;
+  uploadedAt: Date;
   url: string;
   path: string;
 };

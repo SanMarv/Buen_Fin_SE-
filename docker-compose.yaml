@@ -2,9 +2,22 @@ networks:
   db:
     driver: bridge
 
+  image-service:
+    driver: bridge
+
 name: buen-fin-app
 
 services:
+  image-service:
+    build:
+      dockerfile: ./process-queue.Dockerfile
+    environment:
+      PORT: 4001
+      DB_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db-postgres:5432/${DB_NAME}
+    networks:
+      - image-service
+      - db
+
   db-postgres:
     image: postgres:18
     restart: unless-stopped
@@ -19,3 +32,14 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: /data/postgres
       POSTGRES_DB: ${DB_NAME}
+
+  proxy:
+    image: nginx:latest
+    depends_on: [image-service,db-postgres]
+    volumes:
+      - ${PWD}/src/config/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "3000:8080"
+    networks:
+      - db
+      - image-service
