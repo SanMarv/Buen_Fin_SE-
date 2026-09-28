@@ -10,6 +10,7 @@ export class ImageOnlyHash extends ImageProcessor {
     const file = await sharp(this.file).toBuffer();
     const construction: ImageProductWithHash = {
       file,
+      id: this.options.fileName,
       fileName: `${this.options.fileName}.${this.options.format}`,
       format: this.options.format,
       height: this.metadata.height,

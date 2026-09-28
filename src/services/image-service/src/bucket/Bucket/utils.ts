@@ -7,10 +7,9 @@ import { UnexpectedError } from "./error/UnextedError.ts";
 type PropsGenerateUrl = {
   bucket: BucketName;
   key: string;
-  format: string;
 };
-export const generatePathKey = ({ bucket, format, key }: PropsGenerateUrl) =>
-  `${BUCKET_NAMES[bucket]}/${key}.${format}`;
+export const generatePathKey = ({ bucket, key }: PropsGenerateUrl) =>
+  `/${BUCKET_NAMES[bucket]}/${key}`;
 
 export const generateBucketUrl = (param: PropsGenerateUrl) =>
   `${BUCKET_OPTIONS.S3_URL}/${generatePathKey(param)}`;

@@ -1,9 +1,9 @@
 import { validateBuckets } from "../validate_buckets.ts";
-import { ImageBucket } from "./abstract/ImageBucket.ts";
+import { ImageBucket as ImageBucketI } from "./abstract/ImageBucket.ts";
 
 await validateBuckets();
-export class PostBucket extends ImageBucket {
+export class ImageBucket extends ImageBucketI {
   constructor() {
-    super("POSTS");
+    super("IMAGES");
   }
 }

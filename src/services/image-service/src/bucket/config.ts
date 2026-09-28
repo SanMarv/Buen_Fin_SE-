@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { S3ClientConfig } from "@aws-sdk/client-s3";
 
 const DEFAULT_RUSTFS_REGION = "us-east-1";
-const DEFAULT_BUCKET_POST = "buen-fin-post";
+const DEFAULT_BUCKET_NAME = "buen-fin-images";
 
 const BucketConfigSchema = z.object({
   S3_REGION: z.string().default(DEFAULT_RUSTFS_REGION),
@@ -10,7 +10,7 @@ const BucketConfigSchema = z.object({
   S3_ACCESS_KEY: z.string(),
   S3_PRIVATE_KEY: z.string(),
   isPathStyle: z.boolean().optional().default(true),
-  BUCKET_POST: z.string().optional().default(DEFAULT_BUCKET_POST),
+  BUCKET_IMAGES: z.string().optional().default(DEFAULT_BUCKET_NAME),
 });
 
 export const BUCKET_OPTIONS = BucketConfigSchema.parse(process.env);
@@ -25,7 +25,7 @@ export const S3_CLIENT_PARAMS: S3ClientConfig = {
 };
 
 export const BUCKET_NAMES = {
-  POSTS: BUCKET_OPTIONS["BUCKET_POST"],
+  IMAGES: BUCKET_OPTIONS["BUCKET_IMAGES"],
 } as const;
 type BucketNames = typeof BUCKET_NAMES;
 export type BucketName = keyof BucketNames;

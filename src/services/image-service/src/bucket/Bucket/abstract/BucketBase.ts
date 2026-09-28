@@ -89,15 +89,20 @@ export abstract class BucketBase {
     body,
     format,
     metatada: paramMetadata = {},
+    formatId = true,
   }: PutOneObjectBase): PutOneResult {
-    const metadata = this.getUploadMetadata({ format, id });
+    const fileName = formatId ? `${id}.${format}` : id;
+    const metadata = this.getUploadMetadata({ id: fileName });
     try {
       const command = new PutObjectCommand({
         Bucket: this.bucket,
         Body: body,
-        Key: `${id}.${format}`,
+        Key: fileName,
         ContentType: this.mimeType(format),
-        Metadata: { ...paramMetadata, uploadedAt: metadata.uploadedAt },
+        Metadata: {
+          ...paramMetadata,
+          uploadedAt: metadata.uploadedAt.toISOString(),
+        },
       });
 
       const { success: ok, error } = await sendCommandWithResult(command);
@@ -118,12 +123,7 @@ export abstract class BucketBase {
       Bucket: this.bucket,
       Key: key,
     });
-
     try {
-      const { success: isSaved, error: no_found } = await this.isObjectSaved({
-        key,
-      });
-      if (!isSaved) return fail({ ...no_found, key });
       const {
         success: isDeleted,
         data,
@@ -153,13 +153,12 @@ export abstract class BucketBase {
   }
 
   // Helpers
-  private getUploadMetadata({ format, id }: { format: string; id: string }) {
+  private getUploadMetadata({ id }: { id: string }) {
     const path = generatePathKey({
       bucket: this.bucket_name,
-      format: format,
       key: id,
     });
-    const now = new Date().toISOString();
+    const now = new Date();
     const url = concatBucketPath(path);
     return {
       uploadedAt: now,
