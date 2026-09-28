@@ -13,6 +13,7 @@ export class ImageUpload {
   file: Props["file"];
   user_id: Props["user_id"];
   id: string;
+
   image?: ImageObject["image"];
   bucketData?: Awaited<PutOneResult>;
   constructor({ user_id, file }: Props) {

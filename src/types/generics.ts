@@ -2,6 +2,7 @@ export type Result<T, E> =
   | { success: true; data: T; error?: never }
   | { success: false; data?: never; error: E };
 
+export type PromiseResult<T, E> = Promise<Result<T, E>>;
 export function success<T>(data: T): Result<T, never> {
   return { success: true, data };
 }

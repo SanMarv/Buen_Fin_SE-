@@ -34,6 +34,7 @@ export class ImageProcessor implements ImageProcesorI {
     const hash = await this.hashImage();
     const construct: ImageProductWithHash = {
       file: image,
+      id: this.options.fileName,
       fileName: `${this.options.fileName}.${this.options.format}`,
       createdAt: new Date(),
       format: this.options.format,
@@ -50,6 +51,7 @@ export class ImageProcessor implements ImageProcesorI {
       info: { height, width, format },
     } = await sharp(this.file).toBuffer({ resolveWithObject: true });
     const construct: ImageProduct = {
+      id: this.options.fileName,
       fileName: `${this.options.fileName}.${this.metadata.format}`,
       createdAt: new Date(),
       file: image,
@@ -64,7 +66,8 @@ export class ImageProcessor implements ImageProcesorI {
     const image = await this.convertFormat();
 
     const construct: ImageProduct = {
-      fileName: `${this.options.fileName}.${this.options.format}`,
+      id: this.options.fileName,
+      fileName: `${this.options.fileName}.${this.metadata.format}`,
       createdAt: new Date(),
       file: image,
       format: this.options.format,

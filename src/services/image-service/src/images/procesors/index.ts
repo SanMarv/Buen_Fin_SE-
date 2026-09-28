@@ -17,7 +17,7 @@ export async function ImageProcessorFactory(
   params?: ImageOptions,
 ): Promise<ImageProcessor> {
   let file: SharpInput = fileParam;
-  const metadata = await sharp(fileParam).metadata();
+  let metadata = await sharp(fileParam).metadata();
   const mimeType = metadata.mediaType || `image/${metadata.format}`;
 
   // Error if not supported
@@ -32,6 +32,7 @@ export async function ImageProcessorFactory(
   // Heic supoort
   if (isHeic(mimeType)) {
     file = await heic({ buffer: file, format: "PNG", quality: 1 });
+    metadata = await sharp(file).metadata();
   }
   return new ImageProcessor({ data: file, metadata }, params);
 }

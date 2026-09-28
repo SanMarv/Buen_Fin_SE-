@@ -1,6 +1,5 @@
 import express from "express";
 import imageRoutes from "./images/images.routes.ts";
-
 const app = express();
 
 process.loadEnvFile();

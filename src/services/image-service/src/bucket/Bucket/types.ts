@@ -36,6 +36,7 @@ export type PutOneObject = {
   id: string;
   body: string | Buffer;
   format: string;
+  formatId?: boolean;
 };
 export interface PutOneObjectBase extends PutOneObject {
   metatada?: Record<string, string>;

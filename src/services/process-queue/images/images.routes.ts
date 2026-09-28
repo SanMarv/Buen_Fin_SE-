@@ -5,6 +5,7 @@ import {
   type RequestWithUser,
 } from "@auth/headers.middleware.js";
 import { ImageUpload } from "./ImageUpload.ts";
+import { queue } from "../queue.ts";
 
 const routes = Router();
 
@@ -34,6 +35,10 @@ routes.post(
     } = await imageUpload.createRecord({ alt: req.body.alt });
 
     if (!wasCreated) return res.status(dbError.status).json(dbError);
+    queue.enqueue({
+      image: imageUpload.image!,
+      source: { url: recordData.url },
+    });
     return res.json({ url: recordData });
   },
 );

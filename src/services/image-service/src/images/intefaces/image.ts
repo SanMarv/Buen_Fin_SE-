@@ -17,6 +17,7 @@ export const SUPORTED_MIMETYPES = [...SUPORTED_FORMATS].map(
   (format) => `image/${format}`,
 ) as `image/${SuportedFormats}`[];
 export interface ImageObject {
+  id: string;
   fileName: string;
   width: number;
   height: number;

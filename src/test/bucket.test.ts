@@ -15,9 +15,13 @@ test("To upload file", async () => {
   expect(success).toBe(true);
   expect({ path: data?.path }).toEqual({ path: "/test/test.jpg" });
 });
-
+test("Check if object is present", async () => {
+  const { success, data } = await Bucket.isObjectSaved({ key: "test.jpg" });
+  expect(success).toBe(true);
+  expect(data).toEqual({ status: 200 });
+});
 test("To delete file", async () => {
-  const { success, data } = await Bucket.deleteOne({ key: "/test.jpg" });
+  const { success, data } = await Bucket.deleteOne({ key: "test.jpg" });
   expect(success).toBe(true);
   expect(data?.status).toBe(204);
 });
