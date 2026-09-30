@@ -1,0 +1,15 @@
+source .env
+
+set -e
+
+OBJECT_STORE="${!#}"
+
+if [[ ! "$OBJECT_STORE" =~ ^[a-z]+$ ]]; then
+    printf '\033[31mError: Object alias undefined\033[0m\n'
+    exit 1
+fi
+
+
+rc object remove -r "${!#}/${BUCKET_IMAGES}"
+
+PGPASSWORD=${DB_PASSWORD} psql -h ${DB_HOST} -p ${DB_PORT} -d ${DB_NAME} -U ${DB_USER} -c 'DELETE FROM images'
