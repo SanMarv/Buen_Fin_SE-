@@ -14,6 +14,7 @@ services:
     environment:
       PORT: 4001
       DB_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db-postgres:5432/${DB_NAME}
+      S3_URL: http://host.docker.internal:9000
     networks:
       - image-service
       - db
