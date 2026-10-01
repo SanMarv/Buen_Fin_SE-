@@ -1,11 +1,31 @@
 import { Router } from "express";
 
-const router = Router(); 
+const userRouter = Router(); 
 
-router.post('/', async (req, res) => {
+userRouter.post('/login', async (req, res) => {
   try{
 
   }
-  catch(e : any){
+  catch(e : unknown){
   }
 })
+
+userRouter.post('/register', async(req, res) =>{
+  try{
+
+  }
+  catch(e : unknown){
+
+  }
+})
+
+userRouter.post('/logout', async(req, res)=>{
+  try{
+
+  }
+  catch(e : unknown){
+
+  }
+})
+
+export default userRouter; 
