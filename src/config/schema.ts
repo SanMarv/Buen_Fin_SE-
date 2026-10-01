@@ -17,5 +17,6 @@ export const ConfigSchema = z.object({
   DB_USER: z.string().default(DB_DIALECT),
   DB_HOST: z.string(),
   DB_URL: z.url(),
+  JWT_KEY: z.string().min(5), // TODO assign real params for propper key,
 });
 export type Config = z.infer<typeof ConfigSchema>;
