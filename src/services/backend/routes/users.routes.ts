@@ -44,7 +44,7 @@ userRouter.post("/register", async (req, res) => {
   } catch (e: unknown) {}
 });
 
-userRouter.post("/logout", async (_, res: Response) => {
+userRouter.post("/logout", (_, res: Response) => {
   res.clearCookie("token");
   res.sendStatus(204);
 });
