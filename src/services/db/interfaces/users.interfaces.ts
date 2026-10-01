@@ -7,4 +7,6 @@ export interface UserLogin {
   password: string;
 }
 type CreateError = { status: 500 | 400 | 404; error: string };
-export type UserOperationResult = Promise<Result<UsersRecord, CreateError>>;
+export type UserOperationResult = Promise<
+  Result<Pick<UsersRecord, "id">, CreateError>
+>;
