@@ -1,8 +1,8 @@
 import { fail, success } from "@app/types";
 import { db } from "@db/conection.js"
-import type { UserCreate, UserOperationResult } from "@db/interfaces/users.interfaces.js"
+import type { UserCreate, UserOperationResult, UserLogin } from "@db/interfaces/users.interfaces.js"
 import { users } from "@db/schema.js";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { v7 as genUUID } from "uuid";
 
 export class UsersController{
@@ -38,6 +38,22 @@ export class UsersController{
       return fail({status: 500, error: "Unexpected error when eliminating user"})
     }
 
+  }
+
+  static async returnRegister(user : UserLogin) : UserOperationResult{
+    try{
+      const [usuario] = await db.select().from(users).where(and(eq(users.email, user.email)));
+      if(!usuario){
+        return fail({status : 404, error : "User not found"});
+      }
+
+      return success(usuario); 
+
+    }
+    catch(e : unknown){
+      console.log(e); 
+      return fail({status : 500, error : "Unexcpeted error when retrieving user"});
+    }
   }
 }
 
