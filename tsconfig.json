@@ -17,6 +17,7 @@
       "@auth/*": ["./src/services/backend/auth/*"],
       "@app/types": ["./src/types/types.js"],
       "@env": ["./src/config/index.js"],
+      "@backend/*": ["./src/services/backend/*"],
     },
     "rewriteRelativeImportExtensions": true,
     "erasableSyntaxOnly": true,

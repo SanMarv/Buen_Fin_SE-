@@ -6,12 +6,7 @@ export interface UserLogin {
   email: string;
   password: string;
 }
-<<<<<<< Updated upstream
 type CreateError = { status: 500 | 400 | 404; error: string };
 export type UserOperationResult = Promise<
   Result<Pick<UsersRecord, "id">, CreateError>
 >;
-=======
-export type CreateError = { status: 500 | 400 | 404; error: string };
-export type UserOperationResult = Promise<Result<UsersRecord, CreateError>>;
->>>>>>> Stashed changes
