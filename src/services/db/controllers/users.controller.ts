@@ -1,5 +1,10 @@
 import { fail, success } from "@app/types";
 import { db } from "@db/conection.js";
+<<<<<<< Updated upstream
+=======
+import { type Result } from "@app/types";
+import { type CreateError } from "@db/interfaces/users.interfaces.js";
+>>>>>>> Stashed changes
 import type {
   UserCreate,
   UserOperationResult,
@@ -25,7 +30,11 @@ export class UsersController {
 
       return success(user);
     } catch (e: any) {
+<<<<<<< Updated upstream
       console.error(e);
+=======
+      console.log(e);
+>>>>>>> Stashed changes
       return fail({
         status: 500,
         error: "Unexpected error when creating user",
@@ -44,7 +53,11 @@ export class UsersController {
       }
       return success(eliminatedUser);
     } catch (e: any) {
+<<<<<<< Updated upstream
       console.error(e);
+=======
+      console.log(e);
+>>>>>>> Stashed changes
       return fail({
         status: 500,
         error: "Unexpected error when eliminating user",
@@ -52,6 +65,7 @@ export class UsersController {
     }
   }
 
+<<<<<<< Updated upstream
   static async returnRegister(user: UserLogin): UserOperationResult {
     try {
       const [record] = await db
@@ -66,10 +80,28 @@ export class UsersController {
       return success(record);
     } catch (e: unknown) {
       console.error(e);
+=======
+  static async returnRegister(
+    user: UserLogin,
+  ): Promise<Result<string, CreateError>> {
+    try {
+      const [usuario] = await db
+        .select({ id: users.id })
+        .from(users)
+        .where(and(eq(users.email, user.email)));
+      if (!usuario) {
+        return fail({ status: 404, error: "User not found" });
+      }
+
+      return success(usuario);
+    } catch (e: unknown) {
+      console.log(e);
+>>>>>>> Stashed changes
       return fail({
         status: 500,
         error: "Unexcpeted error when retrieving user",
       });
+<<<<<<< Updated upstream
     }
   }
 
@@ -83,6 +115,8 @@ export class UsersController {
     } catch (e: unknown) {
       console.error(e);
       return false;
+=======
+>>>>>>> Stashed changes
     }
   }
 }

@@ -1,31 +1,52 @@
-import { Router } from "express";
+import { Router, type NextFunction } from "express";
+import { signResponseWithAuth } from "@auth/jwt.middleware.js";
+import { type Request, type Response } from "express";
+import { UsersController } from "@db/controllers/users.controller.js";
+import type { RequestWithUser } from "../types.js";
+const userRouter = Router();
 
-const userRouter = Router(); 
+userRouter.post(
+  "/login",
+  async (req: Request, res: RequestWithUser, next: NextFunction) => {
+    try {
+      const { email, password } = req.body;
+      if (!email || !password)
+        return res
+          .status(400)
+          .json({ code: 400, error: "Email or password are not there" });
 
-userRouter.post('/login', async (req, res) => {
-  try{
+      const {
+        success: isFound,
+        data,
+        error,
+      } = await UsersController.returnRegister({ email, password });
 
-  }
-  catch(e : unknown){
-  }
-})
+      if (!isFound) {
+        return res.status(error.status).json(error);
+      }
+      const { id } = data;
+      res.locals.auth = {
+        user_id: id,
+      };
+      next();
+    } catch (e: unknown) {
+      console.log(e);
+      return res
+        .status(500)
+        .json({ code: 500, error: "Unexpected error when logging in" });
+    }
+  },
+  signResponseWithAuth,
+);
 
-userRouter.post('/register', async(req, res) =>{
-  try{
+userRouter.post("/register", async (req, res) => {
+  try {
+  } catch (e: unknown) {}
+});
 
-  }
-  catch(e : unknown){
+userRouter.post("/logout", async (_, res: Response) => {
+  res.clearCookie("token");
+  res.sendStatus(204);
+});
 
-  }
-})
-
-userRouter.post('/logout', async(req, res)=>{
-  try{
-
-  }
-  catch(e : unknown){
-
-  }
-})
-
-export default userRouter; 
+export default userRouter;
