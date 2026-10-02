@@ -1,8 +1,8 @@
 import { fail, type PromiseResult, success } from "@app/types";
-import { Bucket } from "./bucket.ts";
+import { Bucket } from "../bucket.ts";
 import { ImageController } from "@db/controllers/images.controller.js";
 import { parentPort } from "node:worker_threads";
-import type { Task, WorkerResult } from "./types.ts";
+import type { TaskImageProcessing, WorkerResult } from "../types.ts";
 import { ImageProcessorFactory } from "@images-service";
 
 type SuccessMove = {
@@ -10,7 +10,7 @@ type SuccessMove = {
 };
 type ErrorMove = {
   cleanup: () => Promise<void>;
-  task: Task;
+  task: TaskImageProcessing;
   error: string;
 };
 async function imageDelete(key: string) {
@@ -19,7 +19,9 @@ async function imageDelete(key: string) {
     .then(({ success, error }) => !success && console.error(error))
     .catch((e) => console.error(e));
 }
-async function processImage(task: Task): PromiseResult<SuccessMove, ErrorMove> {
+async function processImage(
+  task: TaskImageProcessing,
+): PromiseResult<SuccessMove, ErrorMove> {
   const {
     image: imageSource,
     source: { url },
@@ -64,7 +66,7 @@ async function processImage(task: Task): PromiseResult<SuccessMove, ErrorMove> {
   });
 }
 
-parentPort?.on("message", async (param: Task) => {
+parentPort?.on("message", async (param: TaskImageProcessing) => {
   if (!parentPort || parentPort === null)
     throw new Error("Worker Current comuncate with parrent");
   const { success: processSuccess, error } = await processImage(param);
@@ -74,5 +76,7 @@ parentPort?.on("message", async (param: Task) => {
   }
   const { cleanup, ...mess } = error;
   await cleanup();
-  parentPort.postMessage(fail<NonNullable<WorkerResult["error"]>>(mess));
+  parentPort.postMessage(
+    fail<NonNullable<WorkerResult<TaskImageProcessing>["error"]>>(mess),
+  );
 });

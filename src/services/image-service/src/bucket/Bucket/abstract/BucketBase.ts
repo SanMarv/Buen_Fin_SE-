@@ -91,13 +91,13 @@ export abstract class BucketBase {
     metatada: paramMetadata = {},
     formatId = true,
   }: PutOneObjectBase): PutOneResult {
-    const fileName = formatId ? `${id}.${format}` : id;
-    const metadata = this.getUploadMetadata({ id: fileName });
+    id = formatId ? `${id}.${format}` : id;
+    const metadata = this.getUploadMetadata({ id });
     try {
       const command = new PutObjectCommand({
         Bucket: this.bucket,
         Body: body,
-        Key: fileName,
+        Key: id,
         ContentType: this.mimeType(format),
         Metadata: {
           ...paramMetadata,

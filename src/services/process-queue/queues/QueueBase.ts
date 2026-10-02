@@ -1,22 +1,16 @@
-import type { Task, WorkerResult } from "./types.ts";
-import { Worker } from "node:worker_threads";
-const worker_script = new URL("./worker.js", import.meta.url);
-const WORKER_POOL_SIZE = Number(process.env.WORKER_POOL_SIZE ?? 10) || 10;
-class Queue {
-  private size: number;
+import type { WorkerResult } from "../types.ts";
+import type { Worker } from "node:worker_threads";
+
+// const WORKER_POOL_SIZE = Number(process.env.WORKER_POOL_SIZE ?? 10) || 10;
+export class Queue<Task> {
+  public readonly size: number;
+  protected createWorker: () => Worker;
   private tasks: Task[] = [];
   private freeWorkers: Worker[] = [];
-  static #instance: Queue;
-  public static get instance(): Queue {
-    if (this.#instance) return this.#instance;
-    this.#instance = new Queue();
-    return this.#instance;
-  }
-  private constructor() {
-    this.size = WORKER_POOL_SIZE;
+  private init() {
     for (let i = 0; i < this.size; i++) {
-      const worker = new Worker(worker_script, { env: { ...process.env } });
-      worker.on("message", ({ success, error }: WorkerResult) => {
+      const worker = this.createWorker();
+      worker.on("message", ({ success, error }: WorkerResult<Task>) => {
         console.log(
           `image-worker-${worker.threadId} finish with status ${Number(!success)}`,
         );
@@ -30,6 +24,17 @@ class Queue {
       this.freeWorkers.push(worker);
     }
   }
+  constructor({
+    size,
+    createWorker,
+  }: {
+    size: number;
+    createWorker: () => Worker;
+  }) {
+    this.size = size;
+    this.createWorker = createWorker;
+    this.init();
+  }
   enqueue(task: Task) {
     if (this.freeWorkers.length > 0) {
       this.runTask(this.freeWorkers.pop()!, task);
@@ -38,6 +43,7 @@ class Queue {
     }
   }
   private runTask(worker: Worker, task: Task) {
+    console.log(`image-worker-${worker.threadId} pick task`);
     console.time(`image-worker-${worker.threadId}`);
     worker.postMessage(task);
   }
@@ -49,5 +55,3 @@ class Queue {
     }
   }
 }
-
-export const queue = Queue.instance;

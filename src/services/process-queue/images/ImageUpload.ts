@@ -38,6 +38,10 @@ export class ImageUpload {
     });
     return this.bucketData;
   }
+  async deleteFromBucket() {
+    if (!this.bucketData?.data) throw new Error("Delete without creation");
+    await Bucket.deleteOne({ key: this.bucketData.data.id });
+  }
   async createRecord(param: { alt?: ImageRecord["alt"] } = {}) {
     if (!this.image || !this.bucketData)
       throw new Error("Image not uploaded to bucket");

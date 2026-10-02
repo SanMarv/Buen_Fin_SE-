@@ -1,8 +1,7 @@
 import { Router } from "express";
 import { validateInputFile } from "./images.middleware.ts";
 import { parseAuthHeader } from "@auth/headers.middleware.js";
-import { ImageUpload } from "./ImageUpload.ts";
-import { queue } from "../queue.ts";
+import { imageRawQueue } from "../queues/ImageRawQueue.js";
 import type { RequestWithUser } from "@backend/types.js";
 
 const routes = Router();
@@ -14,30 +13,16 @@ routes.post(
   async (req, res: RequestWithUser) => {
     const file = req.file!;
     const user_id = res.locals.auth.user_id;
-    const imageUpload = new ImageUpload({ user_id, file });
-
-    // Basic process before upload
-    await imageUpload.process();
-
-    // Upload to bucket
-    const { success: isUploaded, error: bucketError } =
-      await imageUpload.uploadToBucket();
-
-    if (!isUploaded) return res.status(bucketError.status).json(bucketError);
-
-    // Adding record
     const {
-      success: wasCreated,
-      error: dbError,
-      data: recordData,
-    } = await imageUpload.createRecord({ alt: req.body.alt });
-
-    if (!wasCreated) return res.status(dbError.status).json(dbError);
-    queue.enqueue({
-      image: imageUpload.image!,
-      source: { url: recordData.url },
+      success: isUploaded,
+      data: record,
+      error,
+    } = await imageRawQueue.enqueue({
+      file,
+      user_id,
     });
-    return res.json({ url: recordData });
+    if (!isUploaded) return res.status(error.status).json(error);
+    return res.json(record);
   },
 );
 
