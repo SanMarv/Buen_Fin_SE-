@@ -84,6 +84,9 @@ userRouter.delete("/delete", protectRoute, async (req : Request, res : Response)
     console.error(e); 
     return res.status(500).json({status : 500, error : "Unexpected error when eliminating user"}); 
   }
-})
+}); 
+
+
+userRouter.put("/update", )
 
 export default userRouter;
