@@ -55,7 +55,10 @@ userRouter.post("/register", async (req : Request, res : Response) => {
 
     res.sendStatus(201); 
 
-  } catch (e: unknown) {}
+  } catch (e: unknown) {
+      console.error(e); 
+      return res.status(500).json({status : 500, error: "Unexpected error when creating user"}); 
+  }
 });
 
 userRouter.post("/logout", (_, res: Response) => {
