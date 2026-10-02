@@ -39,8 +39,22 @@ userRouter.post(
   signResponseWithAuth,
 );
 
-userRouter.post("/register", async (req, res) => {
+userRouter.post("/register", async (req : Request, res : Response) => {
   try {
+    const {name, email, password} = req.body; 
+
+    if(!name || !email || !password){
+      return res.status(400).json({code : 400, error: "Missing a mandatory field"}); 
+    }
+
+    const { success : created, error} = await UsersController.createRegister(req.body);
+
+    if(!created){
+      return res.status(error.status).json(error); 
+    }
+
+    res.sendStatus(201); 
+
   } catch (e: unknown) {}
 });
 
