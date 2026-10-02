@@ -33,22 +33,19 @@ export class UsersController {
     }
   }
 
-  static async deleteRegister(email: string): UserOperationResult {
+  static async deleteRegister(id: string): Promise<boolean> {
     try {
       const [eliminatedUser] = await db
         .delete(users)
-        .where(eq(users.email, email))
+        .where(eq(users.id, id))
         .returning();
       if (!eliminatedUser) {
-        return fail({ status: 500, error: "Could not find user to eliminate" });
+        return false;
       }
-      return success(eliminatedUser);
+      return true;
     } catch (e: unknown) {
       console.error(e);
-      return fail({
-        status: 500,
-        error: "Unexpected error when eliminating user",
-      });
+      return false;
     }
   }
   static async returnRegister(user: UserLogin): UserOperationResult {

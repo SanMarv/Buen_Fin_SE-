@@ -1,8 +1,9 @@
 import { Router, type NextFunction } from "express";
-import { signResponseWithAuth } from "@auth/jwt.middleware.js";
+import { signResponseWithAuth, protectRoute } from "@auth/jwt.middleware.js";
 import { type Request, type Response } from "express";
 import { UsersController } from "@db/controllers/users.controller.js";
 import type { RequestWithUser } from "../types.js";
+import { argon2 } from "node:crypto";
 const userRouter = Router();
 
 userRouter.post(
@@ -42,7 +43,7 @@ userRouter.post(
 userRouter.post("/register", async (req : Request, res : Response) => {
   try {
     const {name, email, password} = req.body; 
-
+ 
     if(!name || !email || !password){
       return res.status(400).json({code : 400, error: "Missing a mandatory field"}); 
     }
@@ -65,5 +66,24 @@ userRouter.post("/logout", (_, res: Response) => {
   res.clearCookie("token");
   res.sendStatus(204);
 });
+
+userRouter.delete("/delete", protectRoute, async (req : Request, res : Response) => {
+  try{
+    const { user_id } = res.locals.auth; 
+    
+    const eliminated = await UsersController.deleteRegister(user_id); 
+
+    if(!eliminated){
+      return res.status(404).json({status: 404, error: "User does not exist"}); 
+    }
+
+    res.clearCookie("token"); 
+    res.sendStatus(204); 
+  }
+  catch(e : unknown){
+    console.error(e); 
+    return res.status(500).json({status : 500, error : "Unexpected error when eliminating user"}); 
+  }
+})
 
 export default userRouter;

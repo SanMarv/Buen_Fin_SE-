@@ -46,6 +46,7 @@
     "@aws-sdk/client-s3": "^3.1131.0",
     "@nodecfdi/credentials": "github:nasa14119/nodecfdi-credentials#main",
     "@nodecfdi/rfc": "github:nasa14119/nodecfdi-rfc#main",
+    "argon2": "^0.45.1",
     "blurhash": "^2.0.5",
     "drizzle-orm": "^1.0.0-rc.4",
     "express": "^5.2.1",

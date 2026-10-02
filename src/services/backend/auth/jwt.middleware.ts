@@ -1,4 +1,4 @@
-import type { Request, RequestHandler } from "express";
+import type { NextFunction, Request, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "@env";
 import type { RequestWithUser } from "../types.ts";
@@ -38,6 +38,6 @@ export const protectRoute: RequestHandler = (req, res) => {
     const user = jwt.verify(token, env.JWT_KEY);
     res.locals.auth = user;
   } catch {
-    return res.status(403).json({ status: 403, error: "Unoutorized" });
+    return res.status(403).json({ status: 403, error: "Unauthorized" });
   }
 };
