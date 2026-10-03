@@ -28,16 +28,17 @@ export const signResponseWithAuth = (req: Request, res: RequestWithUser) => {
   }
 };
 
-export const protectRoute: RequestHandler = (req, res) => {
+export const protectRoute: RequestHandler = (req, res, next) => {
   const { token } = req.cookies;
   if (!token)
     return res
-      .status(400)
-      .json({ error: "Bad request token not found", status: 400 });
+      .status(401)
+      .json({ error: "Bad request token not found", status: 401 });
   try {
     const user = jwt.verify(token, env.JWT_KEY);
     res.locals.auth = user;
   } catch {
     return res.status(403).json({ status: 403, error: "Unauthorized" });
   }
+  next();
 };

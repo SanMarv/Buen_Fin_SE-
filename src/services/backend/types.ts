@@ -1,4 +1,4 @@
-import type { Response } from "express";
+import type { Response, RequestHandler, Request, NextFunction } from "express";
 
 export interface RequestWithUser extends Response {
   locals: Response["locals"] & {
@@ -7,3 +7,5 @@ export interface RequestWithUser extends Response {
     };
   };
 }
+
+export type RequestHandlerWithUser = (req: Request, res: RequestWithUser, next:NextFunction ) => ReturnType<RequestHandler>

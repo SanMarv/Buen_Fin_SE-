@@ -3,6 +3,6 @@
 npm run build
 
 docker build \
-  -t buen-fin-image-process \
+  -t buen-fin-app-image-service \
   -f process-queue.Dockerfile \
   .

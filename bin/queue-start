@@ -9,7 +9,7 @@ if [[ ! "$PORT" =~ ^[0-9]+$ ]]; then
 fi
 
 docker run -d \
-  --name buen-fin-image-process \
+  --name buen-fin-app-image-service \
   --publish "${PORT}:80" \
   --env-file .env \
-  buen-fin-image-process
+  buen-fin-app-image-service

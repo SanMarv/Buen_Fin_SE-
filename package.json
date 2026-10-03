@@ -5,6 +5,7 @@
   "private": true,
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
     "@types/heic-convert": "^2.1.1",
     "@types/jsonwebtoken": "^9.0.10",
@@ -26,6 +27,7 @@
   },
   "scripts": {
     "test": "vitest",
+    "dev:back": "tsx --env-file .env --watch src/services/backend/app.ts",
     "dev:up": "docker compose --env-file .env up -d",
     "dev:down": "docker compose down",
     "dev:stop": "docker compose stop",
@@ -40,7 +42,8 @@
     "lint:fix": "eslint . --fix",
     "image:process-image": "bash bin/queue-image",
     "process-image:start": "bash bin/queue-start",
-    "process-image:stop": " docker stop buen-fin-image-process && docker rm buen-fin-image-process"
+    "process-image:stop": "docker stop buen-fin-app-image-service && docker rmi buen-fin-app-image-service",
+    "process-image:rebuild": "docker rmi buen-fin-app-image-service"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",
@@ -48,6 +51,7 @@
     "@nodecfdi/rfc": "github:nasa14119/nodecfdi-rfc#main",
     "argon2": "^0.45.1",
     "blurhash": "^2.0.5",
+    "cookie-parser": "^1.4.7",
     "drizzle-orm": "^1.0.0-rc.4",
     "express": "^5.2.1",
     "fast-blurhash": "^1.2.0",
