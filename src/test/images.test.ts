@@ -1,11 +1,10 @@
 import { test, expect } from "vitest";
-import fs from "node:fs";
-import path from "node:path";
-import { ImageProcessorFactory } from "@images-service";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { ImageProcessorFactory } from "@images-service/index.js";
 
-const dummyPath = path.resolve(__dirname, "dummy");
-console.log(dummyPath);
-const heic = fs.readFileSync(`${dummyPath}/heic-horizontal.heic`);
+const dummyPath = resolve(__dirname, "dummy");
+const heic = readFileSync(`${dummyPath}/heic-horizontal.heic`);
 
 test("Heic to be change to standar format", async () => {
   const imageObject = await ImageProcessorFactory(heic);

@@ -1,4 +1,4 @@
-import type { NextFunction, Request, RequestHandler } from "express";
+import type { Request, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "@env";
 import type { RequestWithUser } from "../types.ts";

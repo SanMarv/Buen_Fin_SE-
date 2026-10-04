@@ -1,8 +1,9 @@
 import type { Result } from "@app/types";
+import type { ValidCompany } from "@db/interfaces/validation.interface.js";
 
 export interface ValidateSatSchema {
-  cer: string;
-  key: string;
+  cer: Buffer;
+  key: Buffer;
   password: string;
 }
 
@@ -11,11 +12,4 @@ interface ValidationError {
   error: string;
 }
 
-export interface SuccessSign {
-  rfc: string;
-  signed: string;
-  hash: string;
-  valid_until: Date;
-}
-export type PartialSuccessSign = Partial<SuccessSign>;
-export type ValidationResult = Result<SuccessSign, ValidationError>;
+export type ValidationResult = Result<ValidCompany, ValidationError>;
