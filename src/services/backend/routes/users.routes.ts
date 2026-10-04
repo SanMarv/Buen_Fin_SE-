@@ -3,7 +3,7 @@ import { signResponseWithAuth, protectRoute } from "@auth/jwt.middleware.js";
 import { type Request, type Response } from "express";
 import { UsersController } from "@db/controllers/users.controller.js";
 import type { RequestWithUser } from "../types.js";
-import { argon2 } from "node:crypto";
+import * as argon2 from "argon2"; 
 const userRouter = Router();
 
 userRouter.post(
@@ -47,6 +47,8 @@ userRouter.post("/register", async (req : Request, res : Response) => {
     if(!name || !email || !password){
       return res.status(400).json({code : 400, error: "Missing a mandatory field"}); 
     }
+    
+    req.body.password = await argon2.hash(password); 
 
     const { success : created, error} = await UsersController.createRegister(req.body);
 

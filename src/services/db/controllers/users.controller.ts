@@ -6,9 +6,9 @@ import type {
   UserLogin,
 } from "@db/interfaces/users.interfaces.js";
 import { users } from "@db/schema.js";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { v7 as genUUID } from "uuid";
-
+import * as argon2 from "argon2"; 
 export class UsersController {
   static async createRegister(newUser: UserCreate): UserOperationResult {
     const uuid = genUUID();
@@ -51,13 +51,18 @@ export class UsersController {
   static async returnRegister(user: UserLogin): UserOperationResult {
     try {
       const [record] = await db
-        .select({ id: users.id })
+        .select({ id: users.id, password : users.password })
         .from(users)
         .where(
-          and(eq(users.email, user.email), eq(users.password, user.password)),
+         eq(users.email, user.email),
         );
       if (!record) {
         return fail({ status: 404, error: "User not found" });
+      }
+
+      const isValid = await argon2.verify(record.password, user.password); 
+      if(!isValid){
+        return fail({status: 401, error: "Incorrect credentials"}); 
       }
       return success(record);
     } catch (e: unknown) {
