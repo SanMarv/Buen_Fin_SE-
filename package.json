@@ -52,6 +52,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",
+    "@dicebear/core": "^10.7.0",
+    "@dicebear/styles": "^10.6.0",
     "@nodecfdi/credentials": "github:nasa14119/nodecfdi-credentials#main",
     "@nodecfdi/rfc": "github:nasa14119/nodecfdi-rfc#main",
     "@tanstack/react-router": "^1.170.41",
