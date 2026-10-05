@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import type { Request } from "express";
 import { ImageProcessorFactory, type ImageObject } from "@images-service";
-import { Bucket } from "../bucket.ts";
+import { imageBucket as Bucket } from "@images-service";
 import type { PutOneResult } from "@images/types";
 import { ImageController } from "@db/controllers/images.controller.js";
 import type { ImageRecord } from "@db/models/image.model.js";

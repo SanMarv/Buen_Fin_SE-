@@ -1,5 +1,5 @@
 import { fail, type PromiseResult, success } from "@app/types";
-import { Bucket } from "../bucket.ts";
+import { imageBucket as Bucket } from "@images-service";
 import { ImageController } from "@db/controllers/images.controller.js";
 import { parentPort } from "node:worker_threads";
 import type { TaskImageProcessing, WorkerResult } from "../types.ts";
