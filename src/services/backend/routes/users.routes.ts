@@ -89,6 +89,18 @@ userRouter.delete("/delete", protectRoute, async (req : Request, res : Response)
 }); 
 
 
-userRouter.put("/update", )
+userRouter.put("/update", protectRoute, async(req: Request, res: Response) =>{
+  try{
+    const { user_id } = res.locals.auth; 
+    const {email, new_password, original_password} = req.body; 
+
+    if(!original_password){
+      return res.status(400).json({status: 400, error: "Can't update data without your current password"});
+    }
+  }
+  catch(e : unknown){
+
+  }
+})
 
 export default userRouter;

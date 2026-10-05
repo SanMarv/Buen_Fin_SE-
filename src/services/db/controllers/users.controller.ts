@@ -4,6 +4,7 @@ import type {
   UserCreate,
   UserOperationResult,
   UserLogin,
+  UserUpdate
 } from "@db/interfaces/users.interfaces.js";
 import { users } from "@db/schema.js";
 import { eq } from "drizzle-orm";
@@ -84,6 +85,16 @@ export class UsersController {
     } catch (e: unknown) {
       console.error(e);
       return false;
+    }
+  }
+
+  static async updateUser(new_data: UserUpdate) : UserOperationResult{
+    try{
+      const updated_user = await db.update(users).
+    }
+    catch(e : unknown){
+      console.error(e); 
+      return fail({status: 500, error: "Unexpected error when updating user"})
     }
   }
 }
