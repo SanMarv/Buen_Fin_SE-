@@ -90,7 +90,26 @@ export class UsersController {
 
   static async updateUser(new_data: UserUpdate) : UserOperationResult{
     try{
-      const updated_user = await db.update(users).
+      const [record] = await db
+        .select({password : users.password })
+        .from(users)
+        .where(
+         eq(users.id, new_data.id),
+        );
+
+      const isValid = await argon2.verify(record.password, new_data.old_password);
+
+      if(!isValid){
+        return fail({status: 401, error: "Incorrect credentials"}); 
+      }
+
+      const [updated_record] = await db.update(users).set({
+        email: new_data.new_email, 
+        password: new_data.new_password
+      }).where(eq(users.id, new_data.id)).returning(); 
+
+      return success(updated_record);
+
     }
     catch(e : unknown){
       console.error(e); 
