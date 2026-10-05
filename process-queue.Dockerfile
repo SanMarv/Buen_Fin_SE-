@@ -12,4 +12,4 @@ ENV PORT=80
 
 EXPOSE 80
 
-CMD [ "node", "--env-file",".env","dist/services/process-queue/init.js"]
+CMD [ "NODE_ENV=production","node", "--env-file",".env","dist/services/process-queue/init.js"]

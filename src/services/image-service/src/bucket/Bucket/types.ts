@@ -32,12 +32,25 @@ export type S3Error = {
   status: number;
   error: string;
 };
-export type PutOneObject = {
+export interface PutOneObject {
+  /**
+   * @param id The key that will be saved in bucket
+   */
   id: string;
+  /**
+   * @param body Raw file being uploaded
+   */
   body: string | Buffer;
+  /**
+   * @param format Format to auto set mimeType
+   */
   format: string;
+  /**
+   * @param formatId Will add format to the key `{id}.{format}`
+   * @defaultValue `true`
+   */
   formatId?: boolean;
-};
+}
 export interface PutOneObjectBase extends PutOneObject {
   metatada?: Record<string, string>;
 }

@@ -1,5 +1,5 @@
 import { fail, type PromiseResult, success } from "@app/types";
-import { Bucket } from "../bucket.ts";
+import { imageBucket as Bucket } from "@images-service";
 import { ImageController } from "@db/controllers/images.controller.js";
 import { parentPort } from "node:worker_threads";
 import type { TaskImageProcessing, WorkerResult } from "../types.ts";
@@ -45,16 +45,16 @@ async function processImage(
     return fail({ error: bucketError.error, cleanup: async () => {}, task });
   }
 
-  const { path, uploadedAt } = bucketData;
+  const { url: newUrl, uploadedAt } = bucketData;
 
   const { success: isSavedDB, error } = await ImageController.move([
     { url },
-    { url: path, hash: image.hash, metadata: { uploadedAt } },
+    { url: newUrl, hash: image.hash, metadata: { uploadedAt } },
   ]);
   if (isSavedDB) {
     imageDelete(imageSource.fileName).catch((e) => console.error(e));
     return success({
-      url: path,
+      url: newUrl,
     });
   }
   return fail({

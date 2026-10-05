@@ -4,6 +4,7 @@ import { BUCKET_NAMES, BUCKET_OPTIONS, type BucketName } from "../config.ts";
 import { fail, success, type Result } from "@app/types";
 import { BucketError } from "./error/BucketError.ts";
 import { UnexpectedError } from "./error/UnextedError.ts";
+import { env } from "@env";
 type PropsGenerateUrl = {
   bucket: BucketName;
   key: string;
@@ -11,8 +12,12 @@ type PropsGenerateUrl = {
 export const generatePathKey = ({ bucket, key }: PropsGenerateUrl) =>
   `/${BUCKET_NAMES[bucket]}/${key}`;
 
-export const generateBucketUrl = (param: PropsGenerateUrl) =>
-  `${BUCKET_OPTIONS.S3_URL}/${generatePathKey(param)}`;
+export const generateBucketUrl = (param: PropsGenerateUrl) => {
+  if (env.NODE_ENV === "development") {
+    return `${BUCKET_OPTIONS.S3_URL}${generatePathKey(param)}`;
+  }
+  return `${env.DOMAIN}/images${generatePathKey(param)}`;
+};
 
 export const concatBucketPath = (path: string) =>
   `${BUCKET_OPTIONS.S3_URL}/${path}`;

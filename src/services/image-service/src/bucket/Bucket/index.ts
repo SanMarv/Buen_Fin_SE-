@@ -7,3 +7,8 @@ export class ImageBucket extends ImageBucketI {
     super("IMAGES");
   }
 }
+export class ProfilesBucket extends ImageBucketI {
+  constructor() {
+    super("PROFILES");
+  }
+}

@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import path from "node:path";
 import fs from "node:fs";
-import { Bucket } from "../services/process-queue/bucket.ts";
+import { imageBucket as Bucket } from "@images-service";
 const dummyPath = path.resolve(__dirname, "dummy");
 
 const img = fs.readFileSync(`${dummyPath}/horizontal.jpg`);
