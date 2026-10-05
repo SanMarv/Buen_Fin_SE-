@@ -11,7 +11,7 @@ export const images = pgTable(TABLE_NAMES.IMAGES, {
   width: integer().notNull(),
   height: integer().notNull(),
   user_id: uuid()
-    .references(() => users.id)
+    .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
   url: varchar({ length: 2000 }).notNull(),
   hash: varchar({ length: 166 }),

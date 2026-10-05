@@ -6,6 +6,6 @@ export const wishlists = pgTable(TABLE_NAMES.WISHLISTS, {
   id: uuid().primaryKey().notNull(),
   name: varchar({ length: 200 }).notNull(),
   userId: uuid()
-    .references(() => users.id)
+    .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
 });
