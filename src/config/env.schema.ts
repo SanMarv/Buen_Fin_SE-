@@ -7,6 +7,7 @@ const {
   MINIMUM_DB_NAME_SIZE,
   MINIMUM_PASSWORD_SIZE,
   BACKEND_DEFAULT_PORT,
+  DEFAULT_PROFILE_IMAGE_SIZE,
 } = DEFAULT_CONFIG;
 
 // TODO: assign real params for propper key
@@ -25,5 +26,6 @@ export const ConfigSchema = z.object({
   DB_URL: z.url(),
   JWT_KEY: server_password,
   HMAC_KEY: server_password,
+  IMAGE_PROFILE_SIZE: z.number().min(0).default(DEFAULT_PROFILE_IMAGE_SIZE),
 });
 export type Config = z.infer<typeof ConfigSchema>;

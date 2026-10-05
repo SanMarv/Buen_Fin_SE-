@@ -6,6 +6,7 @@ export const DEFAULT_CONFIG = {
   MINIMUM_DB_NAME_SIZE: 4,
   DEFAULT_DB_PORT: 5432,
   DB_DIALECT: "postgres",
+  DEFAULT_PROFILE_IMAGE_SIZE: 480,
 } as const;
 
 const DAYS = 1,
