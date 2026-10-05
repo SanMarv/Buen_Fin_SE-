@@ -3,7 +3,7 @@ import { signResponseWithAuth, protectRoute } from "@auth/jwt.middleware.js";
 import { type Request, type Response } from "express";
 import { UsersController } from "@db/controllers/users.controller.js";
 import type { RequestWithUser } from "../types.js";
-import * as argon2 from "argon2";
+import * as argon2 from "argon2"; 
 const userRouter = Router();
 
 userRouter.post(
@@ -40,32 +40,27 @@ userRouter.post(
   signResponseWithAuth,
 );
 
-userRouter.post("/register", async (req: Request, res: Response) => {
+userRouter.post("/register", async (req : Request, res : Response) => {
   try {
-    const { name, email, password } = req.body;
+    const {name, email, password} = req.body; 
+ 
+    if(!name || !email || !password){
+      return res.status(400).json({code : 400, error: "Missing a mandatory field"}); 
+    }
+    
+    req.body.password = await argon2.hash(password); 
 
-    if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({ code: 400, error: "Missing a mandatory field" });
+    const { success : created, error} = await UsersController.createRegister(req.body);
+
+    if(!created){
+      return res.status(error.status).json(error); 
     }
 
-    req.body.password = await argon2.hash(password);
+    res.sendStatus(201); 
 
-    const { success: created, error } = await UsersController.createRegister(
-      req.body,
-    );
-
-    if (!created) {
-      return res.status(error.status).json(error);
-    }
-
-    res.sendStatus(201);
   } catch (e: unknown) {
-    console.error(e);
-    return res
-      .status(500)
-      .json({ status: 500, error: "Unexpected error when creating user" });
+      console.error(e); 
+      return res.status(500).json({status : 500, error: "Unexpected error when creating user"}); 
   }
 });
 
@@ -74,48 +69,45 @@ userRouter.post("/logout", (_, res: Response) => {
   res.sendStatus(204);
 });
 
-userRouter.delete(
-  "/delete",
-  protectRoute,
-  async (req: Request, res: Response) => {
-    try {
-      const { user_id } = res.locals.auth;
+userRouter.delete("/delete", protectRoute, async (_,  res : Response) => {
+  try{
+    const { user_id } = res.locals.auth; 
+    
+    const eliminated = await UsersController.deleteRegister(user_id); 
 
-      const eliminated = await UsersController.deleteRegister(user_id);
-
-      if (!eliminated) {
-        return res
-          .status(404)
-          .json({ status: 404, error: "User does not exist" });
-      }
-
-      res.clearCookie("token");
-      res.sendStatus(204);
-    } catch (e: unknown) {
-      console.error(e);
-      return res
-        .status(500)
-        .json({ status: 500, error: "Unexpected error when eliminating user" });
+    if(!eliminated){
+      return res.status(404).json({status: 404, error: "User does not exist"}); 
     }
-  },
-);
 
-userRouter.put("/update", protectRoute, async (req: Request, res: Response) => {
-  try {
-    const { user_id } = res.locals.auth;
-    const { email, new_password, original_password } = req.body;
-
-    if (!original_password) {
-      return res
-        .status(400)
-        .json({
-          status: 400,
-          error: "Can't update data without your current password",
-        });
-    }
-  } catch (e: unknown) {
-    console.error(e);
+    res.clearCookie("token"); 
+    res.sendStatus(204); 
   }
-});
+  catch(e : unknown){
+    console.error(e); 
+    return res.status(500).json({status : 500, error : "Unexpected error when eliminating user"}); 
+  }
+}); 
+
+
+userRouter.put("/update", protectRoute, async(req: Request, res: Response) =>{
+  try{
+    const { user_id } = res.locals.auth;  
+
+    if(!req.body.original_password){
+      return res.status(400).json({status: 400, error: "Can't update data without your current password"});
+    }
+    
+    const {success, error} = await UsersController.updateUser({user_id, ...req.body}); 
+
+    if(!success){
+      return res.status(error.status).json(error)
+    }
+    
+    res.sendStatus(200); 
+  }
+  catch(e : unknown){
+
+  }
+})
 
 export default userRouter;
