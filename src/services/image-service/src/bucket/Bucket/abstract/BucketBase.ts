@@ -18,7 +18,7 @@ import type {
 } from "../types.ts";
 import { fail, success, type Result } from "@app/types";
 import {
-  concatBucketPath,
+  generateBucketUrl,
   generatePathKey,
   sendCommandWithResult,
 } from "../utils.ts";
@@ -159,7 +159,7 @@ export abstract class BucketBase {
       key: id,
     });
     const now = new Date();
-    const url = concatBucketPath(path);
+    const url = generateBucketUrl({ bucket: this.bucket_name, key: id });
     return {
       uploadedAt: now,
       path,

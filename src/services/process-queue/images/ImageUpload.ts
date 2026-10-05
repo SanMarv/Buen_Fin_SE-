@@ -47,9 +47,9 @@ export class ImageUpload {
       throw new Error("Image not uploaded to bucket");
     if (!this.bucketData.success)
       throw new Error("There was and error uploading to bucket");
-    const { path, uploadedAt } = this.bucketData.data;
+    const { url, uploadedAt } = this.bucketData.data;
     const result = await ImageController.create({
-      url: path,
+      url,
       height: this.image.height,
       width: this.image.width,
       user_id: this.user_id,

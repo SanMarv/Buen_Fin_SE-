@@ -17,6 +17,7 @@ export const ConfigSchema = z.object({
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
+  DOMAIN: z.string().default("http://localhost:5000"),
   BACKEND_PORT: z.number().min(0).max(65_535).default(BACKEND_DEFAULT_PORT),
   DB_NAME: z.string().min(MINIMUM_DB_NAME_SIZE),
   DB_PASSWORD: z.string().min(MINIMUM_PASSWORD_SIZE),
