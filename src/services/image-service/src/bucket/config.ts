@@ -10,7 +10,7 @@ const BucketConfigSchema = z.object({
   S3_URL: process.env.NODE_ENV === "production" ? z.httpUrl() : z.url(),
   S3_ACCESS_KEY: z.string(),
   S3_PRIVATE_KEY: z.string(),
-  isPathStyle: z.boolean().optional().default(true),
+  isPathStyle: z.stringbool().default(true),
   BUCKET_IMAGES: z.string().optional().default(DEFAULT_BUCKET_NAME),
   BUCKET_PROFILES: z.string().optional().default(DEFAULT_BUCKET_PROFILES),
 });
