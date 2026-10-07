@@ -7,7 +7,7 @@ const options = [
     icon: ShoppingBag,
     title: 'Soy consumidor',
     description:
-      'Consulta tus derechosy compra de forma segura.',
+      'Consulta tus derechos y compra de forma segura.',
     link: 'Ver recursos para consumidores',
   },
   {

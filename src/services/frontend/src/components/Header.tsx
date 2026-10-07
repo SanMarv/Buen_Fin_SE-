@@ -47,7 +47,6 @@ const navLinks = [
   { to: '/faq', label: 'Preguntas frecuentes' },
 ] as const
 
-const outlineHover = 'hover:bg-primary hover:text-primary-foreground'
 
 export function Header() {
   return (
@@ -82,17 +81,22 @@ export function Header() {
 
         <div className="flex flex-col gap-2 px-4">
           <SheetClose asChild>
-            <Button asChild variant="outline" className={outlineHover}>
+            <Button asChild variant="outline" 
+            >
               <Link to="/login">Iniciar sesión</Link>
             </Button>
           </SheetClose>
           <SheetClose asChild>
-            <Button asChild variant="outline" className={outlineHover}>
+            <Button asChild variant="outline" 
+
+            >
               <Link to="/register-consumer">Registro de consumidor</Link>
             </Button>
           </SheetClose>
           <SheetClose asChild>
-            <Button asChild variant="outline" className={outlineHover}>
+            <Button asChild variant="outline" 
+            
+            >
               <Link to="/register-business">Registro de comercio</Link>
             </Button>
           </SheetClose>
@@ -103,7 +107,7 @@ export function Header() {
             variant="outline"
             size="icon"
             aria-label="Traducir"
-            className={outlineHover}
+            
           >
             <Languages />
           </Button>
@@ -111,7 +115,7 @@ export function Header() {
             variant="outline"
             size="icon"
             aria-label="Modo oscuro"
-            className={outlineHover}
+            
           >
             <Moon />
           </Button>
