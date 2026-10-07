@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutusRouteImport } from './routes/aboutus'
 import { Route as BusinessProfileRouteImport } from './routes/business-profile'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterBusinessRouteImport } from './routes/register-business'
 import { Route as RegisterConsumerRouteImport } from './routes/register-consumer'
@@ -24,9 +26,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutusRoute = AboutusRouteImport.update({
+  id: '/aboutus',
+  path: '/aboutus',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BusinessProfileRoute = BusinessProfileRouteImport.update({
   id: '/business-profile',
   path: '/business-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -68,7 +80,9 @@ const WishlistRoute = WishlistRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aboutus': typeof AboutusRoute
   '/business-profile': typeof BusinessProfileRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/register-business': typeof RegisterBusinessRoute
   '/register-consumer': typeof RegisterConsumerRoute
@@ -79,7 +93,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aboutus': typeof AboutusRoute
   '/business-profile': typeof BusinessProfileRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/register-business': typeof RegisterBusinessRoute
   '/register-consumer': typeof RegisterConsumerRoute
@@ -91,7 +107,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/aboutus': typeof AboutusRoute
   '/business-profile': typeof BusinessProfileRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/register-business': typeof RegisterBusinessRoute
   '/register-consumer': typeof RegisterConsumerRoute
@@ -104,7 +122,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/aboutus'
     | '/business-profile'
+    | '/faq'
     | '/login'
     | '/register-business'
     | '/register-consumer'
@@ -115,7 +135,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/aboutus'
     | '/business-profile'
+    | '/faq'
     | '/login'
     | '/register-business'
     | '/register-consumer'
@@ -126,7 +148,9 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/aboutus'
     | '/business-profile'
+    | '/faq'
     | '/login'
     | '/register-business'
     | '/register-consumer'
@@ -138,7 +162,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutusRoute: typeof AboutusRoute
   BusinessProfileRoute: typeof BusinessProfileRoute
+  FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   RegisterBusinessRoute: typeof RegisterBusinessRoute
   RegisterConsumerRoute: typeof RegisterConsumerRoute
@@ -157,11 +183,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aboutus': {
+      id: '/aboutus'
+      path: '/aboutus'
+      fullPath: '/aboutus'
+      preLoaderRoute: typeof AboutusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/business-profile': {
       id: '/business-profile'
       path: '/business-profile'
       fullPath: '/business-profile'
       preLoaderRoute: typeof BusinessProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -218,7 +258,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutusRoute: AboutusRoute,
   BusinessProfileRoute: BusinessProfileRoute,
+  FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   RegisterBusinessRoute: RegisterBusinessRoute,
   RegisterConsumerRoute: RegisterConsumerRoute,
