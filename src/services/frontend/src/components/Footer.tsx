@@ -1,12 +1,27 @@
 import { Link } from '@tanstack/react-router'
 
-const exploreLinks = [
-  { to: '/', label: 'Inicio' },
-  { to: '/search-business', label: 'Comercios' },
-  { to: '/search-products', label: 'Productos' },
+// cuando ya tengamos los links se les agrega un `to`
+const sections = [
+  {
+    title: 'Explora', // encabezado de la columna
+    items: [
+      { to: '/', label: 'Inicio' },
+      { to: '/search-business', label: 'Comercios' },
+      { to: '/search-products', label: 'Productos' },
+    ],
+  },
+  {
+    title: 'Legal',
+    items: [{ label: 'Aviso de privacidad' }, { label: 'Términos de uso' }],
+  },
+  {
+    title: 'Ayuda',
+    items: [{ to: '/faq', label: 'Preguntas frecuentes' }],
+  },
 ] as const
 
-const itemClass = 'border-b border-white/20 pb-2 text-xs break-words'
+const itemClass = 'block border-b border-white/20 pb-2 text-xs break-words'
+const linkClass = `${itemClass} hover:text-accent`
 
 export function Footer() {
   return (
@@ -18,47 +33,26 @@ export function Footer() {
       </p>
 
       <div className="mt-8 grid grid-cols-3 gap-3">
-        <nav aria-label="Explora">
-          <h2 className="text-sm font-bold text-accent">Explora</h2>
-          <ul className="mt-3 flex flex-col gap-2">
-            {exploreLinks.map((link) => (
-              <li key={link.to}>
-                <Link
-                  to={link.to}
-                  className={`${itemClass} block hover:text-accent`}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <nav aria-label="Legal">
-          <h2 className="text-sm font-bold text-accent">Legal</h2>
-          <ul className="mt-3 flex flex-col gap-2">
-            <li>
-              <span className={`${itemClass} block`}>Aviso de privacidad</span>
-            </li>
-            <li>
-              <span className={`${itemClass} block`}>Términos de uso</span>
-            </li>
-          </ul>
-        </nav>
-
-        <nav aria-label="Ayuda">
-          <h2 className="text-sm font-bold text-accent">Ayuda</h2>
-          <ul className="mt-3 flex flex-col gap-2">
-            <li>
-              <Link
-                to="/faq"
-                className={`${itemClass} block hover:text-accent`}
-              >
-                Preguntas frecuentes
-              </Link>
-            </li>
-          </ul>
-        </nav>
+        {sections.map(({ title, items }) => (
+          <nav key={title} aria-labelledby={`footer-${title}`}>
+            <h2 id={`footer-${title}`} className="text-sm font-bold text-accent">
+              {title}
+            </h2>
+            <ul className="mt-3 flex flex-col gap-2">
+              {items.map((item) => (
+                <li key={item.label}>
+                  {'to' in item ? (
+                    <Link to={item.to} className={linkClass}>
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <span className={itemClass}>{item.label}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
       </div>
 
       <hr className="mt-10 border-white/20" />
