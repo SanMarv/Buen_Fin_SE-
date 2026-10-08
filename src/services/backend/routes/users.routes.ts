@@ -12,9 +12,7 @@ userRouter.post(
     try {
       const { email, password } = req.body;
       if (!email || !password)
-        return res
-          .status(400)
-          .json({ code: 400, error: "Email or password are not there" });
+        return res.status(400).json({ code: 400, error: "Email or password are not there" });
 
       const {
         success: isFound,
@@ -25,16 +23,15 @@ userRouter.post(
       if (!isFound) {
         return res.status(error.status).json(error);
       }
-      const { id } = data;
+      const { id, validation_id } = data;
       res.locals.auth = {
         user_id: id,
+        validation_id,
       };
       next();
     } catch (e: unknown) {
       console.log(e);
-      return res
-        .status(500)
-        .json({ code: 500, error: "Unexpected error when logging in" });
+      return res.status(500).json({ code: 500, error: "Unexpected error when logging in" });
     }
   },
   signResponseWithAuth,
@@ -45,16 +42,12 @@ userRouter.post("/register", async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({ code: 400, error: "Missing a mandatory field" });
+      return res.status(400).json({ code: 400, error: "Missing a mandatory field" });
     }
 
     req.body.password = await argon2.hash(password);
 
-    const { success: created, error } = await UsersController.createRegister(
-      req.body,
-    );
+    const { success: created, error } = await UsersController.createRegister(req.body);
 
     if (!created) {
       return res.status(error.status).json(error);
@@ -63,9 +56,7 @@ userRouter.post("/register", async (req: Request, res: Response) => {
     res.sendStatus(201);
   } catch (e: unknown) {
     console.error(e);
-    return res
-      .status(500)
-      .json({ status: 500, error: "Unexpected error when creating user" });
+    return res.status(500).json({ status: 500, error: "Unexpected error when creating user" });
   }
 });
 
@@ -81,18 +72,14 @@ userRouter.delete("/delete", protectRoute, async (_, res: Response) => {
     const eliminated = await UsersController.deleteRegister(user_id);
 
     if (!eliminated) {
-      return res
-        .status(404)
-        .json({ status: 404, error: "User does not exist" });
+      return res.status(404).json({ status: 404, error: "User does not exist" });
     }
 
     res.clearCookie("token");
     res.sendStatus(204);
   } catch (e: unknown) {
     console.error(e);
-    return res
-      .status(500)
-      .json({ status: 500, error: "Unexpected error when eliminating user" });
+    return res.status(500).json({ status: 500, error: "Unexpected error when eliminating user" });
   }
 });
 
@@ -119,9 +106,7 @@ userRouter.put("/update", protectRoute, async (req: Request, res: Response) => {
     res.sendStatus(200);
   } catch (e: unknown) {
     console.error(e);
-    return res
-      .status(500)
-      .json({ status: 500, error: "Unexpected error updating user" });
+    return res.status(500).json({ status: 500, error: "Unexpected error updating user" });
   }
 });
 

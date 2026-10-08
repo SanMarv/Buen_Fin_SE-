@@ -12,4 +12,7 @@ interface ValidationError {
   error: string;
 }
 
-export type ValidationResult = Result<ValidCompany, ValidationError>;
+export type ValidationResult = Result<
+  Omit<ValidCompany, "id">,
+  ValidationError
+>;

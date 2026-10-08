@@ -2,22 +2,19 @@ import type { Request, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "@env";
 import type { RequestWithUser } from "../types.ts";
+import { COOKIES_OPTS } from "@config/app.const.js";
 export const signResponseWithAuth = (req: Request, res: RequestWithUser) => {
   try {
     const { auth } = res.locals;
     if (!auth || !auth.user_id)
       res
         .status(500)
-        .json({ status: 500, error: "No user id found for for jwt" });
-    const { user_id } = auth;
-    const auth_token = jwt.sign({ user_id }, env.JWT_KEY, {
+        .json({ status: 500, error: "No user id found for jwt signing" });
+    const auth_token = jwt.sign({ ...auth }, env.JWT_KEY, {
       expiresIn: "7d",
     });
 
-    res.cookie("token", auth_token, {
-      httpOnly: true,
-      path: "/",
-    });
+    res.cookie("token", auth_token, COOKIES_OPTS);
 
     res.sendStatus(204);
   } catch {

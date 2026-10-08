@@ -35,6 +35,5 @@ export type BucketName = keyof BucketNames;
 
 export const BUCKET_ENDPOINT = z
   .url()
-  .optional()
   .default(BUCKET_OPTIONS.S3_URL)
   .parse(process.env.BUCKET_ENDPOINT);
