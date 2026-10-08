@@ -72,7 +72,7 @@ export function Header() {
         <nav className="flex flex-col px-4">
           {navLinks.map((item) => (
             <SheetClose asChild key={item.to}>
-              <Link to={item.to} className="border-b py-3 text-base font-medium">
+              <Link to={item.to} className="border-b py-3 text-base font-medium hover:underline decoration-black">
                 {item.label}
               </Link>
             </SheetClose>
