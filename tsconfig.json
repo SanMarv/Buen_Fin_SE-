@@ -18,6 +18,7 @@
       "@app/types": ["./src/lib/types/types.js"],
       "@app/utils": ["./src/lib/utils.js"],
       "@env": ["./src/config/index.js"],
+      "@config/*": ["./src/config/*"],
       "@backend/*": ["./src/services/backend/*"],
       "@sat/*": ["./src/services/sat/*"],
     },

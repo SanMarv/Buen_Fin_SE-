@@ -1,6 +1,7 @@
 import express from "express";
 import userRouter from "./routes/users.routes.ts";
 import imagesAuth from "./routes/images.routes.ts";
+import companieRouter from "./routes/companies.routes.ts";
 import cookies from "cookie-parser";
 import { env } from "@env";
 
@@ -13,5 +14,5 @@ const PORT = env.BACKEND_PORT;
 app.get("/", (_, res) => res.send("Server up"));
 app.use("/auth", userRouter);
 app.use("/auth/images", imagesAuth);
-
+app.use("/companies", companieRouter);
 app.listen(PORT, (): void => console.log(` App listening on port ${PORT}...`));

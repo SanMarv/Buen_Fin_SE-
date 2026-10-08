@@ -41,6 +41,7 @@ export class SatMockValidatior {
       signature,
       valid_until: addMonthFromNow(),
       name,
+      isMoral: false,
     });
   }
 }
