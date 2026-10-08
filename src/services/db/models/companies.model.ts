@@ -1,4 +1,4 @@
-import { pgTable, varchar, uuid, integer, text } from "drizzle-orm/pg-core";
+import { pgTable, varchar, uuid, text } from "drizzle-orm/pg-core";
 import { users } from "./users.model.ts";
 import { validation_table } from "./validation.model.ts";
 import { TABLE_NAMES } from "@db/const.js";
@@ -11,5 +11,5 @@ export const companies = pgTable(TABLE_NAMES.COMPANIES, {
     .references(() => users.id)
     .notNull(),
   rfc: varchar("RFC", { length: 13 }).notNull(),
-  validation_id: integer().references(() => validation_table.id),
+  validation_id: uuid().references(() => validation_table.id),
 });
