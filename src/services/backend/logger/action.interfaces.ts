@@ -14,3 +14,7 @@ export interface RequestPayload extends BasePayload {
   action: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   status: string;
 }
+
+export interface SessionPayload extends BasePayload {
+  action: "LOGIN" | "LOGOUT";
+}
