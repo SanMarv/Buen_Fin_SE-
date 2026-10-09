@@ -8,7 +8,7 @@ export interface UserLogin {
   password: string;
 }
 export type UserOperationResult = Promise<
-  Result<{ id: string; validation_id: null | string }, CreateError>
+  Result<{ id: string; validation_id: null | string }, ErrorFormat>
 >;
 
 export interface UserUpdate {

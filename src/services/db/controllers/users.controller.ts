@@ -11,6 +11,7 @@ import { and, eq } from "drizzle-orm";
 import { v7 as genUUID } from "uuid";
 import * as argon2 from "argon2";
 import type { ValidationInfo } from "@backend/types.js";
+import { ERROR_CODES } from "../../types/errors.js";
 export class UsersController {
   static async createRegister(newUser: UserCreate): UserOperationResult {
     const uuid = genUUID();

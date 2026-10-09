@@ -2,7 +2,7 @@ import type {
   DBPayload,
   RequestPayload,
   SessionPayload,
-} from "./action.interfaces.js";
+} from "./interfaces/payloads.interfaces.js";
 
 export interface Logger {
   logMessage(): string;
