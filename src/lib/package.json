@@ -1,0 +1,8 @@
+{
+  "name": "lib",
+  "version": "1.0.0",
+  "exports":{
+	  "./types":"./types/index.ts"
+  },
+  "type": "module"
+}
