@@ -1,5 +1,6 @@
 import type { Metadata, SharpInput } from "sharp";
 const SUPORTED_FORMATS_LIST = [
+  "svg",
   "webp",
   "avif",
   "jpeg",

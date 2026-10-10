@@ -1,3 +1,4 @@
+import { validateCompanyHeader } from "@auth/headers.middleware.js";
 import { protectRoute } from "@auth/jwt.middleware.js";
 import { protectWithValidation } from "@auth/validation.middleware.js";
 import { companiesInputValidation } from "@backend/schemas/company.schema.js";
@@ -19,5 +20,7 @@ app.post(
     return res.json(data);
   },
 );
+
+app.get("/profile-validate", protectRoute, validateCompanyHeader);
 
 export default app;

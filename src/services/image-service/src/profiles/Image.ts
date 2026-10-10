@@ -23,7 +23,7 @@ export class ProfileImage {
     this.user = user;
     this.image = image;
     this.user.name = this.user.name || "no_name";
-    this.filename = `${user.name}.${image ? "webp" : "svg"}`;
+    this.filename = `${user.id}.${image ? "webp" : "svg"}`;
   }
   private generateFallback() {
     const style = new Style(definition);

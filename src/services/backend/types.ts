@@ -34,12 +34,18 @@ export type RequestHandler<T> = (
   next: NextFunction,
 ) => ReturnType<ExpressRequestHandler>;
 
+export interface AuthWithCompany {
+  auth: {
+    companyId: string;
+  };
+}
 // Request
 export type RequestWithUser = ResponseLocals<{ auth: Auth }>;
 export type RequestWithValidation = ResponseLocals<{ auth: AuthValidated }>;
 export type RequestWithCompany = ResponseLocals<Company>;
+export type RequestWithCompanyId = ResponseLocals<AuthWithCompany>;
 
 // Handlers
 export type RequestHandlerWithValidInfo = RequestHandler<ValidationData>;
 export type RequestHandlerWithUser = RequestHandler<{ auth: Auth }>;
-export type RequestHadlerWithCompanie = RequestHandler<Company>;
+export type RequestHadlerWithCompany = RequestHandler<Company>;
