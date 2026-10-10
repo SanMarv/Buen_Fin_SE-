@@ -1,5 +1,6 @@
 import express from "express";
-import imageRoutes from "./images/images.routes.ts";
+import imageRoutes from "./routes/images.routes.ts";
+import profilesRoutes from "./routes/profile.routes.ts";
 const app = express();
 
 process.loadEnvFile();
@@ -11,6 +12,8 @@ app.get("/health", (_, res) => {
 });
 
 app.use("/image", imageRoutes);
+
+app.use("/profile", profilesRoutes);
 
 app.all(/.*/, (_, res) => res.sendStatus(404));
 

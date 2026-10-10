@@ -1,4 +1,3 @@
-import { Router, type RequestHandler } from "express";
 import { SUPORTED_MIMETYPES } from "@images/intefaces/image.js";
 import { config } from "@images/config.js";
 import z from "zod";
@@ -10,7 +9,7 @@ const fileSchema = z.object({
   mimetype: z.enum(SUPORTED_MIMETYPES),
 });
 
-const upload = multer({
+const multerMiddleware = multer({
   storage: multer.memoryStorage(),
   limits: {
     fieldNameSize: PREVENT_OVERFLOW_IN_NAME,
@@ -22,17 +21,4 @@ const upload = multer({
   },
 });
 
-const validateFileInputExits: RequestHandler = (req, res, next) => {
-  const file = req.file;
-  if (!file)
-    return res.status(500).json({
-      status: 500,
-      error: "Error processing file multer not extracted file",
-    });
-  next();
-};
-
-const app = Router();
-app.use(upload.single("file"), validateFileInputExits);
-
-export const validateInputFile = app;
+export const fileMiddleware = multerMiddleware.single("file");

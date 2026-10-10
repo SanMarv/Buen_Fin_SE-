@@ -24,4 +24,4 @@ ENV NODE_ENV=production
 
 EXPOSE 80
 
-CMD ["node", "--env-file",".env","dist/services/process-queue/init.js"]
+CMD ["node", "--env-file",".env","dist/services/process-queue/index.js"]

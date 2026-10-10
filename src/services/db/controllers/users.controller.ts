@@ -11,6 +11,7 @@ import { and, eq } from "drizzle-orm";
 import { v7 as genUUID } from "uuid";
 import * as argon2 from "argon2";
 import type { ValidationInfo } from "@backend/types.js";
+import { ERROR_CODES } from "../../types/errors.js";
 export class UsersController {
   static async createRegister(newUser: UserCreate): UserOperationResult {
     const uuid = genUUID();
@@ -22,16 +23,13 @@ export class UsersController {
         .returning();
 
       if (!user) {
-        return fail({ status: 500, error: "User was not returned by drizzle" });
+        return fail(ERROR_CODES.NOT_FOUND);
       }
 
       return success(user);
     } catch (e: unknown) {
       console.error(e);
-      return fail({
-        status: 500,
-        error: "Unexpected error when creating user",
-      });
+      return fail(ERROR_CODES.SERVER_ERROR);
     }
   }
 
@@ -61,7 +59,7 @@ export class UsersController {
         .from(users)
         .where(eq(users.email, user.email));
       if (!record) {
-        return fail({ status: 404, error: "User not found" });
+        return fail(ERROR_CODES.NOT_FOUND);
       }
 
       const isValid = await argon2.verify(record.password, user.password);
@@ -72,10 +70,7 @@ export class UsersController {
       return success({ id, validation_id });
     } catch (e: unknown) {
       console.error(e);
-      return fail({
-        status: 500,
-        error: "Unexcpeted error when retrieving user",
-      });
+      return fail(ERROR_CODES.SERVER_ERROR);
     }
   }
 

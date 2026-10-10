@@ -37,6 +37,7 @@ export async function sendCommandWithResult(
   } catch (e) {
     if (e instanceof S3ServiceException) {
       const errStatus = e?.$metadata?.httpStatusCode ?? 500;
+      console.error(e);
       const { message, status } = new BucketError(errStatus);
       return fail({
         error: message,

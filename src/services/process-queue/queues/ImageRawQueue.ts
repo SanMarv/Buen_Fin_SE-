@@ -1,11 +1,9 @@
 import { Queue } from "./QueueForRequest.js";
 import type { ImageRecordSuccess, TaskImageUpload } from "../types.js";
 import { Worker } from "node:worker_threads";
-const worker_script = new URL(
-  "../workers/imageUploading.worker.js",
-  import.meta.url,
-);
+import { getWorkerPath } from "../workers/utils.ts";
 
+const worker_script = getWorkerPath("../workers/imageUploading.worker.js");
 class ImageRawQueue extends Queue<TaskImageUpload, ImageRecordSuccess> {
   constructor() {
     super({

@@ -34,6 +34,7 @@
     "db:stop": "docker compose -f src/services/db/image.docker-compose.yaml stop",
     "db:restart": "docker compose -f src/services/db/image.docker-compose.yaml restart",
     "db:migration": "drizzle-kit push",
+    "db:console": "drizzle-kit studio",
     "typecheck": "tsc --noEmit",
     "build": "tsc && tsc-alias",
     "lint": "eslint .",

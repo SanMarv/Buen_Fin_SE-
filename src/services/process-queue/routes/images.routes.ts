@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { validateInputFile } from "./images.middleware.ts";
+import { validateInputFile } from "../middleware/images.middleware.ts";
 import { parseAuthHeader } from "@auth/headers.middleware.js";
-import { imageRawQueue } from "../queues/ImageRawQueue.js";
+import { imageRawQueue } from "../queues/ImageRawQueue.ts";
 import type { RequestWithUser } from "@backend/types.js";
 
 const routes = Router();
