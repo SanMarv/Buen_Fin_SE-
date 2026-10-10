@@ -1,5 +1,5 @@
 import { appendFile } from "node:fs/promises";
-import type { Logger } from "./logger.js";
+import type { Logger } from "./factory/Loggers.ts";
 
 export class Cache {
   private max_size: number;

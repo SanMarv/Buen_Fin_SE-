@@ -2,7 +2,7 @@ import type {
   DBPayload,
   RequestPayload,
   SessionPayload,
-} from "./interfaces/payloads.interfaces.js";
+} from "../interfaces/payloads.interfaces.ts";
 
 export interface Logger {
   logMessage(): string;
@@ -15,8 +15,8 @@ export class DBLogger implements Logger {
   }
 
   logMessage(): string {
-    const { id, start_time, end_time, action, table } = this.data;
-    return `${start_time}-${end_time} user: ${id} Performed a/an ${action} in ${table}`;
+    const { id, start_time, action, table } = this.data;
+    return `${start_time} user: ${id} Action: Performed a/an ${action} in ${table}`;
   }
 }
 
@@ -27,8 +27,8 @@ export class SessionLogger implements Logger {
   }
 
   logMessage(): string {
-    const { id, start_time, end_time, action } = this.data;
-    return `${start_time}-${end_time} user: ${id} Has made ${action} in his account`;
+    const { id, start_time, action } = this.data;
+    return `${start_time} user: ${id} Has made ${action} in his account`;
   }
 }
 
@@ -39,7 +39,7 @@ export class RequestLogger implements Logger {
   }
 
   logMessage(): string {
-    const { id, start_time, end_time, action, status } = this.data;
-    return `${start_time}-${end_time} user: ${id} Has made a ${action} request with status ${status}`;
+    const { id, start_time, action, status } = this.data;
+    return `${start_time} user: ${id} Has made a ${action} request with status ${status}`;
   }
 }

@@ -1,9 +1,7 @@
 import type { DBData, RequestData, SessionData } from "./data.interfaces.ts";
 
-interface BasePayload {
+export interface BasePayload {
   start_time: string;
-  end_time: string;
-  id: string;
 }
 
 export type DBPayload = BasePayload & DBData;
