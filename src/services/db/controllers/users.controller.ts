@@ -14,8 +14,9 @@ import type { ValidationInfo } from "@backend/types.js";
 import { ERROR_CODES } from "../../types/errors.js";
 export class UsersController {
   static async createRegister(newUser: UserCreate): UserOperationResult {
+    if (await this.isEmailSaved(newUser.email))
+      return fail({ status: 409, error: "User already exits" });
     const uuid = genUUID();
-
     try {
       const [user] = await db
         .insert(users)
@@ -80,6 +81,19 @@ export class UsersController {
         .select({ id: users.id })
         .from(users)
         .where(eq(users.id, id));
+      return records.length > 0;
+    } catch (e: unknown) {
+      console.error(e);
+      return false;
+    }
+  }
+
+  static async isEmailSaved(email: string): Promise<boolean> {
+    try {
+      const records = await db
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.email, email));
       return records.length > 0;
     } catch (e: unknown) {
       console.error(e);

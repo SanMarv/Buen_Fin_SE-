@@ -32,5 +32,6 @@ export const ConfigSchema = z.object({
   JWT_KEY: server_password,
   HMAC_KEY: server_password,
   IMAGE_PROFILE_SIZE: z.number().min(0).default(DEFAULT_PROFILE_IMAGE_SIZE),
+  FRONTEND: z.url().default("http://localhost:3002"),
 });
 export type Config = z.infer<typeof ConfigSchema>;

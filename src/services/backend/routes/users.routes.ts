@@ -4,6 +4,11 @@ import { type Request, type Response } from "express";
 import { UsersController } from "@db/controllers/users.controller.js";
 import type { RequestWithUser } from "../types.js";
 import * as argon2 from "argon2";
+import { inputValidationMiddleware } from "@backend/middleware/inputValidation.middleware.js";
+import {
+  userRegisterInput,
+  type UserRegisterInput,
+} from "@lib/schemas/user.schema.js";
 const userRouter = Router();
 
 userRouter.post(
@@ -41,34 +46,35 @@ userRouter.post(
   signResponseWithAuth,
 );
 
-userRouter.post("/register", async (req: Request, res: Response) => {
-  try {
-    const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
+userRouter.post(
+  "/register",
+  inputValidationMiddleware(userRegisterInput, "newUser"),
+  async (
+    _: Request,
+    res: Response<unknown, { newUser: UserRegisterInput }>,
+  ) => {
+    if (!res.locals.newUser) {
       return res
-        .status(400)
-        .json({ code: 400, error: "Missing a mandatory field" });
+        .status(500)
+        .json({ status: 500, error: "Unexpected error when creating user" });
     }
+    const { email, lastname, name: firstName, password } = res.locals.newUser;
 
-    req.body.password = await argon2.hash(password);
+    const name = `${firstName.toLocaleLowerCase()} ${lastname.toLocaleLowerCase()}`;
+    const passwordHash = await argon2.hash(password, { parallelism: 1 });
 
-    const { success: created, error } = await UsersController.createRegister(
-      req.body,
-    );
+    const { success: created, error } = await UsersController.createRegister({
+      name,
+      email,
+      password: passwordHash,
+    });
 
     if (!created) {
       return res.status(error.status).json(error);
     }
-
-    res.sendStatus(201);
-  } catch (e: unknown) {
-    console.error(e);
-    return res
-      .status(500)
-      .json({ status: 500, error: "Unexpected error when creating user" });
-  }
-});
+    return res.sendStatus(201);
+  },
+);
 
 userRouter.post("/logout", (_, res: Response) => {
   res.clearCookie("token");
