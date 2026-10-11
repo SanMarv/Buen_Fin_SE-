@@ -9,7 +9,7 @@ export const Route = createFileRoute('/aboutus')({
   component: AboutUs,
 })
 
-const requirements = ['Nombre del comercio', 'RFC'] as const
+const requirements = ['Nombre del comercio', 'RFC', 'Cuenta de Consumidor'] as const
 
 function AboutUs() {
   return (
