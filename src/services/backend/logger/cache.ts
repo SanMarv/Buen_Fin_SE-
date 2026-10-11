@@ -11,11 +11,11 @@ export class Cache {
     this.file = target_file;
   }
 
-  write(logger: Logger) {
+  async write(logger: Logger) {
     const log = logger.logMessage();
     this.data.push(log);
     if (this.data.length > this.max_size) {
-      this.writeToFile([...this.data]).catch((er) => console.error(er));
+      await this.writeToFile([...this.data]).catch((er) => console.error(er));
       this.data = [];
     }
   }
