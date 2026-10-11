@@ -21,6 +21,7 @@
       "@config/*": ["./src/config/*"],
       "@backend/*": ["./src/services/backend/*"],
       "@sat/*": ["./src/services/sat/*"],
+      "@lib/*": ["./src/lib/*"],
     },
     "rewriteRelativeImportExtensions": true,
     "erasableSyntaxOnly": true,
