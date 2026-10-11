@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY package.json ./
 
+COPY package-lock.json ./
+
 COPY tsconfig.json .
 
 COPY vitest.config.ts .

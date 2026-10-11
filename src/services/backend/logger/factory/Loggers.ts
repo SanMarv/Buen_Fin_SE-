@@ -16,7 +16,7 @@ export class DBLogger implements Logger {
 
   logMessage(): string {
     const { id, start_time, action, table } = this.data;
-    return `${start_time} user: ${id} Action: Performed a/an ${action} in ${table}`;
+    return `${start_time} user: ${id} Action: Performed a/an ${action} in ${table}\n`;
   }
 }
 
@@ -28,7 +28,7 @@ export class SessionLogger implements Logger {
 
   logMessage(): string {
     const { id, start_time, action } = this.data;
-    return `${start_time} user: ${id} Has made ${action} in his account`;
+    return `${start_time} user: ${id} Has made ${action} in his account\n`;
   }
 }
 
@@ -40,6 +40,6 @@ export class RequestLogger implements Logger {
 
   logMessage(): string {
     const { id, start_time, action, status } = this.data;
-    return `${start_time} user: ${id} Has made a ${action} request with status ${status}`;
+    return `${start_time} user: ${id} Has made a ${action} request with status ${status}\n`;
   }
 }

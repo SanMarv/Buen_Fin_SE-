@@ -9,6 +9,7 @@ import {
   userRegisterInput,
   type UserRegisterInput,
 } from "@lib/schemas/user.schema.js";
+import { manager } from "@backend/logger/manager.js";
 const userRouter = Router();
 
 userRouter.post(

@@ -12,6 +12,7 @@ import { v7 as genUUID } from "uuid";
 import * as argon2 from "argon2";
 import type { ValidationInfo } from "@backend/types.js";
 import { ERROR_CODES } from "../../types/errors.js";
+import { manager } from "@backend/logger/manager.js";
 export class UsersController {
   static async createRegister(newUser: UserCreate): UserOperationResult {
     if (await this.isEmailSaved(newUser.email))
@@ -22,6 +23,15 @@ export class UsersController {
         .insert(users)
         .values({ id: uuid, ...newUser })
         .returning();
+
+      const res = await manager.addLog({
+        type: "DB",
+        id: uuid,
+        table: "Users",
+        action: "CREATE",
+      });
+
+      console.log(res);
 
       if (!user) {
         return fail(ERROR_CODES.NOT_FOUND);
