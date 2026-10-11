@@ -1,10 +1,16 @@
 const allies = [
-  { id: 1, name: 'Secretaría de Economía' },
-  { id: 2, name: 'SAT' },
-  { id: 3, name: 'PROFECO' },
-  { id: 4, name: 'CONCANACO SERVYTUR' },
-  { id: 5, name: 'Consejo Coordinador Empresarial' },
-  { id: 6, name: 'ABM' },
+  { id: 1, name: "Asociación bancaría de México", logo: "/logo_partners/abm.svg" },
+  { id: 2, name: "AMVO", logo: "/logo_partners/amvo.svg"},
+  { id: 3, name: "Asociación Nacional de Tiendas Autoservicio y Departamentales", logo: "/logo_partners/antad.svg" },
+  { id: 4, name: "Asociación Internet MX", logo: "/logo_partners/asociacionInternetMX.svg" },
+  { id: 5, name: "Consejo Coordinador Empresarial", logo: "/logo_partners/cce.svg" },
+  { id: 6, name: "Radio y Televisión Mexicanas", logo: "/logo_partners/cirt.svg" },
+  { id: 7, name: "Concanaco", logo: "/logo_partners/concanaco.svg" },
+  { id: 8, name: "Profeco", logo: "/logo_partners/profeco.svg" },
+  { id: 9, name: "SAT", logo: "/logo_partners/sat.svg"},
+  { id: 10, name: "Secretaria de Economía", logo:"/logo_partners/se.svg" },
+  { id: 11, name: "Secretaria de Hacienda", logo:"/logo_partners/shcp.svg" },
+  { id: 12, name: "Secretaria de Turismo", logo:"/logo_partners/st.svg" },
 ]
 
 export function Allies() {
@@ -23,14 +29,20 @@ export function Allies() {
 
       <ul className="mt-6 grid grid-cols-3 gap-2">
         {allies.map((ally) => (
-            <li
-                key={ally.id}
-                className="flex aspect-square items-center justify-center rounded-lg border bg-card p-1.5 text-center text-[10px] leading-tight font-medium text-muted-foreground"
-            >
-                {ally.name}
-            </li>
+          <li
+            key={ally.id}
+            title={ally.name}
+            className="flex aspect-square items-center justify-center rounded-lg border bg-card p-3"
+          >
+            <img
+              src={ally.logo}
+              alt={ally.name}
+              loading="lazy"
+              className="max-h-full max-w-full object-contain"
+            />
+          </li>
         ))}
-        </ul>
+      </ul>
     </section>
-  )
+  );
 }
