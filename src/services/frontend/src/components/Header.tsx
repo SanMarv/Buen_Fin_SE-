@@ -87,12 +87,7 @@ export function Header() {
           </SheetClose>
           <SheetClose asChild>
             <Button asChild variant="outline">
-              <Link to="/register-consumer">Registro de consumidor</Link>
-            </Button>
-          </SheetClose>
-          <SheetClose asChild>
-            <Button asChild variant="outline">
-              <Link to="/register-business">Registro de comercio</Link>
+              <Link to="/register-consumer"> Crear una cuenta</Link>
             </Button>
           </SheetClose>
         </div>
