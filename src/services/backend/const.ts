@@ -3,3 +3,5 @@ export const HEADERS = {
   SIGNATURE: "x-signature",
   COMPANY_ID: "x-company",
 } as const;
+
+export const COMPANY_ID_KEY = "companyId";
