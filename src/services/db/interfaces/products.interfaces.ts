@@ -12,6 +12,7 @@ Pick<ProductsRecord, "id" | "name" | "description" | "price"> & {
 "company": Pick<CompaniesRecord, "name"> | null};
 
 export type GetProductQuery = Promise<Result<GetProductResult[], ErrorFormat>>
+export type GetProductQueryOne = Promise<Result<GetProductResult, ErrorFormat>>
 
 export interface GetProductInput{
   page: number, 
@@ -19,3 +20,5 @@ export interface GetProductInput{
   category?: string[], 
   company?: string[], 
 }
+
+export type GetProductByIdInput = Pick<ProductsRecord, "id">; 
