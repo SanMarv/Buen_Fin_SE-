@@ -20,6 +20,7 @@
       "@env": ["./src/config/index.js"],
       "@config/*": ["./src/config/*"],
       "@backend/*": ["./src/services/backend/*"],
+      "@backend/types": ["./src/services/backend/types.ts"],
       "@sat/*": ["./src/services/sat/*"],
       "@lib/*": ["./src/lib/*"],
     },
