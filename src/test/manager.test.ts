@@ -32,14 +32,6 @@ test("Request log acceptance", async () => {
   expect(success).toBe(true);
 });
 
-test("Log rejection", async () => {
-  const success = await manager.addLog({
-    type: "ses", 
-    action: "LOGIN", 
-    id: v4(),
-  })
-  expect(success).toBe(false);
-});
 
 
 

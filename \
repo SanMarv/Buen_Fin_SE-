@@ -1,0 +1,18 @@
+import type { CaregoriesRecord } from "@db/models/categories.model.js";
+import type { ProductsRecord } from "@db/models/products.model.js";
+import type { ImageRecord } from "@db/models/image.model.js";
+import type { ErrorFormat } from "../../types/errors.js";
+
+type GetProductResult = 
+Pick<ProductsRecord, "id" | "name" | "description" | "price"> &
+Pick<ImageRecord, "url"> &
+Pick<CaregoriesRecord, "name">;
+
+export type GetProductQuery = Promise<GetProductResult | ErrorFormat>
+
+export interface GetProductInput{
+  page: number, 
+  sort: "ASC" | "DESC", 
+  category: string[], 
+  company: string[], 
+}

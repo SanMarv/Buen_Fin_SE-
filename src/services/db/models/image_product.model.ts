@@ -2,7 +2,7 @@ import { pgTable, uuid } from "drizzle-orm/pg-core";
 import { products } from "./products.model.ts";
 import { images } from "./image.model.ts";
 import { TABLE_NAMES } from "@db/const.js";
-
+import type { InferInsertModel } from "drizzle-orm";
 export const imageProducts = pgTable(TABLE_NAMES.IMAGE_PRODUCTS, {
   id: uuid().primaryKey().notNull(),
   product_id: uuid()
@@ -12,3 +12,6 @@ export const imageProducts = pgTable(TABLE_NAMES.IMAGE_PRODUCTS, {
     .references(() => images.id)
     .notNull(),
 });
+
+export type ImageProductsRecord = InferInsertModel<typeof imageProducts>; 
+

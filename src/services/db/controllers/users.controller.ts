@@ -12,6 +12,8 @@ import { v7 as genUUID } from "uuid";
 import * as argon2 from "argon2";
 import type { ValidationInfo } from "@backend/types.js";
 import { ERROR_CODES } from "../../types/errors.js";
+
+
 export class UsersController {
   static async createRegister(newUser: UserCreate): UserOperationResult {
     if (await this.isEmailSaved(newUser.email))
@@ -24,7 +26,7 @@ export class UsersController {
         .returning();
 
       if (!user) {
-        return fail(ERROR_CODES.NOT_FOUND);
+        return fail(ERROR_CODES.SERVER_ERROR);
       }
 
       return success(user);

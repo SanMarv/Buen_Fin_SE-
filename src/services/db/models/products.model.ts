@@ -2,6 +2,7 @@ import { DEFAULT_DESCRIPTION, TABLE_NAMES } from "@db/const.js";
 import { pgTable, uuid, varchar, integer, jsonb } from "drizzle-orm/pg-core";
 import type { ProductMetadata } from "../interfaces/images.interfaces.ts";
 import { companies } from "./companies.model.ts";
+import type { InferInsertModel } from "drizzle-orm";
 
 export const products = pgTable(TABLE_NAMES.PRODUCTS, {
   id: uuid().primaryKey(),
@@ -13,3 +14,5 @@ export const products = pgTable(TABLE_NAMES.PRODUCTS, {
     .references(() => companies.id)
     .notNull(),
 });
+
+export type ProductsRecord = InferInsertModel<typeof products>
