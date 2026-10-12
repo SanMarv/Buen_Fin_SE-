@@ -1,5 +1,5 @@
 import { db } from "@db/conection.js";
-import { companies, users } from "@db/schema.js";
+import { companies, users, validation_table } from "@db/schema.js";
 import { v4 as uuid } from "uuid";
 import { UploadProfile as getProfilePicture } from "@images-service";
 import type {
@@ -16,6 +16,8 @@ import {
 } from "@app/types";
 import { and, eq } from "drizzle-orm";
 import type { CompanieInput } from "@backend/schemas/company.schema.js";
+import type { CompaniesSelectUser } from "@backend/types";
+import { COMPANY_ID_KEY } from "@backend/const.js";
 
 export class CompaniesController {
   static async isRfcPresent(rfc: string) {
@@ -115,6 +117,31 @@ export class CompaniesController {
     } catch (e) {
       console.error(e);
       return noContentError({ status: 500, error: "Unexpeted error" });
+    }
+  }
+  static async getUserCompanies(
+    userId: string,
+  ): Promise<CompaniesSelectUser[]> {
+    try {
+      return await db
+        .select({
+          [COMPANY_ID_KEY]: companies.id,
+          name: companies.name,
+          profile_picture: companies.profile_picture,
+          certification: {
+            rfc: validation_table.rfc,
+            legal_name: validation_table.name,
+            valid_until: validation_table.valid_until,
+          },
+        })
+        .from(companies)
+        .where(eq(companies.user_id, userId))
+        .leftJoin(
+          validation_table,
+          eq(companies.validation_id, validation_table.id),
+        );
+    } catch {
+      return [];
     }
   }
 }

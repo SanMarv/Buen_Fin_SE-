@@ -5,6 +5,9 @@ import companieRouter from "./routes/companies.routes.ts";
 import cookies from "cookie-parser";
 import cors from "cors";
 import { env } from "@env";
+import { protectWithValidation } from "@auth/validation.middleware.js";
+import { editModeCompany } from "@auth/edit.middleware.js";
+import { protectRoute } from "@auth/jwt.middleware.js";
 
 const app = express();
 app.use(express.json());
@@ -15,6 +18,12 @@ if (env.NODE_ENV === "development")
 // Routers
 app.get("/", (_, res) => res.send("Server up"));
 app.use("/auth", userRouter);
+app.get(
+  "/auth/company/:companyId",
+  protectRoute,
+  protectWithValidation,
+  editModeCompany,
+);
 app.use("/auth/images", imagesAuth);
 app.use("/companies", companieRouter);
 app.listen(PORT, (): void => console.log(` App listening on port ${PORT}...`));

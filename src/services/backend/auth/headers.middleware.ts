@@ -2,6 +2,7 @@ import type { NextFunction, Request, RequestHandler } from "express";
 import { env } from "@env";
 import { createHmac } from "node:crypto";
 import type {
+  RequestHandlerWithOwner,
   RequestHandlerWithUser,
   RequestWithCompanyId,
 } from "@backend/types.js";
@@ -73,24 +74,20 @@ export const parseProfileHeader = (
   next();
 };
 
-export const validateCompanyHeader: RequestHandlerWithUser = async (
-  req,
+export const validateCompanyHeader: RequestHandlerWithOwner = async (
+  _,
   res,
 ) => {
-  const { success: isValidHeader, data: companieId } = z
-    .uuidv4()
-    .safeParse(req.header(HEADERS["COMPANY_ID"]));
-  if (!isValidHeader)
-    return res.status(401).json({ status: 401, error: "error in company" });
+  const { companyId } = res.locals;
   const user_id = res.locals.auth.user_id;
   const { success: isOwner } = await CompaniesController.checkOwner(
-    companieId,
+    companyId,
     user_id,
   );
   if (!isOwner)
     return res.status(403).json({ status: 403, error: "Unouthorized" });
-  res.setHeader(HEADERS["SIGNATURE"], getHmac(companieId));
-  res.setHeader(HEADERS["COMPANY_ID"], companieId);
+  res.setHeader(HEADERS["SIGNATURE"], getHmac(companyId));
+  res.setHeader(HEADERS["COMPANY_ID"], companyId);
   res.sendStatus(204);
 };
 
