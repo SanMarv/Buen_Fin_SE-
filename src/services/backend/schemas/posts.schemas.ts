@@ -14,6 +14,12 @@ export const getProduct = z.object({
 
 })
 
-export const gerProductIdSchema = z.object({
+export const getJobs = z.object({
+  page: z.coerce.number().int().min(1).default(1), 
+  sort: z.enum(["desc", "asc"]).default("desc"),
+  company: z.string()
+})
+
+export const gerPostIdSchema = z.object({
   id: z.uuid(),  
 })

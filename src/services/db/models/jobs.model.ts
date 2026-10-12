@@ -2,6 +2,7 @@ import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 import { locations } from "./locations.model.ts";
 import { companies } from "./companies.model.ts";
 import { TABLE_NAMES } from "@db/const.js";
+import type { InferInsertModel } from "drizzle-orm";
 
 export const jobs = pgTable(TABLE_NAMES.JOBS, {
   id: uuid().primaryKey().notNull(),
@@ -12,3 +13,5 @@ export const jobs = pgTable(TABLE_NAMES.JOBS, {
     .references(() => companies.id)
     .notNull(),
 });
+
+export type jobsRecord = InferInsertModel<typeof jobs> 
