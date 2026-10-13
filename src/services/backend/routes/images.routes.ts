@@ -17,11 +17,7 @@ const parseRequestPathBucket = (
 ): Result<{ key: string; bucket: string }, null> => {
   const result = z
     .object({
-      bucket: z
-        .string()
-        .min(1)
-        .max(100)
-        .refine((bucket) => bucket === BUCKET_NAME),
+      bucket: z.string().min(1).max(100),
       key: z.string().min(1).max(100),
     })
     .safeParse(req.params);
@@ -37,6 +33,8 @@ app.get(
     const { success: isValid, data } = parseRequestPathBucket(req);
     if (!isValid) return res.sendStatus(401);
     const { key, bucket } = data;
+    // Check if is profile picture
+    if (bucket === BUCKET_NAMES["PROFILES"]) return res.sendStatus(200);
     const {
       success: querryDB,
       data: record,

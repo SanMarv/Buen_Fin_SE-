@@ -26,9 +26,12 @@ app.get("/user", getUsersCompanies, (_, res: RequestWithCompaniesInfo) => {
   if (companies.length <= 0) return res.sendStatus(204);
   return res.json(companies);
 });
-
 app.get(
   "/profile-validate",
+  protectRoute,
+  refreshEditMode,
+  validateCompanyHeader,
+);
 app.post(
   "/",
   fielMiddlewareInputValidator,
