@@ -10,7 +10,6 @@ export const Route = createFileRoute('/search-products')({
   component: SearchProducts,
 })
 
-
 const CATEGORIES: CategoriesRecord<string> = {
   [CATEGORIES_ENUM['tecnologies']]: 'Tecnología',
   [CATEGORIES_ENUM['home']]: 'Hogar',
