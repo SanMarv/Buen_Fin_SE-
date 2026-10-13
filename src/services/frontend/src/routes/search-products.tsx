@@ -13,7 +13,6 @@ const CATEGORIES = [
   'Tecnología',
   'Hogar',
   'Moda',
-  'Deportes',
   'Electrodomésticos',
   'Juguetes',
 ]
@@ -24,7 +23,7 @@ const CATEGORIES = [
 const placeholderProducts: Product[] = [
   { name: 'Lavadora automática', category: 'Electrodomésticos', price: 18500, oldPrice: 25000, company: 'Marca X' },
   { name: 'Pantalla 50 pulgadas', category: 'Tecnología', price: 9800, oldPrice: 13000, company: 'Marca Y' },
-  { name: 'Tenis para correr', category: 'Deportes', price: 1200, oldPrice: 1800, company: 'Marca Z' },
+  { name: 'Tenis para correr', category: 'Moda', price: 1200, oldPrice: 1800, company: 'Marca Z' },
   { name: 'Chamarra de invierno', category: 'Moda', price: 950, oldPrice: 1500, company: 'Marca W' },
   { name: 'Refrigerador', category: 'Electrodomésticos', price: 22000, oldPrice: 28000, company: 'Marca X' },
   { name: 'Laptop 14 pulgadas', category: 'Tecnología', price: 14500, oldPrice: 19000, company: 'Marca Y' },

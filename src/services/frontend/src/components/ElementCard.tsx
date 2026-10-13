@@ -39,6 +39,9 @@ export function ProductCard ({product}: {product:Product })
         </Link>
 
       <h3 className="mt-1 text-sm leading-tight font-bold">{product.name}</h3>
+        <p className="truncate text-[11px] text-muted-foreground">
+        {product.category}
+        </p>
       <p className="mt-1 text-xs text-muted-foreground line-through">
         {money.format(product.oldPrice)}
       </p>
