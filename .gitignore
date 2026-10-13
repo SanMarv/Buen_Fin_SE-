@@ -42,3 +42,6 @@ bun.lock
 # Ignore DB Data
 **/db/.data
 src/test/outputs
+
+# Ignore logs
+./logs.txt
