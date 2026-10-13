@@ -3,10 +3,10 @@ import multer from "multer";
 import z from "zod";
 import path from "node:path"
 
-const hasExt = (ext: string) => (name: string) => {
+const hasExt = (ext: string) => (name: string) => 
   path.extname(name).toLowerCase() === ext 
-}
-const satFileSchema = z.discriminatedUnion("filename", [
+
+const satFileSchema = z.discriminatedUnion("fieldname", [
   z.object({
     fieldname: z.literal("cer"), 
     originalname: z.string().refine(hasExt(fielConfig.CER_EXTENSION), "Expected .cer extension"), 
