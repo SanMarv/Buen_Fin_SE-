@@ -2,20 +2,27 @@ import { Router, type NextFunction } from "express";
 import { signResponseWithAuth, protectRoute } from "@auth/jwt.middleware.js";
 import { type Request, type Response } from "express";
 import { UsersController } from "@db/controllers/users.controller.js";
-import type { RequestWithUser } from "../types.js";
+import type { Auth } from "../types.js";
 import * as argon2 from "argon2";
 import { inputValidationMiddleware } from "@backend/middleware/inputValidation.middleware.js";
 import {
   userRegisterInput,
+  userLoginSchema,
+  type UserLoginInput,
   type UserRegisterInput,
 } from "@lib/schemas/user.schema.js";
 const userRouter = Router();
 
 userRouter.post(
   "/login",
-  async (req: Request, res: RequestWithUser, next: NextFunction) => {
+  inputValidationMiddleware(userLoginSchema, "user"),
+  async (
+    req: Request,
+    res: Response<unknown, { user: UserLoginInput; auth: Auth }>,
+    next: NextFunction,
+  ) => {
     try {
-      const { email, password } = req.body;
+      const { email, password } = res.locals.user;
       if (!email || !password)
         return res
           .status(400)
