@@ -2,7 +2,10 @@ import { refreshEditMode } from "@auth/edit.middleware.js";
 import { validateCompanyHeader } from "@auth/headers.middleware.js";
 import { protectRoute } from "@auth/jwt.middleware.js";
 import { protectWithValidation } from "@auth/validation.middleware.js";
+<<<<<<< HEAD
 import { getUsersCompanies } from "@backend/middleware/companies.middleware.js";
+=======
+>>>>>>> 8e40804 (Feat(backend): Implemented multer middleware to verify cer and key fields in company register)
 import { fielMiddlewareInputValidator } from "@backend/middleware/fielMulter.middleware.js";
 import { companiesInputValidation } from "@backend/schemas/company.schema.js";
 import type {
@@ -34,7 +37,11 @@ app.get(
 );
 app.post(
   "/",
+<<<<<<< HEAD
   fielMiddlewareInputValidator,
+=======
+  fielMiddlewareInputValidator, 
+>>>>>>> 8e40804 (Feat(backend): Implemented multer middleware to verify cer and key fields in company register)
   companiesInputValidation,
   protectRoute,
   refreshEditMode,

@@ -3,10 +3,17 @@ import multer from "multer";
 import z from "zod";
 import path from "node:path"
 
+<<<<<<< HEAD
 const hasExt = (ext: string) => (name: string) => 
   path.extname(name).toLowerCase() === ext 
 
 const satFileSchema = z.discriminatedUnion("fieldname", [
+=======
+const hasExt = (ext: string) => (name: string) => {
+  path.extname(name).toLowerCase() === ext 
+}
+const satFileSchema = z.discriminatedUnion("filename", [
+>>>>>>> 8e40804 (Feat(backend): Implemented multer middleware to verify cer and key fields in company register)
   z.object({
     fieldname: z.literal("cer"), 
     originalname: z.string().refine(hasExt(fielConfig.CER_EXTENSION), "Expected .cer extension"), 
