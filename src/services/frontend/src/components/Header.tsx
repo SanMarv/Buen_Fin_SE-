@@ -47,6 +47,7 @@ export function Toggle() {
 const navLinks = [
   { to: '/', label: 'Inicio' },
   { to: '/aboutus', label: 'Acerca De' },
+  { to: '/search-products', label: 'Productos' },
   { to: '/faq', label: 'Preguntas frecuentes' },
 ] as const
 
@@ -87,7 +88,7 @@ export function Header() {
           </SheetClose>
           <SheetClose asChild>
             <Button asChild variant="outline">
-              <Link to="/register-consumer"> Crear una cuenta</Link>
+              <Link to="/register-consumer"> Crear una cuenta de usuario</Link>
             </Button>
           </SheetClose>
         </div>

@@ -16,15 +16,7 @@ export function SearchBox() {
           className="mt-4 flex flex-col gap-3"
           onSubmit={(event) => event.preventDefault()}
         >
-          <label htmlFor="search" className="sr-only">
-            Nombre del comercio o categoría
-          </label>
-          <input
-            id="search"
-            type="search"
-            placeholder="Nombre del comercio o categoría"
-            className="w-full rounded-md bg-white px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-accent focus:outline-none"
-          />
+         
           <Button asChild className="w-full">
             <Link to="/search-products">
                 Buscar
