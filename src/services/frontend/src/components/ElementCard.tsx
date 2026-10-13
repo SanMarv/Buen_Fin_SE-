@@ -46,7 +46,7 @@ export function ProductCard ({product}: {product:Product })
       <p className="text-lg leading-none font-extrabold text-primary">
         {money.format(product.price)}
       </p>
-
+      
       <Button
         type="button"
         variant="outline"
@@ -56,3 +56,4 @@ export function ProductCard ({product}: {product:Product })
     </article>
   )
 }
+//este ultimo botón es el que despues va a mandar a un link de la compañia
