@@ -1,6 +1,12 @@
 import { appendFile } from "node:fs/promises";
 import type { Logger } from "./factory/Loggers.ts";
 
+class CacheErrorLog extends Error {
+  constructor(logs: string[]) {
+    super("Error appending to file losing logs");
+    logs.forEach(console.log);
+  }
+}
 export class Cache {
   private max_size: number;
   private file: string;
@@ -11,11 +17,11 @@ export class Cache {
     this.file = target_file;
   }
 
-  async write(logger: Logger) {
+  write(logger: Logger) {
     const log = logger.logMessage();
     this.data.push(log);
     if (this.data.length > this.max_size) {
-      await this.writeToFile([...this.data]).catch((er) => console.error(er));
+      this.writeToFile([...this.data]).catch((er) => console.error(er));
       this.data = [];
     }
   }
@@ -24,7 +30,7 @@ export class Cache {
       try {
         await appendFile(this.file, log);
       } catch {
-        throw new Error("Error appending to file");
+        throw new CacheErrorLog(info);
       }
     }
   }
