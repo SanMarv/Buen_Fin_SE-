@@ -1,6 +1,28 @@
-import type {Request, Response} from "express"
-import { SatValidator } from "@sat/validator.js"
+import type { NextFunction, Request, Response } from "express";
+import { SatValidator } from "@sat/validator.js";
+import { ValidationController } from "@db/controllers/validation.controller.ts";
 
-const satValidation = (req: Request, res: Response) => {
-  
-}
+const satValidation = (req: Request, res: Response, next: NextFunction) => {
+  const cer = req.files?.cer?.[0];
+  const key = req.files?.key?.[0];
+  const password = req.body.password;
+  if (!cer || !key || !password) {
+    return res.status(400).json("Certificate, Key or password are required");
+  }
+  const validator = new SatValidator({
+    cer: cer.buffer,
+    key: key.buffer,
+    password,
+  });
+
+  const { success, data, error } = validator.validate();
+
+  if (!success) {
+    return res.status(error.status).json(error);
+  }
+
+  const validation_id = await ValidationController.insertValidation(data);
+
+  res.locals.companie["validation_id"] = validation_id;
+  next();
+};
