@@ -14,7 +14,7 @@ export interface ResponseLocals<P> extends Response {
 export type ValidationInfo = Omit<ValidationRecord, "hash" | "signature">;
 
 // locals
-interface Auth {
+export interface Auth {
   user_id: string;
   validation_id: string | null;
 }
