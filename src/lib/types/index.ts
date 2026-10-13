@@ -1,2 +1,2 @@
-export * from "./generics.ts"
-export * from "./types.ts"
+export * from "./types.js"
+export * from "./categories.js"

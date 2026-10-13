@@ -3,30 +3,69 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { ProductCard, type Product } from '#/components/ElementCard'
-
+import { CATEGORIES_ENUM } from 'lib/types'
+import type { CategoriesRecord } from 'lib/types'
 
 export const Route = createFileRoute('/search-products')({
   component: SearchProducts,
 })
 
-const CATEGORIES = [
-  'Tecnología',
-  'Hogar',
-  'Moda',
-  'Electrodomésticos',
-  'Juguetes',
-]
 
-//AUN NO FUNCIONA LOS FILTROS
+const CATEGORIES: CategoriesRecord<string> = {
+  [CATEGORIES_ENUM['tecnologies']]: 'Tecnología',
+  [CATEGORIES_ENUM['home']]: 'Hogar',
+  [CATEGORIES_ENUM['fashion']]: 'Moda',
+  [CATEGORIES_ENUM['sports']]: 'Deportes',
+  [CATEGORIES_ENUM['appliances']]: 'Electrodomésticos',
+  [CATEGORIES_ENUM['toys']]: 'Juguetes',
+}
+
+// AUN NO FUNCIONA LOS FILTROS
 
 // Datos de prueba. Se reemplazan con la respuesta del backend.
 const placeholderProducts: Product[] = [
-  { name: 'Lavadora automática', category: 'Electrodomésticos', price: 18500, oldPrice: 25000, company: 'Marca X' },
-  { name: 'Pantalla 50 pulgadas', category: 'Tecnología', price: 9800, oldPrice: 13000, company: 'Marca Y' },
-  { name: 'Tenis para correr', category: 'Moda', price: 1200, oldPrice: 1800, company: 'Marca Z' },
-  { name: 'Chamarra de invierno', category: 'Moda', price: 950, oldPrice: 1500, company: 'Marca W' },
-  { name: 'Refrigerador', category: 'Electrodomésticos', price: 22000, oldPrice: 28000, company: 'Marca X' },
-  { name: 'Laptop 14 pulgadas', category: 'Tecnología', price: 14500, oldPrice: 19000, company: 'Marca Y' },
+  {
+    name: 'Lavadora automática',
+    category: CATEGORIES.appliances,
+    price: 18500,
+    oldPrice: 25000,
+    company: 'Marca X',
+  },
+  {
+    name: 'Pantalla 50 pulgadas',
+    category: CATEGORIES.tecnologies,
+    price: 9800,
+    oldPrice: 13000,
+    company: 'Marca Y',
+  },
+  {
+    name: 'Tenis para correr',
+    category: CATEGORIES.sports,
+    price: 1200,
+    oldPrice: 1800,
+    company: 'Marca Z',
+  },
+  {
+    name: 'Chamarra de invierno',
+    category: CATEGORIES.fashion,
+    price: 950,
+    oldPrice: 1500,
+    company: 'Marca W',
+  },
+  {
+    name: 'Refrigerador',
+    category: CATEGORIES.appliances,
+    price: 22000,
+    oldPrice: 28000,
+    company: 'Marca X',
+  },
+  {
+    name: 'Laptop 14 pulgadas',
+    category: CATEGORIES.tecnologies,
+    price: 14500,
+    oldPrice: 19000,
+    company: 'Marca Y',
+  },
 ]
 
 function SearchProducts() {
@@ -52,7 +91,7 @@ function SearchProducts() {
             <fieldset className="mt-4">
               <legend className="text-sm font-bold">Categoría</legend>
               <div className="mt-2 flex flex-col gap-2">
-                {CATEGORIES.map((category) => (
+                {Object.values(CATEGORIES).map((category) => (
                   <label
                     key={category}
                     className="flex items-center gap-2 text-sm"
@@ -75,7 +114,8 @@ function SearchProducts() {
                 max={30000}
                 step={500}
                 defaultValue={20000}
-                className="mt-2 w-full accent-primary"/>
+                className="mt-2 w-full accent-primary"
+              />
 
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>$0</span>
