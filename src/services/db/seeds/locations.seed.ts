@@ -9,7 +9,7 @@ const STATES = {
   monterrey: "Monterrey",
 } as const;
 
-export const LOCATIONS: LOCATION_ENTRY[] = [
+export const LOCATIONS = [
   {
     state: STATES.cdmx,
     city: "Poniente",
@@ -30,7 +30,7 @@ export const LOCATIONS: LOCATION_ENTRY[] = [
     state: STATES.monterrey,
     city: "Monterrey",
   },
-] as const;
+] as const satisfies LOCATION_ENTRY[];
 
 export default async function () {
   try {
