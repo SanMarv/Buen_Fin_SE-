@@ -2,6 +2,7 @@ import express from "express";
 import userRouter from "./routes/users.routes.ts";
 import imagesAuth from "./routes/images.routes.ts";
 import companieRouter from "./routes/companies.routes.ts";
+import postRoutes from "./routes/posts.routes.ts";
 import cookies from "cookie-parser";
 import cors from "cors";
 import { env } from "@env";
@@ -26,4 +27,5 @@ app.get(
 );
 app.use("/auth/images", imagesAuth);
 app.use("/companies", companieRouter);
+app.use("/", postRoutes);
 app.listen(PORT, (): void => console.log(` App listening on port ${PORT}...`));
