@@ -139,4 +139,6 @@ userRouter.put("/update", protectRoute, async (req: Request, res: Response) => {
   }
 });
 
+userRouter.put("/validate");
+
 export default userRouter;
