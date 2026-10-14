@@ -11,10 +11,22 @@ import { inputValidationMiddleware } from "@backend/middleware/inputValidation.m
 import { createProductSchema } from "@lib/schemas/produts.schema.js";
 import { refreshEditMode } from "@auth/edit.middleware.js";
 import { COMPANY_ID_KEY } from "@backend/const.js";
-import type { RequestWithNewPost } from "@backend/types.js";
+import type {
+  RequestWithNewPost,
+  RequestWithUpdatePost,
+} from "@backend/types.js";
 import { protectRoute } from "@auth/jwt.middleware.js";
+import { editModePost } from "@auth/editPost.middleware.js";
+import z from "zod";
 
 export const postsRouter = Router();
+
+postsRouter.get(
+  "/product/:postId",
+  protectRoute,
+  refreshEditMode,
+  editModePost,
+);
 
 postsRouter.post(
   "/product",
@@ -31,9 +43,36 @@ postsRouter.post(
     return res.json(data);
   },
 );
+
+postsRouter.delete(
+  "/product/:productId",
+  protectRoute,
+  refreshEditMode,
+  async (req, res: RequestWithUpdatePost) => {
+    const { success: isValidId, data } = z
+      .object({ productId: z.uuidv7() })
+      .safeParse(req.params);
+    if (!isValidId)
+      return res
+        .status(400)
+        .json({ error: "Error in request uuid", status: 400 });
+    const { productId } = data;
+    const companyId = res.locals[COMPANY_ID_KEY];
+    const { success } = await ProductsController.checkOwner({
+      companyId,
+      productId,
+    });
+    if (!success)
+      return res.status(403).json({ status: 403, error: "Prohibited" });
+    const { status } = await ProductsController.deleteProduct({
+      productId,
+    });
+    return res.sendStatus(status);
+  },
+);
+
 postsRouter.get("/products", async (req: Request, res: Response) => {
   const parsed_query = getProduct.safeParse(req.query);
-
   if (!parsed_query.success) {
     return res
       .status(400)

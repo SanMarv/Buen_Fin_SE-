@@ -23,7 +23,7 @@ import type { NewProduct } from "@lib/schemas/produts.schema.js";
 import { COMPANY_ID_KEY } from "@backend/const.js";
 import { v7 as uuid } from "uuid";
 import type { ProductsRecord } from "@db/models/products.model.js";
-import { eq, type InferInsertModel } from "drizzle-orm";
+import { and, eq, type InferInsertModel } from "drizzle-orm";
 
 export class ProductsController {
   private static limit: number = 25;
@@ -130,6 +130,34 @@ export class ProductsController {
       return fail({
         error: "Error in the database trying to create Product",
         status: 500,
+      });
+    }
+  }
+  static async checkOwner(id: {
+    [COMPANY_ID_KEY]: string;
+    productId: string;
+  }): PromiseResult<
+    { status: 200; id: string },
+    { error: string; status: 500 | 404 }
+  > {
+    const companyId = id[COMPANY_ID_KEY];
+    try {
+      const records = await db
+        .select({ id: products.company_id })
+        .from(products)
+        .where(
+          and(
+            eq(products.company_id, companyId),
+            eq(products.id, id.productId),
+          ),
+        );
+      if (records.length <= 0)
+        return fail({ error: "Not found the product", status: 404 });
+      return success({ status: 200, id: records[0].id });
+    } catch {
+      return fail({
+        status: 500,
+        error: "Unexpected error getting post from database",
       });
     }
   }
