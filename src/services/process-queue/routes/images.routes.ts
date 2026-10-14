@@ -12,7 +12,7 @@ routes.post(
   validateInputFile,
   async (req, res: RequestWithUser) => {
     const file = req.file!;
-    const user_id = res.locals.auth.user_id;
+    const { user_id } = res.locals.auth;
     const {
       success: isUploaded,
       data: record,
@@ -20,9 +20,14 @@ routes.post(
     } = await imageRawQueue.enqueue({
       file,
       user_id,
+      alt: req.body.alt,
     });
-    if (!isUploaded) return res.status(error.status).json(error);
-    return res.json(record);
+    // TODO: Retry generic function with exponential delay
+    if (!isUploaded)
+      return res
+        .status(error.status)
+        .json({ status: error.status, error: error.error });
+    return res.json(record.data);
   },
 );
 

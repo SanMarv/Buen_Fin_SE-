@@ -24,7 +24,7 @@ async function processing(
     success: isCreated,
     data: record,
     error: errorRecord,
-  } = await imageUploader.createRecord();
+  } = await imageUploader.createRecord({ alt: task.alt });
 
   if (!isCreated) {
     await imageUploader.deleteFromBucket();

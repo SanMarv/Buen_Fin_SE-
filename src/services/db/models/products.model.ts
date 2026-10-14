@@ -10,11 +10,12 @@ export const products = pgTable(TABLE_NAMES.PRODUCTS, {
   name: varchar({ length: 200 }).notNull(),
   description: varchar({ length: 200 }).default(DEFAULT_DESCRIPTION),
   price: integer().notNull(),
+  newPrice: integer().notNull(),
   metadata: jsonb().$type<ProductMetadata>().default({}),
   company_id: uuid()
     .references(() => companies.id)
     .notNull(),
-  visibility: visibilityEnum().default("PRIVATE"),
+  visibility: visibilityEnum().default("PRIVATE").notNull(),
 });
 
 export type ProductsRecord = InferInsertModel<typeof products>;

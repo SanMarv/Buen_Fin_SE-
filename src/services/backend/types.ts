@@ -18,6 +18,10 @@ interface Auth {
   user_id: string;
   validation_id: string | null;
 }
+interface ImageOwnerGet {
+  auth: Auth;
+  imageOwner: string;
+}
 interface AuthValidated extends Auth {
   validation_id: string;
 }
@@ -54,6 +58,7 @@ export interface AuthWithCompany {
 }
 // Request
 export type RequestWithUser = ResponseLocals<{ auth: Auth }>;
+export type RequestWithImageOwner = ResponseLocals<ImageOwnerGet>;
 export type RequestWithValidation = ResponseLocals<{ auth: AuthValidated }>;
 export type RequestWithCompany = ResponseLocals<Company>;
 export type RequestWithCompanyId = ResponseLocals<AuthWithCompany>;
