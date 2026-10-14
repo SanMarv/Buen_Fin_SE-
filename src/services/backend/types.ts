@@ -34,6 +34,9 @@ interface ProductCreate extends ValidationData {
   [COMPANY_ID_KEY]: string;
   newCompany: NewProduct;
 }
+interface ProductUpdate extends ValidationData {
+  [COMPANY_ID_KEY]: string;
+}
 interface Company extends ValidationData {
   companie: ValidatedCompanieInput;
 }
@@ -71,6 +74,7 @@ export type RequestWithCompaniesInfo = ResponseLocals<{
   companies: CompaniesSelectUser[];
 }>;
 export type RequestWithNewPost = ResponseLocals<ProductCreate>;
+export type RequestWithUpdatePost = ResponseLocals<ProductUpdate>;
 
 // Handlers
 export type RequestHandlerWithValidInfo = RequestHandler<ValidationData>;
