@@ -8,10 +8,9 @@ import type {
 import type { CompanieInput as ValidatedCompanieInput } from "./schemas/company.schema.ts";
 import type { COMPANY_ID_KEY } from "./const.ts";
 import type { NewProduct } from "@lib/schemas/produts.schema.js";
+import type { NewJob } from "@db/interfaces/jobs.interface.js";
 
-export interface ResponseLocals<P> extends Response {
-  locals: P & Response["locals"];
-}
+export type ResponseLocals<P> = Response<unknown, P & Response["locals"]>;
 export type ValidationInfo = Omit<ValidationRecord, "hash" | "signature">;
 
 // locals
@@ -33,6 +32,10 @@ interface ValidationData {
 interface ProductCreate extends ValidationData {
   [COMPANY_ID_KEY]: string;
   newCompany: NewProduct;
+}
+interface JobCreate extends ValidationData {
+  [COMPANY_ID_KEY]: string;
+  newJob: NewJob;
 }
 interface ProductUpdate extends ValidationData {
   [COMPANY_ID_KEY]: string;
@@ -75,6 +78,8 @@ export type RequestWithCompaniesInfo = ResponseLocals<{
 }>;
 export type RequestWithNewPost = ResponseLocals<ProductCreate>;
 export type RequestWithUpdatePost = ResponseLocals<ProductUpdate>;
+export type RequestWithNewJob = ResponseLocals<JobCreate>;
+export type RequestWithPostOwner = ResponseLocals<OwnerRequest>;
 
 // Handlers
 export type RequestHandlerWithValidInfo = RequestHandler<ValidationData>;

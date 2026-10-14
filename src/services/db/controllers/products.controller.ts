@@ -24,6 +24,7 @@ import { COMPANY_ID_KEY } from "@backend/const.js";
 import { v7 as uuid } from "uuid";
 import type { ProductsRecord } from "@db/models/products.model.js";
 import { and, eq, type InferInsertModel } from "drizzle-orm";
+import type { VisibilityValue } from "@db/enums.js";
 
 export class ProductsController {
   private static limit: number = 25;
@@ -60,6 +61,28 @@ export class ProductsController {
     }
   }
 
+  static async updateVisibilty(update: {
+    productId: string;
+    [COMPANY_ID_KEY]: string;
+    visibility: VisibilityValue;
+  }): Promise<NoContentResult> {
+    const { productId, visibility } = update;
+    const companyId = update[COMPANY_ID_KEY];
+    try {
+      await db
+        .update(products)
+        .set({ visibility })
+        .where(
+          and(eq(products.id, productId), eq(products.company_id, companyId)),
+        );
+      return successNoContent();
+    } catch {
+      return noContentError({
+        error: "Error trying to update product",
+        status: 500,
+      });
+    }
+  }
   static async getProductByID(data: GetProductByIdInput): GetProductQueryOne {
     try {
       const result = await db.query.products.findFirst({
@@ -143,7 +166,7 @@ export class ProductsController {
     const companyId = id[COMPANY_ID_KEY];
     try {
       const records = await db
-        .select({ id: products.company_id })
+        .select({ id: products.id })
         .from(products)
         .where(
           and(
@@ -151,6 +174,7 @@ export class ProductsController {
             eq(products.id, id.productId),
           ),
         );
+      console.log(id, companyId);
       if (records.length <= 0)
         return fail({ error: "Not found the product", status: 404 });
       return success({ status: 200, id: records[0].id });

@@ -65,7 +65,7 @@ export class JobsController {
           company_id: newJob[COMPANY_ID_KEY],
           location_id,
           name: newJob.name,
-          description: newJob.descriptions,
+          description: newJob.description,
         });
       });
       return successNoContent();
@@ -73,6 +73,7 @@ export class JobsController {
       return noContentError({ error: "Error inserting job", status: 500 });
     }
   }
+
   static async getJobByID(data: GetJobByIdInput): GetJobQueryOne {
     try {
       const result = await db.query.jobs.findFirst({
