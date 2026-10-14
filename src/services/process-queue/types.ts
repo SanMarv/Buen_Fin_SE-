@@ -27,6 +27,7 @@ export type ImageRecordSuccess = NonNullable<
 export interface TaskImageUpload {
   file: NonNullable<Request["file"]>;
   user_id: string;
+  alt?: string;
 }
 export type WorkerResult<Task> = Result<null, { error: string; task: Task }>;
 

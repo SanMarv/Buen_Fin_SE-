@@ -1,1 +1,1 @@
-export * from "./generics.ts";
+export * from "./generics.js";

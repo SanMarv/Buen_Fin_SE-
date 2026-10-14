@@ -3,6 +3,7 @@ import { validateCompanyHeader } from "@auth/headers.middleware.js";
 import { protectRoute } from "@auth/jwt.middleware.js";
 import { protectWithValidation } from "@auth/validation.middleware.js";
 import { getUsersCompanies } from "@backend/middleware/companies.middleware.js";
+import { fielMiddlewareInputValidator } from "@backend/middleware/fielMulter.middleware.js";
 import { companiesInputValidation } from "@backend/schemas/company.schema.js";
 import type {
   RequestWithCompaniesInfo,
@@ -28,6 +29,10 @@ app.get("/user", getUsersCompanies, (_, res: RequestWithCompaniesInfo) => {
 
 app.get(
   "/profile-validate",
+app.post(
+  "/",
+  fielMiddlewareInputValidator,
+  companiesInputValidation,
   protectRoute,
   refreshEditMode,
   validateCompanyHeader,

@@ -45,11 +45,11 @@ async function processImage(
     return fail({ error: bucketError.error, cleanup: async () => {}, task });
   }
 
-  const { url: newUrl, uploadedAt } = bucketData;
+  const { url: newUrl, path: newPath, uploadedAt } = bucketData;
 
   const { success: isSavedDB, error } = await ImageController.move([
     { url },
-    { url: newUrl, hash: image.hash, metadata: { uploadedAt } },
+    { url: newUrl, path: newPath, hash: image.hash, metadata: { uploadedAt } },
   ]);
   if (isSavedDB) {
     imageDelete(imageSource.fileName).catch((e) => console.error(e));

@@ -11,6 +11,7 @@ export const createCompanie = z.object({
     .max(13)
     .refine((inp) => Rfc.isValid(inp)),
   validation_id: z.uuidv4().optional(),
+  password: z.string()
 });
 
 export type CompanieInput = z.infer<typeof createCompanie>;
