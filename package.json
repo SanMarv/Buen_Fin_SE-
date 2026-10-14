@@ -36,6 +36,7 @@
     "db:restart": "docker compose -f src/services/db/image.docker-compose.yaml restart",
     "db:migration": "drizzle-kit push",
     "db:console": "drizzle-kit studio",
+    "db:seed": "tsx --env-file .env src/services/db/seeds/index.ts",
     "typecheck": "tsc --noEmit",
     "build": "tsc && tsc-alias",
     "lint": "eslint .",
