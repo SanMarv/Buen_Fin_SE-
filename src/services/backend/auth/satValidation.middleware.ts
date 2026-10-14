@@ -1,8 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 import { SatValidator } from "@sat/validator.js";
-import { ValidationController } from "@db/controllers/validation.controller.ts";
+import { ValidationController } from "@db/controllers/validation.controller.js";
 
-const satValidation = (req: Request, res: Response, next: NextFunction) => {
+export const satValidation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (!req.files || Array.isArray(req.files)) {
+    return res.status(400).json("Certificate and Key are required");
+  }
   const cer = req.files?.cer?.[0];
   const key = req.files?.key?.[0];
   const password = req.body.password;
