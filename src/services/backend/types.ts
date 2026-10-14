@@ -7,6 +7,7 @@ import type {
 } from "express";
 import type { CompanieInput as ValidatedCompanieInput } from "./schemas/company.schema.ts";
 import type { COMPANY_ID_KEY } from "./const.ts";
+import type { NewProduct } from "@lib/schemas/produts.schema.js";
 
 export interface ResponseLocals<P> extends Response {
   locals: P & Response["locals"];
@@ -28,6 +29,10 @@ interface AuthValidated extends Auth {
 interface ValidationData {
   auth: AuthValidated;
   validation: ValidationInfo;
+}
+interface ProductCreate extends ValidationData {
+  [COMPANY_ID_KEY]: string;
+  newCompany: NewProduct;
 }
 interface Company extends ValidationData {
   companie: ValidatedCompanieInput;
@@ -65,6 +70,7 @@ export type RequestWithCompanyId = ResponseLocals<AuthWithCompany>;
 export type RequestWithCompaniesInfo = ResponseLocals<{
   companies: CompaniesSelectUser[];
 }>;
+export type RequestWithNewPost = ResponseLocals<ProductCreate>;
 
 // Handlers
 export type RequestHandlerWithValidInfo = RequestHandler<ValidationData>;

@@ -8,7 +8,7 @@ import { visibilityEnum } from "@db/enums.js";
 export const products = pgTable(TABLE_NAMES.PRODUCTS, {
   id: uuid().primaryKey(),
   name: varchar({ length: 200 }).notNull(),
-  description: varchar({ length: 200 }).default(DEFAULT_DESCRIPTION),
+  description: varchar({ length: 280 }).default(DEFAULT_DESCRIPTION),
   price: integer().notNull(),
   newPrice: integer().notNull(),
   metadata: jsonb().$type<ProductMetadata>().default({}),

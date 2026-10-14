@@ -69,7 +69,8 @@ export const refreshEditMode: RequestHandlerWithValidInfo = async (
     });
     res.locals[COMPANY_ID_KEY] = data.id;
     next();
-  } catch {
+  } catch (e) {
+    console.error(e);
     return res.status(403).json({ status: 403, error: "Prohibited" });
   }
 };
