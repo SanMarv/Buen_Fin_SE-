@@ -4,6 +4,7 @@ import { users } from "./users.model.ts";
 import { TABLE_NAMES } from "@db/const.js";
 import type { InferInsertModel } from "drizzle-orm";
 import type { ImageMetadata } from "../interfaces/images.interfaces.ts";
+import { visibilityEnum } from "@db/enums.js";
 
 export const images = pgTable(TABLE_NAMES.IMAGES, {
   id: uuid().primaryKey(),
@@ -16,6 +17,7 @@ export const images = pgTable(TABLE_NAMES.IMAGES, {
   url: varchar({ length: 2000 }).notNull(),
   hash: varchar({ length: 166 }),
   metadata: json().$type<ImageMetadata>().default({}),
+  visibility: visibilityEnum().default("PRIVATE"),
 });
 
 export type ImageRecord = InferInsertModel<typeof images>;
