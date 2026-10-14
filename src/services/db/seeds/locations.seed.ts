@@ -2,35 +2,7 @@ import { db } from "@db/conection.js";
 import type { LOCATION_ENTRY } from "@db/interfaces/jobs.interface.js";
 import { locations } from "@db/schema.js";
 import { eq } from "drizzle-orm";
-
-const STATES = {
-  estado: "Estado de México",
-  cdmx: "México",
-  monterrey: "Monterrey",
-} as const;
-
-export const LOCATIONS = [
-  {
-    state: STATES.cdmx,
-    city: "Poniente",
-  },
-  {
-    state: STATES.cdmx,
-    city: "Del Valle",
-  },
-  {
-    state: STATES.estado,
-    city: "Lerma",
-  },
-  {
-    state: STATES.estado,
-    city: "Toluca",
-  },
-  {
-    state: STATES.monterrey,
-    city: "Monterrey",
-  },
-] as const satisfies LOCATION_ENTRY[];
+import { LOCATIONS } from "@lib/schemas/locations.schema.js";
 
 export default async function () {
   try {

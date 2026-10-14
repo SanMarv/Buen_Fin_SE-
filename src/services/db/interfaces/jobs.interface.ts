@@ -4,7 +4,8 @@ import type { Result } from "@app/types";
 import type { CompaniesRecord } from "@db/models/companies.model.js";
 import type { InferInsertModel } from "drizzle-orm";
 import type { locations } from "@db/schema.js";
-
+import type { COMPANY_ID_KEY } from "@backend/const.js";
+import type { LocationEntry } from "@lib/schemas/locations.schema.js";
 type GetJobResult = Pick<jobsRecord, "id" | "name" | "description"> & {
   company: Pick<CompaniesRecord, "name"> | null;
 };
@@ -17,7 +18,12 @@ export interface GetJobInput {
   sort: "asc" | "desc";
   company?: string;
 }
-
+export interface NewJob {
+  name: string;
+  descriptions: string;
+  [COMPANY_ID_KEY]: string;
+  location: LocationEntry;
+}
 export type GetJobByIdInput = Pick<jobsRecord, "id">;
 
 export type LOCATION_ENTRY = InferInsertModel<typeof locations>;
