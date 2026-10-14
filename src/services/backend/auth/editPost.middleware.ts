@@ -14,7 +14,7 @@ export const editModePost: RequestHandlerWithOwner = async (req, res) => {
   if (!postId)
     return res.status(404).json({ status: 404, error: "Route not found" });
   const { data: postIdParsed, success: isValidUUID } = z
-    .uuidv4()
+    .uuidv7()
     .safeParse(postId);
   if (!isValidUUID)
     return res
@@ -56,7 +56,7 @@ export const refreshEditModePost: RequestHandlerWithOwner = async (
     return res.status(403).json({ status: 403, error: "Prohibited" });
   try {
     const payload = verifyJWT(jwtToken);
-    const { postId } = z.object({ [POST_ID_KEY]: z.uuid() }).parse(payload);
+    const { productId } = z.object({ [POST_ID_KEY]: z.uuid() }).parse(payload);
     const { user_id } = res.locals.auth;
     const companyId = res.locals[COMPANY_ID_KEY];
     const { success: isOwner } = await CompaniesController.checkOwner(
@@ -69,7 +69,7 @@ export const refreshEditModePost: RequestHandlerWithOwner = async (
     }
     const { success: isOwnerPost, data } = await ProductsController.checkOwner({
       companyId,
-      productId: postId,
+      productId,
     });
     if (!isOwnerPost) {
       res.clearCookie(POST_ID_KEY);

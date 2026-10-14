@@ -5,4 +5,4 @@ export const HEADERS = {
 } as const;
 
 export const COMPANY_ID_KEY = "companyId";
-export const POST_ID_KEY = "postId";
+export const POST_ID_KEY = "productId";

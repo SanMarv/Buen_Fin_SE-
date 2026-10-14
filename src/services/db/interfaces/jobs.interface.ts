@@ -20,7 +20,7 @@ export interface GetJobInput {
 }
 export interface NewJob {
   name: string;
-  descriptions: string;
+  description: string;
   [COMPANY_ID_KEY]: string;
   location: LocationEntry;
 }

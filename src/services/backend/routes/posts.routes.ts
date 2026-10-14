@@ -13,16 +13,24 @@ import { refreshEditMode } from "@auth/edit.middleware.js";
 import { COMPANY_ID_KEY } from "@backend/const.js";
 import type {
   RequestWithNewPost,
+  RequestWithPostOwner,
   RequestWithUpdatePost,
 } from "@backend/types.js";
 import { protectRoute } from "@auth/jwt.middleware.js";
-import { editModePost } from "@auth/editPost.middleware.js";
-import z from "zod";
+import {
+  editModePost,
+  refreshEditModePost,
+} from "@auth/editPost.middleware.js";
+import {
+  checkRequestParameter,
+  checkVisibility,
+  type RequestWithVisibilty,
+} from "@backend/schemas/app.schema.js";
 
 export const postsRouter = Router();
 
 postsRouter.get(
-  "/product/:postId",
+  "/product/edit/:postId",
   protectRoute,
   refreshEditMode,
   editModePost,
@@ -49,14 +57,14 @@ postsRouter.delete(
   protectRoute,
   refreshEditMode,
   async (req, res: RequestWithUpdatePost) => {
-    const { success: isValidId, data } = z
-      .object({ productId: z.uuidv7() })
-      .safeParse(req.params);
+    const { success: isValidId, data: productId } = checkRequestParameter(
+      "productId",
+      req.params,
+    );
     if (!isValidId)
       return res
         .status(400)
         .json({ error: "Error in request uuid", status: 400 });
-    const { productId } = data;
     const companyId = res.locals[COMPANY_ID_KEY];
     const { success } = await ProductsController.checkOwner({
       companyId,
@@ -67,6 +75,36 @@ postsRouter.delete(
     const { status } = await ProductsController.deleteProduct({
       productId,
     });
+    return res.sendStatus(status);
+  },
+);
+
+postsRouter.put(
+  "/product/visibility/:productId",
+  protectRoute,
+  refreshEditMode,
+  refreshEditModePost,
+  inputValidationMiddleware(checkVisibility, "newVisibility"),
+  async (
+    req,
+    res: RequestWithVisibilty<"newVisibility", RequestWithPostOwner>,
+  ) => {
+    const { success: isValidId, data: productId } = checkRequestParameter(
+      "productId",
+      req.params,
+    );
+    if (!isValidId)
+      return res.status(400).json({ error: "Bad format in id", status: 400 });
+    const { visibility } = res.locals.newVisibility;
+    const companyId = res.locals[COMPANY_ID_KEY];
+    const { status, success, error } = await ProductsController.updateVisibilty(
+      {
+        companyId,
+        productId,
+        visibility,
+      },
+    );
+    if (!success) console.error(error);
     return res.sendStatus(status);
   },
 );
