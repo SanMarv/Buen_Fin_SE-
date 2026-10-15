@@ -17,7 +17,6 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterBusinessRouteImport } from './routes/register-business'
 import { Route as RegisterConsumerRouteImport } from './routes/register-consumer'
 import { Route as RegisterProductsPositionsRouteImport } from './routes/register-products-positions'
-import { Route as SearchBusinessRouteImport } from './routes/search-business'
 import { Route as SearchProductsRouteImport } from './routes/search-products'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 
@@ -62,11 +61,6 @@ const RegisterProductsPositionsRoute =
     path: '/register-products-positions',
     getParentRoute: () => rootRouteImport,
   } as any)
-const SearchBusinessRoute = SearchBusinessRouteImport.update({
-  id: '/search-business',
-  path: '/search-business',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SearchProductsRoute = SearchProductsRouteImport.update({
   id: '/search-products',
   path: '/search-products',
@@ -87,7 +81,6 @@ export interface FileRoutesByFullPath {
   '/register-business': typeof RegisterBusinessRoute
   '/register-consumer': typeof RegisterConsumerRoute
   '/register-products-positions': typeof RegisterProductsPositionsRoute
-  '/search-business': typeof SearchBusinessRoute
   '/search-products': typeof SearchProductsRoute
   '/wishlist': typeof WishlistRoute
 }
@@ -100,7 +93,6 @@ export interface FileRoutesByTo {
   '/register-business': typeof RegisterBusinessRoute
   '/register-consumer': typeof RegisterConsumerRoute
   '/register-products-positions': typeof RegisterProductsPositionsRoute
-  '/search-business': typeof SearchBusinessRoute
   '/search-products': typeof SearchProductsRoute
   '/wishlist': typeof WishlistRoute
 }
@@ -114,7 +106,6 @@ export interface FileRoutesById {
   '/register-business': typeof RegisterBusinessRoute
   '/register-consumer': typeof RegisterConsumerRoute
   '/register-products-positions': typeof RegisterProductsPositionsRoute
-  '/search-business': typeof SearchBusinessRoute
   '/search-products': typeof SearchProductsRoute
   '/wishlist': typeof WishlistRoute
 }
@@ -129,7 +120,6 @@ export interface FileRouteTypes {
     | '/register-business'
     | '/register-consumer'
     | '/register-products-positions'
-    | '/search-business'
     | '/search-products'
     | '/wishlist'
   fileRoutesByTo: FileRoutesByTo
@@ -142,7 +132,6 @@ export interface FileRouteTypes {
     | '/register-business'
     | '/register-consumer'
     | '/register-products-positions'
-    | '/search-business'
     | '/search-products'
     | '/wishlist'
   id:
@@ -155,7 +144,6 @@ export interface FileRouteTypes {
     | '/register-business'
     | '/register-consumer'
     | '/register-products-positions'
-    | '/search-business'
     | '/search-products'
     | '/wishlist'
   fileRoutesById: FileRoutesById
@@ -169,7 +157,6 @@ export interface RootRouteChildren {
   RegisterBusinessRoute: typeof RegisterBusinessRoute
   RegisterConsumerRoute: typeof RegisterConsumerRoute
   RegisterProductsPositionsRoute: typeof RegisterProductsPositionsRoute
-  SearchBusinessRoute: typeof SearchBusinessRoute
   SearchProductsRoute: typeof SearchProductsRoute
   WishlistRoute: typeof WishlistRoute
 }
@@ -232,13 +219,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterProductsPositionsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/search-business': {
-      id: '/search-business'
-      path: '/search-business'
-      fullPath: '/search-business'
-      preLoaderRoute: typeof SearchBusinessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/search-products': {
       id: '/search-products'
       path: '/search-products'
@@ -265,7 +245,6 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterBusinessRoute: RegisterBusinessRoute,
   RegisterConsumerRoute: RegisterConsumerRoute,
   RegisterProductsPositionsRoute: RegisterProductsPositionsRoute,
-  SearchBusinessRoute: SearchBusinessRoute,
   SearchProductsRoute: SearchProductsRoute,
   WishlistRoute: WishlistRoute,
 }
