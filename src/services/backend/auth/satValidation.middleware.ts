@@ -30,6 +30,7 @@ export const satValidation = async (
 
   const validation_id = await ValidationController.insertValidation(data);
 
-  res.locals.companie["validation_id"] = validation_id;
+  res.locals["validation"] = validation_id;
+
   next();
 };
