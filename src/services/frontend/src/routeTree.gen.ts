@@ -14,9 +14,7 @@ import { Route as AboutusRouteImport } from './routes/aboutus'
 import { Route as BusinessProfileRouteImport } from './routes/business-profile'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as RegisterBusinessRouteImport } from './routes/register-business'
-import { Route as RegisterConsumerRouteImport } from './routes/register-consumer'
-import { Route as RegisterProductsPositionsRouteImport } from './routes/register-products-positions'
+import { Route as RegisterProductsLocationsJobsRouteImport } from './routes/register-products-locations-jobs'
 import { Route as SearchProductsRouteImport } from './routes/search-products'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 
@@ -45,20 +43,10 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RegisterBusinessRoute = RegisterBusinessRouteImport.update({
-  id: '/register-business',
-  path: '/register-business',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterConsumerRoute = RegisterConsumerRouteImport.update({
-  id: '/register-consumer',
-  path: '/register-consumer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterProductsPositionsRoute =
-  RegisterProductsPositionsRouteImport.update({
-    id: '/register-products-positions',
-    path: '/register-products-positions',
+const RegisterProductsLocationsJobsRoute =
+  RegisterProductsLocationsJobsRouteImport.update({
+    id: '/register-products-locations-jobs',
+    path: '/register-products-locations-jobs',
     getParentRoute: () => rootRouteImport,
   } as any)
 const SearchProductsRoute = SearchProductsRouteImport.update({
@@ -78,9 +66,7 @@ export interface FileRoutesByFullPath {
   '/business-profile': typeof BusinessProfileRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
-  '/register-business': typeof RegisterBusinessRoute
-  '/register-consumer': typeof RegisterConsumerRoute
-  '/register-products-positions': typeof RegisterProductsPositionsRoute
+  '/register-products-locations-jobs': typeof RegisterProductsLocationsJobsRoute
   '/search-products': typeof SearchProductsRoute
   '/wishlist': typeof WishlistRoute
 }
@@ -90,9 +76,7 @@ export interface FileRoutesByTo {
   '/business-profile': typeof BusinessProfileRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
-  '/register-business': typeof RegisterBusinessRoute
-  '/register-consumer': typeof RegisterConsumerRoute
-  '/register-products-positions': typeof RegisterProductsPositionsRoute
+  '/register-products-locations-jobs': typeof RegisterProductsLocationsJobsRoute
   '/search-products': typeof SearchProductsRoute
   '/wishlist': typeof WishlistRoute
 }
@@ -103,9 +87,7 @@ export interface FileRoutesById {
   '/business-profile': typeof BusinessProfileRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
-  '/register-business': typeof RegisterBusinessRoute
-  '/register-consumer': typeof RegisterConsumerRoute
-  '/register-products-positions': typeof RegisterProductsPositionsRoute
+  '/register-products-locations-jobs': typeof RegisterProductsLocationsJobsRoute
   '/search-products': typeof SearchProductsRoute
   '/wishlist': typeof WishlistRoute
 }
@@ -117,9 +99,7 @@ export interface FileRouteTypes {
     | '/business-profile'
     | '/faq'
     | '/login'
-    | '/register-business'
-    | '/register-consumer'
-    | '/register-products-positions'
+    | '/register-products-locations-jobs'
     | '/search-products'
     | '/wishlist'
   fileRoutesByTo: FileRoutesByTo
@@ -129,9 +109,7 @@ export interface FileRouteTypes {
     | '/business-profile'
     | '/faq'
     | '/login'
-    | '/register-business'
-    | '/register-consumer'
-    | '/register-products-positions'
+    | '/register-products-locations-jobs'
     | '/search-products'
     | '/wishlist'
   id:
@@ -141,9 +119,7 @@ export interface FileRouteTypes {
     | '/business-profile'
     | '/faq'
     | '/login'
-    | '/register-business'
-    | '/register-consumer'
-    | '/register-products-positions'
+    | '/register-products-locations-jobs'
     | '/search-products'
     | '/wishlist'
   fileRoutesById: FileRoutesById
@@ -154,9 +130,7 @@ export interface RootRouteChildren {
   BusinessProfileRoute: typeof BusinessProfileRoute
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
-  RegisterBusinessRoute: typeof RegisterBusinessRoute
-  RegisterConsumerRoute: typeof RegisterConsumerRoute
-  RegisterProductsPositionsRoute: typeof RegisterProductsPositionsRoute
+  RegisterProductsLocationsJobsRoute: typeof RegisterProductsLocationsJobsRoute
   SearchProductsRoute: typeof SearchProductsRoute
   WishlistRoute: typeof WishlistRoute
 }
@@ -198,25 +172,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/register-business': {
-      id: '/register-business'
-      path: '/register-business'
-      fullPath: '/register-business'
-      preLoaderRoute: typeof RegisterBusinessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register-consumer': {
-      id: '/register-consumer'
-      path: '/register-consumer'
-      fullPath: '/register-consumer'
-      preLoaderRoute: typeof RegisterConsumerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register-products-positions': {
-      id: '/register-products-positions'
-      path: '/register-products-positions'
-      fullPath: '/register-products-positions'
-      preLoaderRoute: typeof RegisterProductsPositionsRouteImport
+    '/register-products-locations-jobs': {
+      id: '/register-products-locations-jobs'
+      path: '/register-products-locations-jobs'
+      fullPath: '/register-products-locations-jobs'
+      preLoaderRoute: typeof RegisterProductsLocationsJobsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search-products': {
@@ -242,9 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessProfileRoute: BusinessProfileRoute,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
-  RegisterBusinessRoute: RegisterBusinessRoute,
-  RegisterConsumerRoute: RegisterConsumerRoute,
-  RegisterProductsPositionsRoute: RegisterProductsPositionsRoute,
+  RegisterProductsLocationsJobsRoute: RegisterProductsLocationsJobsRoute,
   SearchProductsRoute: SearchProductsRoute,
   WishlistRoute: WishlistRoute,
 }
