@@ -3,6 +3,7 @@ import {Ticket} from 'lucide-react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { BranchCard, ProductCard, VacancyCard, type Branch, type Product, type vacancy, } from '#/components/ElementCard'
+import { HorizontalScroll } from '#/components/ui/Horizontalscroll'
 
 export const Route = createFileRoute('/business-profile')({
   component: BusinessProfile,
@@ -71,33 +72,40 @@ function BusinessProfile() {
           </p>
           </div>
       </section>
-
-      <section className='bg-card px-4 py-8'>
-        <h2 className = "text-xl font-extrabold">Vacantes</h2>
-        <div className="mt-4 flex flex-col gap-3">
-          {vacancies.map ((vacancy)=>(
-            <VacancyCard key ={vacancy.name} vacancy = {vacancy}/>
+    
+      <section className = "bg-card px-4 py-8">
+        <HorizontalScroll title ="Vacantes" addLabel = "Agregar vacante">
+          {vacancies.map((vacancy)=>(
+            <div key={vacancy.name} className = "w-72 shrink-0 snap-start">
+              <VacancyCard vacancy = {vacancy}/>
+            </div>
           ))}
-        </div>
+        </HorizontalScroll>
       </section>
 
-      <section className='px-4 py-8'>
-        <h2 className = "text-xl font-extrabold">Productos</h2>
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          {products.map ((product)=>(
-            <ProductCard key ={product.name} product = {product}/>
+      <section className = "px-4 py-8">
+        <HorizontalScroll title = "Productos" addLabel = "Agregar producto">
+          {products.map((product)=>(
+            <div key ={product.name} className = "w-44 shrink-0 snap-start">
+              <ProductCard product = {product}/>
+            </div>
           ))}
-        </div>
+        </HorizontalScroll>
       </section>
+
+      <section className ="bg-card px-4 py-8">
+        <HorizontalScroll title ="Sucursales" addLabel = "Agregar sucursal">
+          {branches.map((branch)=> (
+            <div key ={branch.name} className = "w-40 shrink-0 snap-start">
+              <BranchCard branch ={branch}/>
+              </div>
+          ))}
+        </HorizontalScroll>
+      </section>
+
       
-      <section className='bg-card px-4 py-8'>
-        <h2 className = "text-xl font-extrabold">Sucursales</h2>
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          {branches.map ((branch)=>(
-            <BranchCard key ={branch.name} branch = {branch}/>
-          ))}
-        </div>
-      </section>
+
+      
 
     </main>
     <Footer/>
