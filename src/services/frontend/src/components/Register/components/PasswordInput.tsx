@@ -13,6 +13,7 @@ export function PasswordInput() {
   return (
     <Error name="password" className="px-2 mb-4 relative">
       <Input
+        placeholder='Contraseña'
         name="password"
         type={!isVisible ? 'password' : 'text'}
         autoComplete="current-password"

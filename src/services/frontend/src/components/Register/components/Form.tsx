@@ -88,7 +88,7 @@ export default function Form({ children, ...rest }: FormProps) {
       onSubmit={handleSubmit}
       className={cn(
         rest.className,
-        'flex flex-col min-h-screen justify-center',
+        'flex flex-col justify-center gap-y-3',
       )}
     >
       {children}

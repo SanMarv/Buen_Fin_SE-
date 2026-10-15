@@ -24,7 +24,7 @@ export function EmailField({ ...rest }: Props) {
         onChange={(e) => setInput(e.target.value)}
         className={cn(
           styles['input'],
-          'w-full px-4 border-input border h-full rounded-2xl',
+          'w-full px-4 border-input border h-full rounded-md',
           !!errorCode && 'border-destructive',
           rest.className,
         )}

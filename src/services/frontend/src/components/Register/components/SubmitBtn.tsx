@@ -9,7 +9,7 @@ export function SubmitBtn() {
     <Button
       variant="outline"
       className={cn(
-        'rounded-2xl w-full py-2',
+        'w-full py-2',
         isUploading &&
           'opacity-10 bg-neutral-50 hover:bg-neutral-50 hover:dark:bg-input/30',
       )}
