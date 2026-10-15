@@ -11,6 +11,8 @@ import {
   type UserLoginInput,
   type UserRegisterInput,
 } from "@lib/schemas/user.schema.js";
+import { fielMiddlewareInputValidator } from "@backend/middleware/fielMulter.middleware.js";
+import { satValidation } from "@auth/satValidation.middleware.js";
 const userRouter = Router();
 
 userRouter.post(
@@ -139,6 +141,23 @@ userRouter.put("/update", protectRoute, async (req: Request, res: Response) => {
   }
 });
 
-userRouter.put("/validate");
+userRouter.put(
+  "/validate",
+  protectRoute,
+  fielMiddlewareInputValidator,
+  satValidation,
+  async (req: Request, res: Response) => {
+    const { auth, validation } = res.locals;
+
+    const { user_id } = auth;
+    const { validation_id } = validation;
+
+    res.locals.auth = await UsersController.addValidation(
+      user_id,
+      validation_id,
+    );
+  },
+  signResponseWithAuth,
+);
 
 export default userRouter;

@@ -13,7 +13,6 @@ import * as argon2 from "argon2";
 import type { ValidationInfo } from "@backend/types.js";
 import { ERROR_CODES } from "../../types/errors.js";
 
-
 export class UsersController {
   static async createRegister(newUser: UserCreate): UserOperationResult {
     if (await this.isEmailSaved(newUser.email))
@@ -159,6 +158,30 @@ export class UsersController {
         status: 500,
         error: "Unexpected error when updating user",
       });
+    }
+  }
+
+  static async addValidation(
+    user_id: string,
+    new_validation_id: string,
+  ): UserOperationResult {
+    try {
+      const [user_update] = await db
+        .update(users)
+        .set({ validation_id: new_validation_id })
+        .where(eq(users.id, user_id))
+        .returning();
+
+      if (!user_update) {
+        return fail({ status: 404, error: "User to update not found" });
+      }
+
+      const { id, validation_id } = user_update;
+
+      return success({ id, validation_id });
+    } catch (e: unknown) {
+      console.error(e);
+      return fail({ status: 500, error: "Could't update the user" });
     }
   }
 }
