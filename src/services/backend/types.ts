@@ -79,7 +79,7 @@ export type RequestWithCompaniesInfo = ResponseLocals<{
 export type RequestWithNewPost = ResponseLocals<ProductCreate>;
 export type RequestWithUpdatePost = ResponseLocals<ProductUpdate>;
 export type RequestWithNewJob = ResponseLocals<JobCreate>;
-export type RequestWithPostOwner = ResponseLocals<OwnerRequest>;
+export type RequestWithOwner = ResponseLocals<OwnerRequest>;
 
 // Handlers
 export type RequestHandlerWithValidInfo = RequestHandler<ValidationData>;

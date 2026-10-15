@@ -13,7 +13,7 @@ import { refreshEditMode } from "@auth/edit.middleware.js";
 import { COMPANY_ID_KEY } from "@backend/const.js";
 import type {
   RequestWithNewPost,
-  RequestWithPostOwner,
+  RequestWithOwner,
   RequestWithUpdatePost,
 } from "@backend/types.js";
 import { protectRoute } from "@auth/jwt.middleware.js";
@@ -85,10 +85,7 @@ postsRouter.put(
   refreshEditMode,
   refreshEditModePost,
   inputValidationMiddleware(checkVisibility, "newVisibility"),
-  async (
-    req,
-    res: RequestWithVisibilty<"newVisibility", RequestWithPostOwner>,
-  ) => {
+  async (req, res: RequestWithVisibilty<"newVisibility", RequestWithOwner>) => {
     const { success: isValidId, data: productId } = checkRequestParameter(
       "productId",
       req.params,
