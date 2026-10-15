@@ -11,6 +11,7 @@ import {
   checkVisibility,
   type RequestWithVisibilty,
 } from "@backend/schemas/app.schema.js";
+import { gerPostIdSchema, getJobs } from "@backend/schemas/posts.schemas.js";
 import type { RequestWithNewJob, RequestWithOwner } from "@backend/types.js";
 import { JobsController } from "@db/controllers/jobs.controller.js";
 import { validateJobInput } from "@lib/schemas/job.schema.js";
@@ -82,4 +83,52 @@ app.delete(
     return res.sendStatus(status);
   },
 );
+app.get("jobs", async (req, res) => {
+  const parsed_query = getJobs.safeParse(req.query);
+
+  if (!parsed_query.success) {
+    return res
+      .status(400)
+      .json({ status: 400, error: "Invalid search parameters" });
+  }
+
+  const query_data = parsed_query.data;
+
+  const {
+    success,
+    data: jobs,
+    error,
+  } = await JobsController.getJobs(query_data);
+
+  if (!success) {
+    return res.status(error.status).json(error);
+  }
+
+  return res.status(200).json(jobs);
+});
+
+app.get("jobs/:id", async (req, res) => {
+  const parsed_job_id = gerPostIdSchema.safeParse(req.params.id);
+  if (!parsed_job_id.success) {
+    return res.status(400).json({
+      status: 400,
+      error: "Product id not written in the correct form",
+    });
+  }
+
+  const job_id = parsed_job_id.data;
+
+  const {
+    success,
+    data: product,
+    error,
+  } = await JobsController.getJobByID(job_id);
+
+  if (!success) {
+    return res.status(error.status).json(error);
+  }
+
+  return res.status(200).json(product);
+});
+
 export default app;
