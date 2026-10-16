@@ -18,6 +18,7 @@ export type ERRORS_PASSWORD = typeof ERRORS_PASS[keyof typeof ERRORS_PASS]
 const name = z.string(ERRORS_ENUM.not_string).min(1, ERRORS_ENUM.not_provided).max(30, ERRORS_ENUM.max).regex(/^[\p{L}\p{M}\s'-]+$/u, ERRORS_ENUM.special_char)// ask ai for regex that checks for special caracters like $,#... etc
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const userLoginInput = z.object({
   email: z.email("INVALID_EMAIL"),
   password: z.string(ERRORS_PASS.not_provided).min(8, ERRORS_PASS.password_short) // TODO extra config for password
@@ -31,6 +32,8 @@ export const userRegisterInput = z.object({
 
 export type UserLoginInput = z.infer<typeof userLoginInput>
 =======
+=======
+>>>>>>> de2bc7c (feat(Log In):Log in page and logic implemented also reverted a mistake of eliminating the register document.)
 const passwordSchema =  z.string(ERRORS_PASS.not_provided).min(8, ERRORS_PASS.password_short) // TODO extra config for password
 export const userRegisterInput = z.object({
   email: z.email("INVALID_EMAIL"),
@@ -43,6 +46,23 @@ export const userLoginSchema = z.object({
   email: z.email("INVALID_EMAIL"),
   password:passwordSchema
 })
+<<<<<<< HEAD
 >>>>>>> c8289e3 (feat(user.login): adding input validation to login)
+=======
+=======
+export const userLoginInput = z.object({
+  email: z.email("INVALID_EMAIL"),
+  password: z.string(ERRORS_PASS.not_provided).min(8, ERRORS_PASS.password_short) // TODO extra config for password
+})
+
+export const userRegisterInput = z.object({
+  ...userLoginInput, 
+  name,
+  lastname: name,
+})
+
+export type UserLoginInput = z.infer<typeof userLoginInput>
+>>>>>>> 6883d48 (feat(Log In):Log in page and logic implemented also reverted a mistake of eliminating the register document.)
+>>>>>>> de2bc7c (feat(Log In):Log in page and logic implemented also reverted a mistake of eliminating the register document.)
 export type UserRegisterInput = z.infer<typeof userRegisterInput>
 export type UserLoginInput  = z.infer<typeof userLoginSchema>
