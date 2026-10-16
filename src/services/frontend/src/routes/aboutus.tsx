@@ -105,7 +105,7 @@ function AboutUs() {
           </ul>
 
           <Button asChild className="mt-8 w-full">
-            <Link to="/register-business">
+            <Link to="/register-consumer">
               Únete
               <ArrowRight />
             </Link>
