@@ -11,7 +11,7 @@ const options = [
     link: 'Ver recursos para consumidores',
   },
   {
-    to: '/register-business',
+    to: '/aboutus',
     icon: Store,
     title: 'Tengo un comercio',
     description:
