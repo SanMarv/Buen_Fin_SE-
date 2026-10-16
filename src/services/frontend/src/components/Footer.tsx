@@ -6,7 +6,7 @@ const sections = [
     title: 'Explora', // encabezado de la columna
     items: [
       { to: '/', label: 'Inicio' },
-      { to: '/search-business', label: 'Comercios' },
+      { to: '/aboutus', label: 'Comercios' },
       { to: '/search-products', label: 'Productos' },
     ],
   },
