@@ -21,7 +21,7 @@ export function FreeParticipation() {
         asChild
         className="mt-5 bg-brand-ink text-brand-ink-foreground hover:bg-brand-ink/90"
       >
-        <Link to="/register-business">
+        <Link to="/register-consumer">
           Revisar requisitos y registrar
           <ArrowRight />
         </Link>
