@@ -13,11 +13,13 @@ import {
   type NoContentResult,
   noContentError,
   successNoContent,
+  type Result,
 } from "@app/types";
 import { and, eq } from "drizzle-orm";
 import type { CompanieInput } from "@backend/schemas/company.schema.js";
 import type { CompaniesSelectUser } from "@backend/types";
 import { COMPANY_ID_KEY } from "@backend/const.js";
+import type { ErrorFormat } from "../../types/errors.ts";
 
 export class CompaniesController {
   static async isRfcPresent(rfc: string) {
@@ -142,6 +144,31 @@ export class CompaniesController {
         );
     } catch {
       return [];
+    }
+  }
+
+  static async updateValidation(
+    company_id: string,
+    validation: string,
+  ): Promise<Result<Boolean, ErrorFormat>> {
+    try {
+      const validation_ready = await db
+        .update(companies)
+        .set({ validation_id: validation })
+        .where(eq(companies.id, company_id))
+        .returning();
+
+      if (!validation_ready) {
+        return fail({ status: 404, error: "Record to update not found" });
+      }
+
+      return success(true);
+    } catch (e: unknown) {
+      console.error(e);
+      return fail({
+        status: 500,
+        error: "Unexpected error when updating company validation",
+      });
     }
   }
 }
