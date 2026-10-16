@@ -150,7 +150,7 @@ export class CompaniesController {
   static async updateValidation(
     company_id: string,
     validation: string,
-  ): Promise<Result<Boolean, ErrorFormat>> {
+  ): Promise<Result<boolean, ErrorFormat>> {
     try {
       const validation_ready = await db
         .update(companies)
@@ -168,6 +168,52 @@ export class CompaniesController {
       return fail({
         status: 500,
         error: "Unexpected error when updating company validation",
+      });
+    }
+  }
+
+  static async updateCompany(
+    name: string,
+    company_id: string,
+  ): Promise<Result<boolean, ErrorFormat>> {
+    try {
+      const updated = await db
+        .update(companies)
+        .set({ name: name })
+        .where(eq(companies.id, company_id))
+        .returning();
+      if (!updated) {
+        return fail({ status: 404, error: "Company not found" });
+      }
+
+      return success(true);
+    } catch (e: unknown) {
+      console.log(e);
+      return fail({
+        status: 500,
+        error: "Could not update company correctly ",
+      });
+    }
+  }
+
+  static async deleteCompany(
+    company_id: string,
+  ): Promise<Result<boolean, ErrorFormat>> {
+    try {
+      const updated = await db
+        .delete(companies)
+        .where(eq(companies.id, company_id))
+        .returning();
+      if (!updated) {
+        return fail({ status: 404, error: "Company not found" });
+      }
+
+      return success(true);
+    } catch (e: unknown) {
+      console.log(e);
+      return fail({
+        status: 500,
+        error: "Could not delete company correctly ",
       });
     }
   }

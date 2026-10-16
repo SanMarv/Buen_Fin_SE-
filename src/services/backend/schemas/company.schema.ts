@@ -13,6 +13,10 @@ export const createCompanie = z.object({
   validation_id: z.uuidv4().optional(),
 });
 
+export const updateCompany = z.object({
+  name: z.string(),
+});
+
 export type CompanieInput = z.infer<typeof createCompanie>;
 export const companiesInputValidation = inputValidationMiddleware(
   createCompanie,
