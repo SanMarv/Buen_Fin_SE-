@@ -11,6 +11,8 @@ import type {
 } from "@backend/types";
 import { CompaniesController } from "@db/controllers/companies.controller.js";
 import { Router } from "express";
+import { satValidation } from "@auth/satValidation.middleware.js";
+import type { Request, Response } from "express";
 
 const app = Router();
 
@@ -34,13 +36,29 @@ app.get(
   refreshEditMode,
   validateCompanyHeader,
 );
-app.post(
-  "/",
-  fielMiddlewareInputValidator,
-  companiesInputValidation,
-  protectRoute,
+
+app.put(
+  "/validate",
   refreshEditMode,
-  validateCompanyHeader,
+  fielMiddlewareInputValidator,
+  satValidation,
+  async (req: Request, res: Response) => {
+    const { companyId, validation } = res.locals;
+
+    const { company_id } = companyId;
+    const { validation_id } = validation;
+
+    const { success, error } = await CompaniesController.updateValidation(
+      company_id,
+      validation_id,
+    );
+
+    if (!success) {
+      return res.status(error.status).json(error);
+    }
+
+    return res.sendStatus(201);
+  },
 );
 
 export default app;
