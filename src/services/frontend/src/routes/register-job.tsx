@@ -5,7 +5,7 @@ import { Header } from '#/components/Header'
 import { Button } from '#/components/ui/button.tsx'
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from '#/components/ui/select.tsx'
 import { CITIES } from 'lib/schemas'
-import type { NewJob } from 'lib/schemas'
+import type { NewJob, State } from 'lib/schemas'
 
 export const Route = createFileRoute('/register-job')({
   component: RouteComponent,
@@ -39,7 +39,7 @@ function RouteComponent() {
     setDescription('')
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFontElement>){
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>){
     event.preventDefault()
     setSubmitError('')
     setIsSuccess(false)
@@ -48,7 +48,7 @@ function RouteComponent() {
     const job: NewJob = {
       name,
       description,
-      location: `${ciudad}, ${estado}`,
+      location: {city:ciudad, state: estado as State},
     }
     try{
       const response = await fetch('/api/jobs', {
