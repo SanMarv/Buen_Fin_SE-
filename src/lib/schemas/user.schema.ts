@@ -1,4 +1,4 @@
-import z from "zod"
+import z, { email } from "zod"
 
 const ERRORS_ENUM = {
   not_string: "NOT_STRING",
@@ -16,16 +16,18 @@ export type ERRORS_NAME = typeof ERRORS_ENUM[keyof typeof ERRORS_ENUM]
 export type ERRORS_PASSWORD = typeof ERRORS_PASS[keyof typeof ERRORS_PASS]
 
 const name = z.string(ERRORS_ENUM.not_string).min(1, ERRORS_ENUM.not_provided).max(30, ERRORS_ENUM.max).regex(/^[\p{L}\p{M}\s'-]+$/u, ERRORS_ENUM.special_char)// ask ai for regex that checks for special caracters like $,#... etc
+const passwordSchema = z.string(ERRORS_PASS.not_provided).min(8, ERRORS_PASS.password_short) // TODO extra config for password
 
 export const userLoginInput = z.object({
   email: z.email("INVALID_EMAIL"),
-  password: z.string(ERRORS_PASS.not_provided).min(8, ERRORS_PASS.password_short) // TODO extra config for password
+  password: passwordSchema
 })
 
 export const userRegisterInput = z.object({
-  ...userLoginInput,
   name,
   lastname: name,
+  email: z.email("INVALID_EMAIL"),
+  password: passwordSchema
 })
 
 export type UserLoginInput = z.infer<typeof userLoginInput>

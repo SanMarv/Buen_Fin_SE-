@@ -7,7 +7,7 @@ import * as argon2 from "argon2";
 import { inputValidationMiddleware } from "@backend/middleware/inputValidation.middleware.js";
 import {
   userRegisterInput,
-  userLoginSchema,
+  userLoginInput,
   type UserLoginInput,
   type UserRegisterInput,
 } from "@lib/schemas/user.schema.js";
@@ -15,7 +15,7 @@ const userRouter = Router();
 
 userRouter.post(
   "/login",
-  inputValidationMiddleware(userLoginSchema, "user"),
+  inputValidationMiddleware(userLoginInput, "user"),
   async (
     req: Request,
     res: Response<unknown, { user: UserLoginInput; auth: Auth }>,
