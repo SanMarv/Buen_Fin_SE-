@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
-import { ProductCard, type Product } from '#/components/ElementCard'
+import { ProductCard } from '#/components/ElementCard'
+import type {Product} from '#/components/ElementCard'
 import { CATEGORIES_ENUM } from 'lib/types'
 import type { CategoriesRecord } from 'lib/types'
 

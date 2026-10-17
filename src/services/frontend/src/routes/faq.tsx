@@ -67,7 +67,7 @@ function RouteComponent() {
             </h1>
           </div>
         </section>
-     <Accordion defaultValue={["item-1"]} className="my-8 max-w-lg" type='multiple'>
+     <Accordion defaultValue={[]} className="my-8 max-w-lg" type='multiple'>
       {accordionItems.map((item) => (
         <AccordionItem key={item.value} value={item.value}>
           <AccordionTrigger>{item.trigger}</AccordionTrigger>
