@@ -1,5 +1,5 @@
 import z from "zod";
-import { LOCATION_ERRORS, validateInputLocation } from "./locations.schema";
+import { LOCATION_ERRORS, validateInputLocation } from "./locations.schema.js";
 
 export const ERROS_JOB_INPUT = {
   ...LOCATION_ERRORS,

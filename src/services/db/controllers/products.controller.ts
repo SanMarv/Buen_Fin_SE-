@@ -25,6 +25,7 @@ import { v7 as uuid } from "uuid";
 import type { ProductsRecord } from "@db/models/products.model.js";
 import { and, eq, type InferInsertModel } from "drizzle-orm";
 import type { VisibilityValue } from "@db/enums.js";
+import { imageProducts } from "@db/schema.js";
 
 export class ProductsController {
   private static limit: number = 25;
@@ -35,7 +36,7 @@ export class ProductsController {
         columns: { id: true, name: true, description: true, price: true },
         where: {
           ...(data.category && { categories: { name: { in: data.category } } }),
-          ...(data.company && { company: { name: { in: data.company } } }),
+          ...(data.company && { company: { name: data.company } }),
         },
         orderBy: { name: data.sort },
         limit: this.limit + 1,
@@ -185,6 +186,7 @@ export class ProductsController {
       });
     }
   }
+
   static async deleteProduct({
     productId,
   }: {
@@ -197,6 +199,21 @@ export class ProductsController {
       return noContentError({
         status: 500,
         error: "Error deleting value from db",
+      });
+    }
+  }
+
+  static async appendImage(data: {
+    product_id: string;
+    image_id: string;
+  }): Promise<NoContentResult> {
+    try {
+      await db.insert(imageProducts).values(data);
+      return successNoContent();
+    } catch {
+      return noContentError({
+        status: 500,
+        error: "Unexpeted error linking images and products",
       });
     }
   }

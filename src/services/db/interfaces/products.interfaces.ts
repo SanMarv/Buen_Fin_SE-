@@ -22,7 +22,7 @@ export interface GetProductInput {
   page: number;
   sort: "asc" | "desc";
   category?: string[];
-  company?: string[];
+  company?: string;
 }
 
 export type GetProductByIdInput = Pick<ProductsRecord, "id">;
