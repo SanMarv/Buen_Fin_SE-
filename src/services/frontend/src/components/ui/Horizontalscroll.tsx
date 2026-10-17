@@ -1,17 +1,19 @@
-import {useRef, type ReactNode} from 'react'
+import {useRef} from 'react'
+import type {ReactNode} from 'react'
 import {Link} from '@tanstack/react-router'
 import {Plus} from 'lucide-react'
 
 type Props = {
     title: string
     addLabel: string
-    children: ReactNode //the cards are the children, any component between the openen and closing tags
+    children: ReactNode // the cards are the children, any component between the openen and closing tags
+    href: string
 }
 
-export function HorizontalScroll ({title, addLabel, children}:Props)
-{   const scroller = useRef<HTMLDivElement> (null) //create the empty box
+export function HorizontalScroll ({title, addLabel, children, href}:Props)
+{   const scroller = useRef<HTMLDivElement> (null) // create the empty box
 
-    function scrollBy (direction:1|-1){ //1 is for right, -1 is for left
+    function scrollBy (direction:1|-1){ // 1 is for right, -1 is for left
         const el =scroller.current
         if (!el) return
         el.scrollBy({left:direction*el.clientWidth+0.8, behavior:'smooth'})
@@ -21,7 +23,7 @@ export function HorizontalScroll ({title, addLabel, children}:Props)
             <div className = "flex items-center justify-between gap-2">
                 <h2 className = "text-xl font-extrabold">{title}</h2>
                     <Link
-                        to ="/register-products-locations-jobs"
+                        to = {href}
                         aria-label = {addLabel}
                         className = "flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground hover: bg-primary/90">
                                 <Plus className = "size-5"/>

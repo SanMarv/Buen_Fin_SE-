@@ -2,7 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import {Ticket} from 'lucide-react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
-import { BranchCard, ProductCard, VacancyCard, type Branch, type Product, type vacancy, } from '#/components/ElementCard'
+import { BranchCard, ProductCard, VacancyCard } from '#/components/ElementCard'
+import type { Branch, Product, vacancy } from '#/components/ElementCard'
 import { HorizontalScroll } from '#/components/ui/Horizontalscroll'
 
 export const Route = createFileRoute('/business-profile')({
@@ -16,7 +17,7 @@ type Business = {
   description: string
 }
 
-//Dummy data
+// Dummy data
 
 const business: Business = {
   name: 'Marca X',
@@ -74,7 +75,7 @@ function BusinessProfile() {
       </section>
     
       <section className = "bg-card px-4 py-8">
-        <HorizontalScroll title ="Vacantes" addLabel = "Agregar vacante">
+        <HorizontalScroll title ="Vacantes" addLabel = "Agregar vacante" href = "/register-job">
           {vacancies.map((vacancy)=>(
             <div key={vacancy.name} className = "w-72 shrink-0 snap-start">
               <VacancyCard vacancy = {vacancy}/>
@@ -84,7 +85,7 @@ function BusinessProfile() {
       </section>
 
       <section className = "px-4 py-8">
-        <HorizontalScroll title = "Productos" addLabel = "Agregar producto">
+        <HorizontalScroll title = "Productos" addLabel = "Agregar producto" href = "/register-products">
           {products.map((product)=>(
             <div key ={product.name} className = "w-44 shrink-0 snap-start">
               <ProductCard product = {product}/>
@@ -94,7 +95,7 @@ function BusinessProfile() {
       </section>
 
       <section className ="bg-card px-4 py-8">
-        <HorizontalScroll title ="Sucursales" addLabel = "Agregar sucursal">
+        <HorizontalScroll title ="Sucursales" addLabel = "Agregar sucursal" href = "/register-location">
           {branches.map((branch)=> (
             <div key ={branch.name} className = "w-40 shrink-0 snap-start">
               <BranchCard branch ={branch}/>
