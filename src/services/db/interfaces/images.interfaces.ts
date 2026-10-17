@@ -1,4 +1,5 @@
-import type { Result } from "@app/types";
+import type { PromiseResult, Result } from "@app/types";
+import type { VisibilityValue } from "@db/enums.js";
 import type { ImageRecord } from "@db/models/image.model.js";
 export interface ProductMetadata {
   user_provided_id?: string;
@@ -20,8 +21,22 @@ export type ImageCreate = Omit<ImageRecord, "id">;
 type CreateError = { status: 500 | 400; error: string };
 export type ImageCreateResult = Promise<Result<ImageRecord, CreateError>>;
 type ImageMoveSource = Pick<ImageRecord, "url">;
-type ImageMoveDestination = Pick<ImageRecord, "url" | "hash" | "metadata">;
+type ImageMoveDestination = Pick<
+  ImageRecord,
+  "url" | "hash" | "metadata" | "path"
+>;
 export type ImageMoveUrl = [
   source: ImageMoveSource,
   destination: ImageMoveDestination,
 ];
+
+export type ImageVisibilityResult = PromiseResult<
+  {
+    status: 200;
+    visibility: VisibilityValue;
+    user_id: string;
+  },
+  {
+    status: 404;
+  }
+>;

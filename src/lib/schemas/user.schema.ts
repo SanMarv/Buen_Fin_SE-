@@ -23,7 +23,7 @@ export const userLoginInput = z.object({
 })
 
 export const userRegisterInput = z.object({
-  ...userLoginInput, 
+  ...userLoginInput,
   name,
   lastname: name,
 })
