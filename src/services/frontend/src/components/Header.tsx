@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Languages, Moon } from 'lucide-react'
+import { Moon } from 'lucide-react'
 import type { ComponentProps } from 'react'
 
 import { Button } from '#/components/ui/button'
@@ -94,9 +94,6 @@ export function Header() {
         </div>
 
         <div className="mt-auto flex gap-2 px-4 pb-4">
-          <Button variant="outline" size="icon" aria-label="Traducir">
-            <Languages />
-          </Button>
           <Button variant="outline" size="icon" aria-label="Modo oscuro">
             <Moon />
           </Button>
