@@ -96,7 +96,7 @@ function handleEstado(value: string){
         >
           <div className="flex flex-col gap-1.5">
             <label htmlFor="location-estado" className="text-sm font-semibold">
-              Estado <span aria-hidden="true">*</span>
+              Estado <span aria-hidden="true"></span>
             </label>
             <Select required value={estado} onValueChange={handleEstado}>
               <SelectTrigger id="location-estado" className={triggerClass}>

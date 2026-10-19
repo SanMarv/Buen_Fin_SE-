@@ -15,7 +15,7 @@ export const Route = createFileRoute('/register-job')({
 const estados = Object.keys(CITIES)
 
 const inputClass = 'w-full rounded-xl border-2 border-neutral-200 bh-white px-4 py-3 text-base text-neutral-900 outline-none placeholder:text-neutral-400 focus-visible:ring-[3px] focus-visible:ring-ring/50'
-const triggerClass = 'w-full rounded-2xl border-2 border-neutral-300 bg-neutral-50 px-4 text-base data-[size=default]:h-12'
+const triggerClass = 'w-full rounded-xl border-2 border-neutral-300 bg-neutral-50 px-4 text-base data-[size=default]:h-12'
 
 function RouteComponent() {
   const [name, setName] = useState('')
