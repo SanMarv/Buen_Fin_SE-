@@ -4,15 +4,11 @@ WORKDIR /app
 
 COPY package.json ./
 
-COPY tsconfig.json .
-
-COPY vitest.config.ts .
-
-COPY .git .git
-
 RUN npm install
 
 COPY src src
+
+COPY tsconfig.json .
 
 COPY .env .env
 

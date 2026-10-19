@@ -45,3 +45,7 @@ src/test/outputs
 
 # Ignore logs
 ./logs.txt
+
+# TLS
+buen-fin.cer
+buen-fin.key

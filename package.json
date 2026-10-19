@@ -28,7 +28,9 @@
     "test": "vitest",
     "dev:back": "tsx --env-file .env --watch src/services/backend/app.ts",
     "dev:up": "docker compose --env-file .env up -d",
+    "prod:up": "docker compose --env-file .env  -f production.docker-compose.yaml up -d",
     "dev:down": "docker compose down",
+    "prod:down": "docker compose --env-file .env  -f production.docker-compose.yaml down",
     "dev:stop": "docker compose stop",
     "db:up": "docker compose --project-directory . -f src/services/db/image.docker-compose.yaml --env-file .env up -d",
     "db:down": "docker compose -f src/services/db/image.docker-compose.yaml down",
@@ -69,6 +71,7 @@
     "zod": "^4.6.5"
   },
   "workspaces": [
-    "./src/lib"
+    "./src/lib",
+    "./src/services/frontend"
   ]
 }

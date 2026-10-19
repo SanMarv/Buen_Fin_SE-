@@ -10,7 +10,7 @@ name: buen-fin-app
 services:
   image-service:
     build:
-      dockerfile: ./process-queue.Dockerfile
+      dockerfile: docker-images/image-service/image-service.Dockerfile
     environment:
       PORT: 4001
       DB_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db-postgres:5432/${DB_NAME}
@@ -39,7 +39,8 @@ services:
     image: nginx:latest
     depends_on: [image-service,db-postgres]
     volumes:
-      - ${PWD}/src/config/nginx.conf:/etc/nginx/nginx.conf
+      - ${PWD}/src/config/nginx/dev.nginx.conf:/etc/nginx/nginx.conf
+      - ${PWD}/src/config/nginx/server.nginx.conf:/etc/nginx/server.nginx.conf
     ports:
       - "3000:8080"
     networks:

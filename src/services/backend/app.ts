@@ -17,6 +17,10 @@ app.use(cookies());
 const PORT = env.BACKEND_PORT;
 if (env.NODE_ENV === "development")
   app.use(cors({ origin: env.FRONTEND, credentials: true }));
+if (env.NODE_ENV === "production")
+  app.use(
+    cors({ origin: ["localhost", "nicolas-amaya.dev"], credentials: true }),
+  );
 // Routers
 app.get("/", (_, res) => res.send("Server up"));
 app.use("/auth", userRouter);
