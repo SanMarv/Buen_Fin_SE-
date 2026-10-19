@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import * as React from 'react'
+import {useState } from 'react'
+import type { SubmitEvent } from 'react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { Button } from '#/components/ui/button.tsx'
@@ -17,13 +18,13 @@ const inputClass = 'w-full rounded-xl border-2 border-neutral-200 bh-white px-4 
 const triggerClass = 'w-full rounded-2xl border-2 border-neutral-300 bg-neutral-50 px-4 text-base data-[size=default]:h-12'
 
 function RouteComponent() {
-  const [name, setName] = React.useState('')
-  const [estado, setEstado] = React.useState('')
-  const [ciudad, setCiudad] = React.useState('')
-  const [description, setDescription] = React.useState('')
-  const [isSubmitting, setIsSubmitting] = React.useState(false)
-  const [submitError, setSubmitError] = React.useState('')
-  const [isSuccess, setIsSuccess] = React.useState(false)
+  const [name, setName] = useState('')
+  const [estado, setEstado] = useState('')
+  const [ciudad, setCiudad] = useState('')
+  const [description, setDescription] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const ciudades = estado ? ((CITIES as Record<string,readonly string[]>)[estado] ?? []) : []
 
@@ -39,7 +40,7 @@ function RouteComponent() {
     setDescription('')
   }
 
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>){
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>){
     event.preventDefault()
     setSubmitError('')
     setIsSuccess(false)

@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {useState} from 'react'
+import {useState } from 'react'
+import type { SubmitEvent } from 'react'
 import { Footer } from '#/components/Footer'
 import {Header} from '#/components/Header'
 import {Button} from '#/components/ui/button.tsx'
@@ -37,7 +38,7 @@ function handleEstado(value: string){
     setAddress('')
   }
 
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>){
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>){
       event.preventDefault()
       setSubmitError('')
       setIsSuccess(false)
