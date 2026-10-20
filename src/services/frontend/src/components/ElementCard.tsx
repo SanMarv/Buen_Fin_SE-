@@ -9,7 +9,7 @@ export type Product = {
     price: number
     oldPrice: number
     company: string
-    image?: string  //means the image is optional
+    image?: string  // Means the image is optional
 }
 
 export type vacancy = {
@@ -24,18 +24,18 @@ export type Branch = {
   region: string
 }
 
-const money = new Intl.NumberFormat ('es-MX', //herramienta para poner formato de dinero
+const money = new Intl.NumberFormat ('es-MX', // Herramienta para poner formato de dinero
     {
         style: 'currency',
         currency: 'MXN',
-        maximumFractionDigits: 0, //le quita los centavos
+        maximumFractionDigits: 0, // Le quita los centavos
     }
 )
 
-//se recibe el producto y se checa que tenga el formato correcto 
+// Se recibe el producto y se checa que tenga el formato correcto 
 export function ProductCard ({product}: {product:Product }) 
 { return (
-    <article className = "flex flex-col round-2x1 bg-white p-2.5">
+    <article className = "flex flex-col round-2x1 bg-surface p-2.5">
         {product.image ? (
             <img src = {product.image} alt = {product.name} className ="aspect-square w-full rouded-x1 bg-card"/>
         ):(
@@ -73,13 +73,13 @@ export function ProductCard ({product}: {product:Product })
     </article>
   )
 }
-//este ultimo botón es el que despues va a mandar a un link de la compañia
+// Este ultimo botón es el que despues va a mandar a un link de la compañia
 
 
 
 export function VacancyCard ({vacancy}:{vacancy:vacancy}) {
   return (
-    <article className = "flex flex-col rouded-2x1 bg-white p-4 sdhadow-sm">
+    <article className = "flex flex-col rouded-2x1 bg-surface p-4 sdhadow-sm">
       <div className ="flex items-start justify-between gap-3">
         <h3 className = "text-base leading-tight font-bold">{vacancy.name}</h3>
         <span className = "shrink-0 rounded bg-card px-2 py-0.5 text-[11px] font-bold">
@@ -103,7 +103,7 @@ export function VacancyCard ({vacancy}:{vacancy:vacancy}) {
 
 export function BranchCard({branch}: {branch:Branch}) {
   return (
-    <article className ="flex aspect-square flex-col justify-between rounded-2x1 bg-white p-3 shadow-sm">
+    <article className ="flex aspect-square flex-col justify-between rounded-2x1 bg-surface p-3 shadow-sm">
       <MapPin className ="size-6 text-primary"/>
       <div>
         <h3 className ="text-sm leading-tight font-bold">{branch.name}</h3>
