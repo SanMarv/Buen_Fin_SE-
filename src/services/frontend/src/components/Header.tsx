@@ -31,7 +31,11 @@ function Icon(props: ComponentProps<'svg'>) {
   )
 }
 function Logo () {
-  return <img src="/logo.png" alt ="El Buen Fin Logo" className= "h-8 w-auto" />
+  return (
+  <Link to = "/" aria-label = "Ir a página de inicio">
+    <img src="/logo.png" alt ="El Buen Fin Logo" className= "h-8 w-auto" />
+  </Link>
+  )
 }
 
 export function Toggle() {
