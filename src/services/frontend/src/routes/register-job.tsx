@@ -162,13 +162,15 @@ function RouteComponent() {
               Descripción <span aria-hidden="true"></span>
             </label>
             <textarea
-              id="job-description"
-              rows={5}
-              required
-              className={inputClass}
-              placeholder="Describe las funciones y requisitos del puesto"
+              rows={1}
+              className={`${inputClass} resize-none overflow-hidden`}
               value={description}
               onChange={(event) => setDescription(event.target.value)}
+              onInput={(event) => {
+                const textarea = event.currentTarget
+                textarea.style.height = 'auto'
+                textarea.style.height = `${textarea.scrollHeight}px`
+              }}
             />
           </div>
 

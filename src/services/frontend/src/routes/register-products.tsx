@@ -209,13 +209,15 @@ function RouteComponent() {
               Descripción <span aria-hidden="true"></span>
             </label>
             <textarea
-              id="product-description"
-              rows={5}
-              required
-              className={inputClass}
-              placeholder="Describe el producto"
+              rows={1}
+              className={`${inputClass} resize-none overflow-hidden`}
               value={description}
               onChange={(event) => setDescription(event.target.value)}
+              onInput={(event) => {
+                const textarea = event.currentTarget
+                textarea.style.height = 'auto'
+                textarea.style.height = `${textarea.scrollHeight}px`
+              }}
             />
           </div>
           <div className="flex flex-col gap-1.5">
