@@ -10,14 +10,15 @@ export const Route = createFileRoute('/register-consumer')({
 
 function RouteComponent() {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-      <Register />
-      <Toaster />
-      </main> 
+    <>
+      <div className="min-h-[90dvh] grid grid-rows-[auto_1fr]">
+        <Header />
+        <main className="">
+          <Register />
+          <Toaster />
+        </main>
+      </div>
       <Footer />
-    
-    </div>
+    </>
   )
 }

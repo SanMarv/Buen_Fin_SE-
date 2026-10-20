@@ -11,15 +11,15 @@ function Icon({ isVisble, ...props }: LucideProps & { isVisble: boolean }) {
 export function PasswordInput() {
   const [isVisible, setVisibility] = useState(false)
   return (
-    <Error name="password" className="px-2 mb-4 relative">
+    <Error name="password" className="px-2 relative">
       <Input
-        placeholder='Contraseña'
+        placeholder="Contraseña"
         name="password"
         type={!isVisible ? 'password' : 'text'}
         autoComplete="current-password"
       />
       <button
-        className="aspect-square [grid-area:label] grid place-content-center order-3 justify-self-end h-3/5 mr-2 rounded-full"
+        className="aspect-square [grid-area:label] grid place-content-center order-3 justify-self-end h-3/5 mr-2 rounded-md"
         type="button"
         onClick={() => setVisibility((p) => !p)}
       >

@@ -10,13 +10,15 @@ export const Route = createFileRoute('/login')({
 
 function RouteComponent() {
   return (
-      <div className="min-h-screen">
+    <>
+      <div className="min-h-[90dvh] grid grid-rows-[auto_1fr]">
         <Header />
-        <main>
-        <Login />
-        <Toaster />
-        </main> 
-        <Footer />
+        <main className="h-full">
+          <Login />
+          <Toaster />
+        </main>
       </div>
-    )
+      <Footer />
+    </>
+  )
 }
