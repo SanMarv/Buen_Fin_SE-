@@ -105,11 +105,9 @@
 
 /*variables tailwind*/
 @theme inline {
-<<<<<<< HEAD
 
 =======
   --font-fraunces: "Fraunces";
->>>>>>> 0b4b8db (feat(errorPage): not fount pages and detail page)
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
