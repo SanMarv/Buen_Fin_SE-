@@ -13,7 +13,7 @@ services:
     networks:
       - db
     volumes:
-      - ${PWD}src/services/db/.data:/data/postgres
+      - ${PWD}/src/services/db/.data:/data/postgres
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
