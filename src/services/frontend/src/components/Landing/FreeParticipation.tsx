@@ -27,7 +27,7 @@ export function FreeParticipation() {
         </Link>
       </Button>
 
-      <div className="mt-8 rounded-xl bg-white p-5 text-foreground">
+      <div className="mt-8 rounded-xl bg-surface p-5 text-foreground">
         <p className="text-xs font-medium tracking-wide text-primary uppercase">
           Premio del SAT para comercios
         </p>

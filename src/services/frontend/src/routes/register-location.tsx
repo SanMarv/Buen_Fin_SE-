@@ -92,7 +92,7 @@ function handleEstado(value: string){
       <main className="bg-[#fdf3f0] px-4 py-8">
         <form
           onSubmit={handleSubmit}
-          className="mx-auto flex max-w-lg flex-col gap-5 rounded-3xl bg-white p-6 text-neutral-900"
+          className="mx-auto flex max-w-lg flex-col gap-5 rounded-3xl bg-surface p-6 text-neutral-900"
         >
           <div className="flex flex-col gap-1.5">
             <label htmlFor="location-estado" className="text-sm font-semibold">

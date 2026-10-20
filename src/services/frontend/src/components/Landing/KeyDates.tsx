@@ -59,7 +59,7 @@ export function KeyDates() {
   const last = events.length - 1
 
   return (
-    <section className="bg-white px-4 py-8">
+    <section className="bg-surface px-4 py-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-xs font-bold tracking-wide text-primary uppercase">

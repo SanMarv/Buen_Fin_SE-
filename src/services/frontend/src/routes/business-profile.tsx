@@ -50,7 +50,7 @@ function BusinessProfile() {
       <section className = "relative overflow-hidden bg-primary px-4 py-8">
         <div className = "absolute -top-10 -right-10 size-32 rounded-full bg-accent"/>
 
-         <div className ="relative rouded-2xl  bg-white p-5 shadow-md">
+         <div className ="relative rouded-2xl  bg-surface p-5 shadow-md">
           <div className="flex items-center gap-4">
           {business.logo?(
             <img src = {business.logo} alt = {'Logo de ${business.name}'}
@@ -103,11 +103,6 @@ function BusinessProfile() {
           ))}
         </HorizontalScroll>
       </section>
-
-      
-
-      
-
     </main>
     <Footer/>
   </>

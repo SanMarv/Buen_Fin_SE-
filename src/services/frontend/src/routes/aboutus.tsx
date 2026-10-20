@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {ArrowRight,Check,ExternalLink,TrendingUp,Trophy,} from 'lucide-react'
-
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { Button } from '#/components/ui/button'
@@ -33,7 +32,7 @@ function AboutUs() {
           <div className="relative mt-8 overflow-hidden rounded-2xl bg-primary px-6 py-10">
             <div className="absolute -top-12 -right-12 size-44 rounded-full bg-accent" />
 
-            <div className="relative rounded-xl bg-white p-5 text-foreground">
+            <div className="relative rounded-xl bg-surface p-5 text-foreground">
               <p className="text-xs font-bold tracking-wide text-primary uppercase">
                 Cinco días para elegir bien
               </p>

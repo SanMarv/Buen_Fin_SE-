@@ -9,7 +9,7 @@ import {
 } from "#/components/ui/accordion"
 
 export const Route = createFileRoute('/faq')({
-  component: RouteComponent,
+  component: Faq,
 })
 
 const accordionItems = [
@@ -55,10 +55,11 @@ const accordionItems = [
   }
 ]
 
-function RouteComponent() {
+function Faq() {
   return (
      <>
      <Header />
+     <main>
      <section className="relative overflow-hidden bg-primary px-4 py-8 text-primary-foreground">
           <div className="absolute -top-10 -right-10 size-32 rounded-full bg-accent" />
           <div className="relative">
@@ -67,14 +68,22 @@ function RouteComponent() {
             </h1>
           </div>
         </section>
-     <Accordion defaultValue={[]} className="my-8 max-w-lg" type='multiple'>
+      <section className = "px-4 py-8">
+     <Accordion type="multiple" className="w-full text-foreground">
       {accordionItems.map((item) => (
         <AccordionItem key={item.value} value={item.value}>
-          <AccordionTrigger>{item.trigger}</AccordionTrigger>
-          <AccordionContent>{item.content}</AccordionContent>
-        </AccordionItem>
-      ))}
+         <AccordionTrigger className="text-left text-base font-bold text-foreground">
+                  {item.trigger}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground">
+                  {item.content}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+
     </Accordion>
+     </section>
+     </main>
      <Footer />
      </> 
   )

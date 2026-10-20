@@ -33,7 +33,7 @@ function VerificationPage() {
       <Header />
 
       <main className="flex min-h-[60vh] items-start justify-center bg-[#f6f1ed] px-4 py-8">
-        <section className="w-full max-w-md rounded-xl bg-white px-6 py-6 shadow-md">
+        <section className="w-full max-w-md rounded-xl bg-surface px-6 py-6 shadow-md">
           <p className="text-[10px] font-extrabold uppercase tracking-wide text-red-800">
             El Buen Fin 2026
           </p>

@@ -32,7 +32,7 @@ export function Allies() {
           <li
             key={ally.id}
             title={ally.name}
-            className="flex aspect-square items-center justify-center rounded-lg border bg-card p-3"
+            className="flex aspect-square items-center justify-center rounded-lg border bg-white p-3"
           >
             <img
               src={ally.logo}
