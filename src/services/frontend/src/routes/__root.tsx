@@ -11,6 +11,7 @@ import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import { NotFoundPage } from '#/components/NotFoundPage'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -38,6 +39,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
+  notFoundComponent: NotFoundPage,
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -47,7 +49,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <div className = "mx-auto min-h-screen w-full max-w-[430px] bg-background shadow-xl">
+        <div className="mx-auto min-h-screen w-full max-w-107 bg-background shadow-xl">
           {children}
         </div>
 

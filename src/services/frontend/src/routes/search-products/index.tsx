@@ -6,7 +6,7 @@ import type {Product} from '#/components/ElementCard'
 import { CATEGORIES_ENUM } from 'lib/types'
 import type { CategoriesRecord } from 'lib/types'
 
-export const Route = createFileRoute('/search-products')({
+export const Route = createFileRoute('/search-products/')({
   component: SearchProducts,
 })
 
