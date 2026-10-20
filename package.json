@@ -27,7 +27,7 @@
   "scripts": {
     "test": "vitest",
     "dev:back": "tsx --env-file .env --watch src/services/backend/app.ts",
-    "dev:up": "docker compose --env-file .env up -d",
+    "dev:up": "docker compose --env-file .env -f docker-compose.yaml up -d",
     "prod:up": "docker compose --env-file .env  -f production.docker-compose.yaml up -d",
     "dev:down": "docker compose down",
     "prod:down": "docker compose --env-file .env  -f production.docker-compose.yaml down",

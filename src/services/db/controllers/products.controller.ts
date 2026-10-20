@@ -26,6 +26,8 @@ import type { ProductsRecord } from "@db/models/products.model.js";
 import { and, eq, type InferInsertModel } from "drizzle-orm";
 import type { VisibilityValue } from "@db/enums.js";
 import { imageProducts } from "@db/schema.js";
+import type { Category } from "@lib/types/categories.js";
+import type { ProductPageItem } from "@lib/types/products.js";
 
 export class ProductsController {
   private static limit: number = 25;
@@ -33,7 +35,14 @@ export class ProductsController {
     try {
       const from = (data.page - 1) * this.limit;
       const result = await db.query.products.findMany({
-        columns: { id: true, name: true, description: true, price: true },
+        columns: {
+          id: true,
+          name: true,
+          description: true,
+          price: true,
+          link: true,
+          newPrice: true,
+        },
         where: {
           ...(data.category && { categories: { name: { in: data.category } } }),
           ...(data.company && { company: { name: data.company } }),
@@ -42,7 +51,9 @@ export class ProductsController {
         limit: this.limit + 1,
         offset: from,
         with: {
-          company: { columns: { name: true } },
+          company: {
+            columns: { name: true, validation_id: true, profile_picture: true },
+          },
           images: { columns: { url: true, alt: true }, limit: 1 },
           categories: { columns: { name: true } },
         },
@@ -54,8 +65,23 @@ export class ProductsController {
           error: "Db is not working",
         });
       }
-
-      return success(result);
+      type Product = NonNullable<Awaited<GetProductQuery>["data"]>[number];
+      const parse = result.map<Product>((v) => ({
+        id: v.id,
+        name: v.name,
+        description: v.description ?? "",
+        categories: v.categories.map((v) => v.name as Category),
+        link: v.link,
+        newPrice: v.newPrice,
+        price: v.price,
+        company: {
+          name: v.company!.name,
+          isVerified: !!v.company?.validation_id,
+          profile_picture: v.company!.profile_picture,
+        },
+        images: v.images,
+      }));
+      return success(parse);
     } catch (e: unknown) {
       console.error(e);
       return fail(ERROR_CODES.SERVER_ERROR);
@@ -87,10 +113,19 @@ export class ProductsController {
   static async getProductByID(data: GetProductByIdInput): GetProductQueryOne {
     try {
       const result = await db.query.products.findFirst({
-        columns: { id: true, name: true, description: true, price: true },
+        columns: {
+          id: true,
+          name: true,
+          description: true,
+          price: true,
+          newPrice: true,
+          link: true,
+        },
         where: { id: data.id },
         with: {
-          company: { columns: { name: true } },
+          company: {
+            columns: { name: true, validation_id: true, profile_picture: true },
+          },
           images: { columns: { url: true, alt: true } },
           categories: { columns: { name: true } },
         },
@@ -102,8 +137,23 @@ export class ProductsController {
           error: "Product not found",
         });
       }
-
-      return success(result);
+      const isVerified = !!result.company?.validation_id;
+      const parse: ProductPageItem = {
+        id: result.id,
+        name: result.name,
+        description: result.description ?? "",
+        link: result.link,
+        categories: result.categories.map((v) => v.name),
+        images: result.images,
+        newPrice: result.newPrice,
+        price: result.price,
+        company: {
+          name: result.company!.name,
+          profile_picture: result.company!.profile_picture,
+          isVerified,
+        },
+      };
+      return success(parse);
     } catch (e: unknown) {
       console.error(e);
       return fail(ERROR_CODES.SERVER_ERROR);
@@ -125,6 +175,7 @@ export class ProductsController {
             company_id: newProduct[COMPANY_ID_KEY],
             price: newProduct.price,
             newPrice: newProduct.newPrice,
+            link: newProduct.link,
             metadata: { ...newProduct.metadata },
           })
           .returning();
@@ -175,7 +226,6 @@ export class ProductsController {
             eq(products.id, id.productId),
           ),
         );
-      console.log(id, companyId);
       if (records.length <= 0)
         return fail({ error: "Not found the product", status: 404 });
       return success({ status: 200, id: records[0].id });

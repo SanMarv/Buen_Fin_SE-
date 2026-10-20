@@ -1,15 +1,7 @@
 import { Button } from '#/components/ui/button'
 import { Link } from '@tanstack/react-router'
 import { ArrowUpRight, MapPin } from 'lucide-react'
-
-export type Product = {
-  name: string
-  category: string
-  price: number
-  oldPrice: number
-  company: string
-  image?: string // means the image is optional
-}
+import type { ProductPageItem } from 'lib/types'
 
 export type vacancy = {
   name: string
@@ -33,50 +25,62 @@ const money = new Intl.NumberFormat(
 )
 
 // se recibe el producto y se checa que tenga el formato correcto
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product }: { product: ProductPageItem }) {
   return (
-    <article className="flex flex-col round-2x1 bg-white p-2.5">
-      {product.image ? (
-        <img
-          src={product.image}
-          alt={product.name}
-          className="aspect-square w-full rouded-x1 bg-card"
-        />
-      ) : (
-        <div className="aspect-square w-full rounded-xl bg-card" />
-      )}
+    <Link to={product.id}>
+      <article className="flex flex-col rounded-2xl  bg-white p-2.5">
+        {product.images.length > 0 ? (
+          <img
+            src={product.images[0].url}
+            alt={product.images[0].alt}
+            className="aspect-square w-full rounded-xl bg-card"
+          />
+        ) : (
+          <div className="aspect-square w-full rounded-xl bg-card" />
+        )}
 
-      <Link
-        to="/business-profile"
-        className="mt-2 flex items-center gap-2 hover:text-primary"
-      >
-        <span className="size-6 shrink-0 rounded-full bg-muted-foreground/20" />
-        <p className="truncate text-[11px] font-black uppercase">
-          {product.company}
+        <Link
+          to="/business-profile"
+          className="mt-2 flex items-center gap-2 hover:text-primary"
+        >
+          <img
+            src={product.company.profile_picture}
+            className="size-6 shrink-0 rounded-full bg-muted-foreground/20"
+          />
+          <p className="truncate text-[11px] font-black uppercase">
+            {product.company.name}
+          </p>
+        </Link>
+
+        <h3 className="mt-1 text-sm leading-tight font-bold">{product.name}</h3>
+        <p className="truncate text-[11px] text-muted-foreground">
+          {product.categories[0]}
         </p>
-      </Link>
+        <p className="mt-1 text-xs text-muted-foreground line-through">
+          {money.format(product.price)}
+        </p>
 
-      <h3 className="mt-1 text-sm leading-tight font-bold">{product.name}</h3>
-      <p className="truncate text-[11px] text-muted-foreground">
-        {product.category}
-      </p>
-      <p className="mt-1 text-xs text-muted-foreground line-through">
-        {money.format(product.oldPrice)}
-      </p>
+        <p className="text-lg leading-none font-extrabold text-primary">
+          {money.format(product.newPrice)}
+        </p>
 
-      <p className="text-lg leading-none font-extrabold text-primary">
-        {money.format(product.price)}
-      </p>
-
-      <Button
-        type="button"
-        variant="outline"
-        className="mt-3 w-full border-primary font-bold text-primary hover:bg-primary hover:text-primary-foreground flex items-center"
-      >
-        <span>Ir a la oferta</span>
-        <ArrowUpRight />
-      </Button>
-    </article>
+        <Button
+          type="button"
+          variant="outline"
+          className="mt-3 w-full border-primary font-bold text-primary hover:bg-primary hover:text-primary-foreground flex items-center"
+          asChild
+        >
+          <a
+            href={product.link}
+            target="_blank"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span>Ir a la oferta</span>
+            <ArrowUpRight />
+          </a>
+        </Button>
+      </article>
+    </Link>
   )
 }
 // este ultimo botón es el que despues va a mandar a un link de la compañia

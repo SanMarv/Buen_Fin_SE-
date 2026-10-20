@@ -124,8 +124,8 @@ postsRouter.get("/products", async (req: Request, res: Response) => {
   return res.status(200).json(products);
 });
 
-postsRouter.get("products/:id", async (req: Request, res: Response) => {
-  const parsed_product_id = gerPostIdSchema.safeParse(req.params.id);
+postsRouter.get("/products/:id", async (req: Request, res: Response) => {
+  const parsed_product_id = gerPostIdSchema.safeParse(req.params);
   if (!parsed_product_id.success) {
     return res.status(400).json({
       status: 400,
