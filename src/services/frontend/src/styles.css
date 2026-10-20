@@ -105,8 +105,6 @@
 
 /*variables tailwind*/
 @theme inline {
-
-=======
   --font-fraunces: "Fraunces";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
