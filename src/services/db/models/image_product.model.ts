@@ -6,10 +6,10 @@ import type { InferInsertModel } from "drizzle-orm";
 export const imageProducts = pgTable(TABLE_NAMES.IMAGE_PRODUCTS, {
   id: serial().primaryKey().notNull(),
   product_id: uuid()
-    .references(() => products.id)
+    .references(() => products.id, { onDelete: "cascade" })
     .notNull(),
   image_id: uuid()
-    .references(() => images.id)
+    .references(() => images.id, { onDelete: "cascade" })
     .notNull(),
 });
 

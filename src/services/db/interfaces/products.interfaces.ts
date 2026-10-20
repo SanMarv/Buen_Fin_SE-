@@ -1,22 +1,11 @@
-import type { CaregoriesRecord } from "@db/models/categories.model.js";
 import type { products, ProductsRecord } from "@db/models/products.model.js";
-import type { ImageRecord } from "@db/models/image.model.js";
 import type { ErrorFormat } from "../../types/errors.js";
 import type { Result } from "@app/types";
-import type { CompaniesRecord } from "@db/models/companies.model.js";
 import type { InferSelectModel } from "drizzle-orm";
+import type { ProductPageItem } from "@lib/types/index.js";
 
-type GetProductResult = Pick<
-  ProductsRecord,
-  "id" | "name" | "description" | "price"
-> & {
-  images: Pick<ImageRecord, "url" | "alt">[];
-  categories: Pick<CaregoriesRecord, "name">[];
-  company: Pick<CompaniesRecord, "name"> | null;
-};
-
-export type GetProductQuery = Promise<Result<GetProductResult[], ErrorFormat>>;
-export type GetProductQueryOne = Promise<Result<GetProductResult, ErrorFormat>>;
+export type GetProductQuery = Promise<Result<ProductPageItem[], ErrorFormat>>;
+export type GetProductQueryOne = Promise<Result<ProductPageItem, ErrorFormat>>;
 
 export interface GetProductInput {
   page: number;

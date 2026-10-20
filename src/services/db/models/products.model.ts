@@ -15,6 +15,7 @@ export const products = pgTable(TABLE_NAMES.PRODUCTS, {
   company_id: uuid()
     .references(() => companies.id)
     .notNull(),
+  link: varchar({ length: 2048 }).notNull(),
   visibility: visibilityEnum().default("PRIVATE").notNull(),
 });
 

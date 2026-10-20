@@ -2,11 +2,24 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { ProductCard } from '#/components/ElementCard'
-import type {Product} from '#/components/ElementCard'
 import { CATEGORIES_ENUM } from 'lib/types'
-import type { CategoriesRecord } from 'lib/types'
+import type { CategoriesRecord, ProductPageItem } from 'lib/types'
+import { env } from '#/config/env'
+import { ApiError } from '#/errors'
+
+const fetchProduts = async (): Promise<ProductPageItem[]> => {
+  const res = await fetch(`${env.VITE_BACK_BASE}/products`)
+  const data = await res.json()
+  if (res.status < 200 || res.status > 300)
+    throw new ApiError(data.status, data.error)
+  return data
+}
 
 export const Route = createFileRoute('/search-products/')({
+  loader: async () => {
+    const products = await fetchProduts()
+    return { products }
+  },
   component: SearchProducts,
 })
 
@@ -18,56 +31,9 @@ const CATEGORIES: CategoriesRecord<string> = {
   [CATEGORIES_ENUM['appliances']]: 'Electrodomésticos',
   [CATEGORIES_ENUM['toys']]: 'Juguetes',
 }
-
 // AUN NO FUNCIONA LOS FILTROS
-
-// Datos de prueba. Se reemplazan con la respuesta del backend.
-const placeholderProducts: Product[] = [
-  {
-    name: 'Lavadora automática',
-    category: CATEGORIES.appliances,
-    price: 18500,
-    oldPrice: 25000,
-    company: 'Marca X',
-  },
-  {
-    name: 'Pantalla 50 pulgadas',
-    category: CATEGORIES.tecnologies,
-    price: 9800,
-    oldPrice: 13000,
-    company: 'Marca Y',
-  },
-  {
-    name: 'Tenis para correr',
-    category: CATEGORIES.sports,
-    price: 1200,
-    oldPrice: 1800,
-    company: 'Marca Z',
-  },
-  {
-    name: 'Chamarra de invierno',
-    category: CATEGORIES.fashion,
-    price: 950,
-    oldPrice: 1500,
-    company: 'Marca W',
-  },
-  {
-    name: 'Refrigerador',
-    category: CATEGORIES.appliances,
-    price: 22000,
-    oldPrice: 28000,
-    company: 'Marca X',
-  },
-  {
-    name: 'Laptop 14 pulgadas',
-    category: CATEGORIES.tecnologies,
-    price: 14500,
-    oldPrice: 19000,
-    company: 'Marca Y',
-  },
-]
-
 function SearchProducts() {
+  const { products } = Route.useLoaderData()
   return (
     <>
       <Header />
@@ -126,8 +92,8 @@ function SearchProducts() {
           <h2 className="mt-6 text-xl font-medium">Productos:</h2>
 
           <div className="mt-4 grid grid-cols-2 gap-3">
-            {placeholderProducts.map((product) => (
-              <ProductCard key={product.name} product={product} />
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </section>
