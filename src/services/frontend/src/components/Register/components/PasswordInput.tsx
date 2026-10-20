@@ -3,6 +3,7 @@ import { Error } from './Error'
 import { Input } from './Input'
 import { EyeClosed, Eye } from 'lucide-react'
 import type { LucideProps } from 'lucide-react'
+import { Button } from '#/components/ui/button'
 
 function Icon({ isVisble, ...props }: LucideProps & { isVisble: boolean }) {
   if (isVisble) return <Eye {...props} />
@@ -18,13 +19,16 @@ export function PasswordInput() {
         type={!isVisible ? 'password' : 'text'}
         autoComplete="current-password"
       />
-      <button
-        className="aspect-square [grid-area:label] grid place-content-center order-3 justify-self-end h-3/5 mr-2 rounded-md"
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        className="[grid-area:label] order-3 justify-self-end mr-2 rounded-full"
         type="button"
+        aria-label={isVisible ? 'Ocultar contraseña' : 'Mostrar contraseña'}
         onClick={() => setVisibility((p) => !p)}
       >
         <Icon isVisble={isVisible} className="size-5" />
-      </button>
+      </Button>
     </Error>
   )
 }

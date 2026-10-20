@@ -35,7 +35,7 @@ const money = new Intl.NumberFormat ('es-MX', // Herramienta para poner formato 
 // Se recibe el producto y se checa que tenga el formato correcto 
 export function ProductCard ({product}: {product:Product }) 
 { return (
-    <article className = "flex flex-col round-2x1 bg-surface p-2.5">
+    <article className="flex flex-col rounded-2xl border border-border bg-surface p-3 shadow-md">
         {product.image ? (
             <img src = {product.image} alt = {product.name} className ="aspect-square w-full rouded-x1 bg-card"/>
         ):(
@@ -67,7 +67,7 @@ export function ProductCard ({product}: {product:Product })
       <Button
         type="button"
         variant="outline"
-        className="mt-3 w-full border-primary font-bold text-primary hover:bg-primary hover:text-primary-foreground">
+        className="mt-3 w-full font-bold">
         Ver oferta
       </Button>
     </article>
@@ -79,7 +79,7 @@ export function ProductCard ({product}: {product:Product })
 
 export function VacancyCard ({vacancy}:{vacancy:vacancy}) {
   return (
-    <article className = "flex flex-col rouded-2x1 bg-surface p-4 sdhadow-sm">
+    <article className="flex flex-col rounded-2xl border border-border bg-surface p-3 shadow-md">
       <div className ="flex items-start justify-between gap-3">
         <h3 className = "text-base leading-tight font-bold">{vacancy.name}</h3>
         <span className = "shrink-0 rounded bg-card px-2 py-0.5 text-[11px] font-bold">
@@ -93,7 +93,7 @@ export function VacancyCard ({vacancy}:{vacancy:vacancy}) {
       <Button 
         type="button"
         variant="outline"
-        className = "mt-4 w-full border-primary font-bold text-primary hover:bg-primary hover:text-primary-foreground">
+        className = "mt-4 w-full font-bold">
           Ver detalles
         </Button>
     </article>

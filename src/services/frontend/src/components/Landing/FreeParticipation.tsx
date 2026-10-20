@@ -19,7 +19,8 @@ export function FreeParticipation() {
 
       <Button
         asChild
-        className="mt-5 bg-brand-ink text-brand-ink-foreground hover:bg-brand-ink/90"
+        variant="secondary"
+        className="mt-5"
       >
         <Link to="/register-consumer">
           Revisar requisitos y registrar

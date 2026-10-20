@@ -2,6 +2,7 @@ import {useRef} from 'react'
 import type {ReactNode} from 'react'
 import {Link} from '@tanstack/react-router'
 import {Plus} from 'lucide-react'
+import { Button } from '#/components/ui/button'
 
 type Props = {
     title: string
@@ -22,13 +23,11 @@ export function HorizontalScroll ({title, addLabel, children, href}:Props)
         <div>
             <div className = "flex items-center justify-between gap-2">
                 <h2 className = "text-xl font-extrabold">{title}</h2>
-                    <Link
-                        to = {href}
-                        aria-label = {addLabel}
-                        className = "flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground hover: bg-primary/90">
-                                <Plus className = "size-5"/>
-
-                    </Link> 
+                    <Button asChild size="icon-sm" className="rounded-full">
+                        <Link to={href} aria-label={addLabel}>
+                            <Plus className="size-5" />
+                        </Link>
+                    </Button>
 
             </div>
             <div className ="mt-4 flex snap-x  snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"> 

@@ -14,8 +14,11 @@ export const Route = createFileRoute('/register-location')({
 
 const estados = Object.keys(CITIES)
 
-const inputClass = 'w-full rounded-xl border-2 border-neutral-200 bh-white px-4 py-3 text-base text-neutral-900 outline-none placeholder:text-neutral-400 focus-visible:ring-[3px] focus-visible:ring-ring/50'
-const triggerClass = 'w-full rounded-2xl border-2 border-neutral-300 bg-neutral-50 px-4 text-base data-[size=default]:h-12'
+const inputClass =
+  'w-full rounded-xl border border-input bg-background px-4 py-3 text-base text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50'
+
+const triggerClass =
+  'w-full rounded-xl border border-input bg-background px-4 text-base text-foreground data-[size=default]:h-12'
 
 function RouteComponent(){
     const [estado, setEstado] = useState('')
@@ -89,10 +92,10 @@ function handleEstado(value: string){
         </div>
       </section>
 
-      <main className="bg-[#fdf3f0] px-4 py-8">
+      <main className="bg-background px-4 py-8">
         <form
           onSubmit={handleSubmit}
-          className="mx-auto flex max-w-lg flex-col gap-5 rounded-3xl bg-surface p-6 text-neutral-900"
+          className="mx-auto flex max-w-lg flex-col gap-5 rounded-3xl border border-border bg-card p-6 text-card-foreground"
         >
           <div className="flex flex-col gap-1.5">
             <label htmlFor="location-estado" className="text-sm font-semibold">
@@ -161,7 +164,7 @@ function handleEstado(value: string){
           )}
 
           {isSuccess && (
-            <p role="status" className="text-sm font-semibold text-green-700">
+            <p role="status" className="text-sm font-semibold text-success">
               Sucursal registrada correctamente.
             </p>
           )}

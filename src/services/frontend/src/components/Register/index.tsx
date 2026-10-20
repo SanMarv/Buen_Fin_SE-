@@ -7,12 +7,12 @@ import { FormProvider } from './context'
 
 export default function Register() {
   return (
-    <div className="flex items-start justify-center bg-[#f6f1ed] px-4 py-6 flex-col h-full">
-      <div className="h-auto min-h-0 w-full max-w-md self-start rounded-xl bg-white px-6 py-5 shadow-md">
-        <p className="text-[10px] font-extrabold uppercase tracking-wide text-red-800">
+    <div className="flex items-start justify-center bg-background px-4 py-6 flex-col h-full">
+      <div className="h-auto min-h-0 w-full max-w-md self-start rounded-xl border border-border bg-card px-6 py-5 text-card-foreground shadow-md">
+        <p className="text-[10px] font-extrabold uppercase tracking-wide text-primary">
           Únete a El Buen Fin 2026
         </p>
-        <h1 className="mb-4 text-xl font-extrabold leading-tight text-neutral-900">
+        <h1 className="mb-4 text-xl font-extrabold leading-tight text-foreground">
           Crea tu cuenta oficial
         </h1>
         <FormProvider>

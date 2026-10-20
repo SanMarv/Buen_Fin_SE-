@@ -40,15 +40,19 @@ function toggleTheme() {
   }
 
 function Logo () {
-  return <img src="/logo.png" alt ="El Buen Fin Logo" className= "h-8 w-auto" />
+  return (
+    <Link to="/" aria-label="Ir a la página de inicio">
+      <img src="/logo.png" alt ="El Buen Fin Logo" className= "h-8 w-auto" />
+    </Link>
+  )
 }
 
 export function Toggle() {
   return (
     <SheetTrigger asChild>
-      <button type="button" aria-label="Abrir menú" className="text-primary">
+      <Button type="button" variant="ghost" size="icon" aria-label="Abrir menú" className="text-primary">
         <Icon className="size-8" />
-      </button>
+      </Button>
     </SheetTrigger>
   )
 }

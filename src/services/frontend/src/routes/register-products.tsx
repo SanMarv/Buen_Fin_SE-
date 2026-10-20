@@ -26,8 +26,11 @@ const categoryEntries = Object.entries(CATEGORIES)
 const DISCOUNTS = [10, 15, 20, 25, 30, 35, 40]
 const precioNuevo = (n : number) => String(Math.round(n*100)/100)
 
-const inputClass = 'w-full rounded-2xl border-2 border-neutral-300 bg-neutral-50 px-4 py-3 text-base text-neutral-900 outline-none placeholder:text-neutral-500 focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/50'
-const triggerClass = 'w-full rounded-2xl border-2 border-neutral-300 bg-neutral-50 px-4 text-base data-[size=default]:h-12'
+const inputClass =
+  'w-full rounded-xl border border-input bg-background px-4 py-3 text-base text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50'
+
+const triggerClass =
+  'w-full rounded-xl border border-input bg-background px-4 text-base text-foreground data-[size=default]:h-12'
 
 function RouteComponent() {
   const [name, setName] = useState('')
@@ -104,10 +107,10 @@ function RouteComponent() {
           </h1>
         </div>
       </section>
-      <main className="bg-[#fdf3f0] px-4 py-8">
+      <main className="bg-background px-4 py-8">
         <form
           onSubmit={handleSubmit}
-          className="mx-auto flex max-w-lg flex-col gap-5 rounded-3xl bg-surface p-6 text-neutral-900">
+          className="mx-auto flex max-w-lg flex-col gap-5 rounded-3xl border border-border bg-card p-6 text-card-foreground">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="product-name" className="text-sm font-semibold">
               Nombre <span aria-hidden="true"></span>
@@ -193,7 +196,7 @@ function RouteComponent() {
             </div>
           </div>
 
-          <p className="-mt-2 text-sm text-neutral-600">
+          <p className="-mt-2 text-sm text-muted-foreground">
             {savedPercent !== null
               ? `Descuento de ${savedPercent}%.`
               : 'Escribe el precio nuevo o elige un porcentaje y lo calculamos.'}
@@ -245,7 +248,7 @@ function RouteComponent() {
             </p>
           )}
           {isSuccess && (
-            <p role="status" className="text-sm font-semibold text-green-700">
+            <p role="status" className="text-sm font-semibold text-success">
               Producto registrado correctamente.
             </p>
           )}
