@@ -14,7 +14,7 @@ export const getProduct = z.object({
     .pipe(z.array(z.string()))
     .transform((a) => [...new Set(a)].sort())
     .optional(),
-  company: z.string(),
+  company: z.string().optional(),
 });
 
 export const getJobs = z.object({
