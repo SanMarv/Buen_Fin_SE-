@@ -4,16 +4,13 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Eye, EyeClosed, FileText, Upload, X } from 'lucide-react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
-<<<<<<< Updated upstream
 import { Button } from '#/components/ui/button'
-=======
 import { env } from '#/config/env'
 import { fail, success, type PromiseResult } from 'lib/types'
 import { errorSchema, type ApiError } from 'lib/schemas'
 import { toast } from 'sonner'
 import { Toaster } from '#/components/ui/sonner'
 import { Spinner } from '#/components/ui/spinner'
->>>>>>> Stashed changes
 
 export const Route = createFileRoute('/verification')({
   component: VerificationPage,
@@ -221,21 +218,10 @@ function VerificationPage() {
                 </ul>
               )}
             </div>
-
-<<<<<<< Updated upstream
-            <Button className="mt-1 w-full" type="submit" disabled={!password || files.length === 0}>
-              Enviar 
-            </Button>
-=======
-            <button
-              className="mt-1 rounded-md bg-red-800 px-4 py-2.5 font-semibold text-white hover:bg-red-900 disabled:cursor-not-allowed disabled:opacity-50"
-              type="submit"
-              disabled={!password || !hasValidFiles || isLoading}
-            >
+            <Button className="mt-1 w-full" type="submit" disabled={!password || !hasValidFiles || isLoading}>
               {isLoading && <Spinner />}
               {isLoading ? 'Validando…' : 'Enviar'}
-            </button>
->>>>>>> Stashed changes
+            </Button>
           </form>
         </section>
         <Toaster/>
