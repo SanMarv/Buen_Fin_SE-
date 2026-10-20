@@ -11,8 +11,8 @@ function Card() {
 export function LoaderCards() {
   return (
     <div className="size-full max-w-full overflow-x-hidden flex gap-x-2">
-      {Array.from({ length: 5 }).map(() => (
-        <Card />
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Card key={i} />
       ))}
     </div>
   )

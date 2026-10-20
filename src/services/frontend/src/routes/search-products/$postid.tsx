@@ -93,6 +93,7 @@ const OtherPosts = () => {
       {data.map((v) => (
         <a
           href={`/search-products/${v.id}`}
+          key={v.id}
           className="grid grid-rows-[1fr_auto] gap-2 size-full"
         >
           <ImageProduct
@@ -141,7 +142,9 @@ function RouteComponent() {
           </div>
           <div className="flex my-2 gap-x-2">
             {product.categories.map((category) => (
-              <Badge variant={'outline'}>{CATEGORIES[category]}</Badge>
+              <Badge variant={'outline'} key={category}>
+                {CATEGORIES[category]}
+              </Badge>
             ))}
           </div>
           <p className="font-light h-full text-sm min-h-10">
