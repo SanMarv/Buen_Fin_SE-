@@ -22,7 +22,7 @@ async function SendData(
 ): PromiseResult<Valid, Error> {
   try {
     await new Promise((res) => setTimeout(res, 5000))
-    const res = await fetch(`${env.VITE_BACK_BASE}/auth/register`, {
+    const res = await fetch(`${env.VITE_BACK_BASE}/auth/login`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -71,10 +71,10 @@ export default function Form({ children, ...rest }: FormProps) {
       }
       const { success: wasCreated, error: errorCreating } = await SendData(data)
       if (wasCreated) {
-        toast.success('Usuario Registrado', { position: 'bottom-center' })
+        toast.success('Login de usuario satisfactorio', { position: 'bottom-center' })
       } else {
         toast.error(
-          `Error registrando el usarios status: ${errorCreating.status}`,
+          `El usuario o la contraseña son incorrectos`,
           { position: 'bottom-center' },
         )
       }

@@ -20,6 +20,7 @@ import type { CompanieInput } from "@backend/schemas/company.schema.js";
 import type { CompaniesSelectUser } from "@backend/types";
 import { COMPANY_ID_KEY } from "@backend/const.js";
 import type { ErrorFormat } from "../../types/errors.ts";
+import { manager } from "@backend/logger/manager.js";
 
 export class CompaniesController {
   static async isRfcPresent(rfc: string) {
@@ -51,6 +52,14 @@ export class CompaniesController {
           validation_id,
         })
         .returning();
+
+      manager.addLog({
+        type: "DB",
+        action: "CREATE",
+        table: "companies",
+        id: user_id,
+      });
+
       return success(record);
     } catch (e) {
       console.error(e);
@@ -71,6 +80,14 @@ export class CompaniesController {
         )
         .where(eq(companies.id, companyId));
       if (records.length <= 0) return fail({ status: 404, error: "No found" });
+
+      manager.addLog({
+        type: "DB",
+        action: "READ",
+        table: "companies",
+        id: user_id,
+      });
+
       return success(records[0]);
     } catch (e) {
       console.error(e);
@@ -91,6 +108,7 @@ export class CompaniesController {
         .from(companies)
         .where(eq(companies.id, id));
       if (!record) return fail({ status: 404, error: "Not found record" });
+
       return success(record);
     } catch (e) {
       console.error(e);
@@ -125,6 +143,13 @@ export class CompaniesController {
     userId: string,
   ): Promise<CompaniesSelectUser[]> {
     try {
+      manager.addLog({
+        type: "DB",
+        action: "READ",
+        table: "companies",
+        id: userId,
+      });
+
       return await db
         .select({
           [COMPANY_ID_KEY]: companies.id,

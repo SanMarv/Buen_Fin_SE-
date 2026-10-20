@@ -8,6 +8,7 @@ import { Participation } from '#/components/Landing/Participation'
 import { FreeParticipation } from '#/components/Landing/FreeParticipation'
 import { Allies } from '#/components/Landing/Allies'
 import { Footer } from '#/components/Footer'
+import { Toaster } from '#/components/ui/sonner'
 
 export const Route = createFileRoute('/')({
   component: Landing,
@@ -25,7 +26,8 @@ function Landing() {
         <FreeParticipation />
         <Allies />
       </main>
-        <Footer/>
+      <Toaster/>
+      <Footer/>
     </>
   )
 }

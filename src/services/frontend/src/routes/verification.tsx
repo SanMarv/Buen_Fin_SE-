@@ -1,16 +1,27 @@
 import { useState } from 'react'
 import type { ChangeEvent, SubmitEvent } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Eye, EyeClosed, FileText, Upload, X } from 'lucide-react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
+<<<<<<< Updated upstream
 import { Button } from '#/components/ui/button'
+=======
+import { env } from '#/config/env'
+import { fail, success, type PromiseResult } from 'lib/types'
+import { errorSchema, type ApiError } from 'lib/schemas'
+import { toast } from 'sonner'
+import { Toaster } from '#/components/ui/sonner'
+import { Spinner } from '#/components/ui/spinner'
+>>>>>>> Stashed changes
 
 export const Route = createFileRoute('/verification')({
   component: VerificationPage,
 })
 
 function VerificationPage() {
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading ] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [files, setFiles] = useState<File[]>([])
@@ -25,9 +36,86 @@ function VerificationPage() {
     setFiles((current) => current.filter((_, index) => index !== indexToRemove))
   }
 
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault()
+
+  const getExt = (file: File) => file.name.split('.').pop()?.toLowerCase();
+  const count = (ext: string) => files.filter((f) => getExt(f) === ext).length;
+  const hasValidFiles = files.length === 2 && count("cer") === 1 && count("key") === 1;
+
+  async function sendValidation(body: FormData): PromiseResult<null, ApiError>{
+    try {
+      const res = await fetch(`${env.VITE_BACK_BASE}/auth/validate`, {
+        method: 'PUT',
+        body,
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        return success(null)
+      }
+
+      const parsed = errorSchema.safeParse(await res.json().catch(() => null));
+
+      if (parsed.success) return fail(parsed.data)
+
+      return fail({ status: res.status, error: 'Error desconocido' })
+    }
+    catch {
+      return fail({ status: 500, error: 'Error desconocido' })
+    }
   }
+
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (isLoading) return
+    const cer = files.find((f) => getExt(f) === "cer");
+    const key = files.find((f) => getExt(f) === "key");
+
+    if (!cer || !key) {
+      return
+    }
+
+    const body = new FormData();
+    body.append('cer', cer);
+    body.append('key', key);
+    body.append('password', password);
+
+    setIsLoading(true);
+
+    try{
+      const { success: ok, error } = await sendValidation(body)
+      if (ok) {
+        toast.success('Cuenta verificada' , { position: 'bottom-center' });
+        navigate({ to: '/' });
+        return
+      }
+
+      switch (error.status) {
+        case 401:
+          toast.error(error.error, { position: 'bottom-center' })
+          navigate({ to: '/login' })
+          return
+        case 403:
+          if (error.error === "Unauthorized") {
+            toast.error('Sin sesión', { position: 'bottom-center' })
+            navigate({ to: '/login' })
+          }
+          else {
+            toast.error('Firma no valida', { position: 'bottom-center' })
+          }
+          return
+        case 400:
+          toast.error(error.error, { position: 'bottom-center' })
+          return
+        default:
+          toast.error('Ocurrio un error, revisa bien los parámetros', { position: 'bottom-center' })
+          return
+      }
+    }
+    finally {
+      setIsLoading(false);
+      setPassword('');
+      }
+    }
 
   return (
     <div className="min-h-screen">
@@ -134,11 +222,23 @@ function VerificationPage() {
               )}
             </div>
 
+<<<<<<< Updated upstream
             <Button className="mt-1 w-full" type="submit" disabled={!password || files.length === 0}>
               Enviar 
             </Button>
+=======
+            <button
+              className="mt-1 rounded-md bg-red-800 px-4 py-2.5 font-semibold text-white hover:bg-red-900 disabled:cursor-not-allowed disabled:opacity-50"
+              type="submit"
+              disabled={!password || !hasValidFiles || isLoading}
+            >
+              {isLoading && <Spinner />}
+              {isLoading ? 'Validando…' : 'Enviar'}
+            </button>
+>>>>>>> Stashed changes
           </form>
         </section>
+        <Toaster/>
       </main>
 
       <Footer />

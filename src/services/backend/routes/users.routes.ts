@@ -13,6 +13,7 @@ import {
 } from "@lib/schemas/user.schema.js";
 import { fielMiddlewareInputValidator } from "@backend/middleware/fielMulter.middleware.js";
 import { satValidation } from "@auth/satValidation.middleware.js";
+import { manager } from "@backend/logger/manager.js";
 const userRouter = Router();
 
 userRouter.post(
@@ -85,7 +86,16 @@ userRouter.post(
   },
 );
 
-userRouter.post("/logout", (_, res: Response) => {
+userRouter.post("/logout", protectRoute, (_, res: Response) => {
+  const { user_id } = res.locals.auth;
+
+  manager.addLog({
+    type: "Request",
+    action: "POST",
+    status: 204,
+    id: user_id,
+  });
+
   res.clearCookie("token");
   res.sendStatus(204);
 });
@@ -102,6 +112,13 @@ userRouter.delete("/delete", protectRoute, async (_, res: Response) => {
         .json({ status: 404, error: "User does not exist" });
     }
 
+    manager.addLog({
+      type: "Request",
+      action: "POST",
+      status: 204,
+      id: user_id,
+    });
+
     res.clearCookie("token");
     res.sendStatus(204);
   } catch (e: unknown) {
@@ -117,6 +134,13 @@ userRouter.put("/update", protectRoute, async (req: Request, res: Response) => {
     const { user_id } = res.locals.auth;
 
     if (!req.body.original_password) {
+      manager.addLog({
+        type: "Request",
+        action: "PUT",
+        status: 400,
+        id: user_id,
+      });
+
       return res.status(400).json({
         status: 400,
         error: "Can't update data without your current password",
@@ -129,8 +153,21 @@ userRouter.put("/update", protectRoute, async (req: Request, res: Response) => {
     });
 
     if (!success) {
+      manager.addLog({
+        type: "Request",
+        action: "PUT",
+        status: 404,
+        id: user_id,
+      });
       return res.status(error.status).json(error);
     }
+
+    manager.addLog({
+      type: "Request",
+      action: "PUT",
+      status: 200,
+      id: user_id,
+    });
 
     res.sendStatus(200);
   } catch (e: unknown) {
@@ -146,16 +183,36 @@ userRouter.put(
   protectRoute,
   fielMiddlewareInputValidator,
   satValidation,
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const { auth, validation } = res.locals;
 
     const { user_id } = auth;
     const { validation_id } = validation;
 
-    res.locals.auth = await UsersController.addValidation(
+    const { success, data, error } = await UsersController.addValidation(
       user_id,
       validation_id,
     );
+
+    if (!success) {
+      manager.addLog({
+        type: "Request",
+        action: "PUT",
+        status: error.status,
+        id: user_id,
+      });
+      return res.status(error.status).json(error);
+    }
+
+    res.locals.auth = { user_id: data.id, validation_id: data.validation_id };
+
+    manager.addLog({
+      type: "Request",
+      action: "PUT",
+      status: 200,
+      id: user_id,
+    });
+    next();
   },
   signResponseWithAuth,
 );

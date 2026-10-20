@@ -12,6 +12,7 @@ import { v7 as genUUID } from "uuid";
 import * as argon2 from "argon2";
 import type { ValidationInfo } from "@backend/types.js";
 import { ERROR_CODES } from "../../types/errors.js";
+import { manager } from "@backend/logger/manager.js";
 
 export class UsersController {
   static async createRegister(newUser: UserCreate): UserOperationResult {
@@ -27,6 +28,13 @@ export class UsersController {
       if (!user) {
         return fail(ERROR_CODES.SERVER_ERROR);
       }
+
+      manager.addLog({
+        type: "DB",
+        action: "CREATE",
+        table: "users",
+        id: uuid,
+      });
 
       return success(user);
     } catch (e: unknown) {
@@ -44,6 +52,12 @@ export class UsersController {
       if (!eliminatedUser) {
         return false;
       }
+      manager.addLog({
+        type: "DB",
+        action: "DELETE",
+        table: "users",
+        id: id,
+      });
       return true;
     } catch (e: unknown) {
       console.error(e);
@@ -69,6 +83,12 @@ export class UsersController {
         return fail({ status: 401, error: "Incorrect credentials" });
       }
       const { id, validation_id } = record;
+      manager.addLog({
+        type: "DB",
+        action: "READ",
+        table: "users",
+        id: id,
+      });
       return success({ id, validation_id });
     } catch (e: unknown) {
       console.error(e);
@@ -123,6 +143,13 @@ export class UsersController {
       .where(
         and(eq(users.id, user_id), eq(validation_table.id, validation_id)),
       );
+    manager.addLog({
+      type: "DB",
+      action: "READ",
+      table: "users",
+      id: user_id,
+    });
+
     return results ?? null;
   }
 
@@ -151,6 +178,13 @@ export class UsersController {
         .where(eq(users.id, new_data.id))
         .returning();
 
+      manager.addLog({
+        type: "DB",
+        action: "UPDATE",
+        table: "users",
+        id: new_data.id,
+      });
+
       return success(updated_record);
     } catch (e: unknown) {
       console.error(e);
@@ -177,6 +211,13 @@ export class UsersController {
       }
 
       const { id, validation_id } = user_update;
+
+      manager.addLog({
+        type: "DB",
+        action: "UPDATE",
+        table: "users",
+        id: user_id,
+      });
 
       return success({ id, validation_id });
     } catch (e: unknown) {
