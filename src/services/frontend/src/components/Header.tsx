@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Moon } from 'lucide-react'
+import { Moon, Sun } from 'lucide-react'
 import type { ComponentProps } from 'react'
 
 import { Button } from '#/components/ui/button'
@@ -30,12 +30,17 @@ function Icon(props: ComponentProps<'svg'>) {
     </svg>
   )
 }
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark')
+  try {
+    localStorage.setItem('theme', isDark ? 'dark' : 'light')
+  } catch {
+}
+  }
+
 function Logo () {
-  return (
-  <Link to = "/" aria-label = "Ir a página de inicio">
-    <img src="/logo.png" alt ="El Buen Fin Logo" className= "h-8 w-auto" />
-  </Link>
-  )
+  return <img src="/logo.png" alt ="El Buen Fin Logo" className= "h-8 w-auto" />
 }
 
 export function Toggle() {
@@ -77,7 +82,7 @@ export function Header() {
         <nav className="flex flex-col px-4">
           {navLinks.map((item) => (
             <SheetClose asChild key={item.to}>
-              <Link to={item.to} className="border-b py-3 text-base font-medium hover:underline decoration-black">
+              <Link to={item.to} className="border-b py-3 text-base font-medium hover:underline decoration-foreground">
                 {item.label}
               </Link>
             </SheetClose>
@@ -98,8 +103,9 @@ export function Header() {
         </div>
 
         <div className="mt-auto flex gap-2 px-4 pb-4">
-          <Button variant="outline" size="icon" aria-label="Modo oscuro">
-            <Moon />
+          <Button variant="outline" size="icon" aria-label="Modo oscuro" onClick = {toggleTheme}>
+            <Moon className = "dark:hidden"/>
+            <Sun className ="hidden dark:block"/>
           </Button>
         </div>
       </SheetContent>
