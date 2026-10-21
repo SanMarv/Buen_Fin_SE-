@@ -12,6 +12,7 @@ export type ProductPageItem = {
   price: number;
   link: string;
   company: {
+    id: string;
     name: string;
     profile_picture: string;
     isVerified: boolean;

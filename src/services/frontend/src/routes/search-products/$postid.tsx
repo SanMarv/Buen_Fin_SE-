@@ -1,6 +1,6 @@
 import { OnePage } from '#/components/OnePage'
 import { env } from '#/config/env'
-import { ApiError } from '#/errors'
+import { ApiError } from '#/components/Errors'
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { ArrowLeft, ArrowUpRight, Unlink } from 'lucide-react'
 import { CATEGORIES_ENUM } from 'lib/types'

@@ -52,7 +52,12 @@ export class ProductsController {
         offset: from,
         with: {
           company: {
-            columns: { name: true, validation_id: true, profile_picture: true },
+            columns: {
+              id: true,
+              name: true,
+              validation_id: true,
+              profile_picture: true,
+            },
           },
           images: { columns: { url: true, alt: true }, limit: 1 },
           categories: { columns: { name: true } },
@@ -75,6 +80,7 @@ export class ProductsController {
         newPrice: v.newPrice,
         price: v.price,
         company: {
+          id: v.company!.id,
           name: v.company!.name,
           isVerified: !!v.company?.validation_id,
           profile_picture: v.company!.profile_picture,
@@ -124,7 +130,12 @@ export class ProductsController {
         where: { id: data.id },
         with: {
           company: {
-            columns: { name: true, validation_id: true, profile_picture: true },
+            columns: {
+              id: true,
+              name: true,
+              validation_id: true,
+              profile_picture: true,
+            },
           },
           images: { columns: { url: true, alt: true } },
           categories: { columns: { name: true } },
@@ -148,6 +159,7 @@ export class ProductsController {
         newPrice: result.newPrice,
         price: result.price,
         company: {
+          id: result.company!.id,
           name: result.company!.name,
           profile_picture: result.company!.profile_picture,
           isVerified,

@@ -5,7 +5,7 @@ import { ProductCard } from '#/components/ElementCard'
 import { CATEGORIES_ENUM } from 'lib/types'
 import type { CategoriesRecord, ProductPageItem } from 'lib/types'
 import { env } from '#/config/env'
-import { ApiError } from '#/errors'
+import { ApiError } from '#/components/Errors'
 
 const fetchProduts = async (): Promise<ProductPageItem[]> => {
   const res = await fetch(`${env.VITE_BACK_BASE}/products`)
@@ -47,7 +47,7 @@ function SearchProducts() {
           </div>
         </section>
 
-        <section className="bg-card px-4 py-6">
+        <section className=" px-4 py-6">
           <details className="rounded-xl bg-surface p-4">
             <summary className="cursor-pointer text-base font-bold">
               Filtros

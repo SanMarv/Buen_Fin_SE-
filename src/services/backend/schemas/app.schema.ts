@@ -28,3 +28,13 @@ export const checkRequestParameter = (key: string, data: unknown) => {
   if (!result.success) return result;
   return { ...result, data: result.data[key] };
 };
+
+export const checkRequestParameterV4 = (key: string, data: unknown) => {
+  const result = z
+    .object({
+      [key]: z.uuidv4(),
+    })
+    .safeParse(data);
+  if (!result.success) return result;
+  return { ...result, data: result.data[key] };
+};
