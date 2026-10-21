@@ -47,7 +47,7 @@ function SearchProducts() {
           </div>
         </section>
 
-        <section className="bg-card px-4 py-6">
+        <section className=" px-4 py-6">
           <details className="rounded-xl bg-surface p-4">
             <summary className="cursor-pointer text-base font-bold">
               Filtros

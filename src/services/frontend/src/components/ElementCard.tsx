@@ -29,7 +29,7 @@ export function ProductCard({ product }: { product: ProductPageItem }) {
   const navigate = useNavigate()
   return (
     <article
-      className="flex flex-col rounded-2xl  bg-white p-2.5 cursor-pointer"
+      className="flex flex-col rounded-2xl bg-card p-2.5 cursor-pointer"
       onClick={() =>
         navigate({
           to: '/search-products/$postid',
@@ -48,8 +48,10 @@ export function ProductCard({ product }: { product: ProductPageItem }) {
       )}
 
       <Link
-        to="/business-profile"
+        to="/business-profile/$companyId"
+        params={{ companyId: product.company.id }}
         className="mt-2 flex items-center gap-2 hover:text-primary"
+        onClick={(e) => e.stopPropagation()}
       >
         <img
           src={product.company.profile_picture}
@@ -118,7 +120,7 @@ export function VacancyCard({ vacancy }: { vacancy: vacancy }) {
 
 export function BranchCard({ branch }: { branch: Branch }) {
   return (
-    <article className="flex aspect-square flex-col justify-between rounded-2x1 bg-white p-3 shadow-sm">
+    <article className="flex aspect-square flex-col justify-between rounded-2x1 bg-muted p-3 shadow-sm">
       <MapPin className="size-6 text-primary" />
       <div>
         <h3 className="text-sm leading-tight font-bold">{branch.name}</h3>

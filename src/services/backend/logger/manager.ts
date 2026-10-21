@@ -4,7 +4,7 @@ import { LoggerMaker } from "./factory/LoggerFactory.ts";
 import { type DataType, type PayloadType } from "./types.js";
 
 class LogManager {
-  private cache: Cache = new Cache(50, "./logs.txt");
+  private cache: Cache = new Cache(50, "./trance.log");
 
   addLog(data: DataType): boolean {
     try {
