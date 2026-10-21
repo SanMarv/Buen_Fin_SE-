@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import {useState } from 'react'
 import type { SubmitEvent } from 'react'
 import { Footer } from '#/components/Footer'
@@ -16,33 +16,25 @@ export const Route = createFileRoute('/register-company')({
 const inputClass =
   'w-full rounded-xl border border-input bg-background px-4 py-3 text-base text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50'
 
-const triggerClass =
-  'w-full rounded-xl border border-input bg-background px-4 text-base text-foreground data-[size=default]:h-12'
-
 function RouteComponent() {
+  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [RFC, setRFC] = useState('')
   const [description, setDescription] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState('')
-  const [isSuccess, setIsSuccess] = useState(false)
 
-  function resetForm(){
-    setName('')
-    setRFC('')
-    setDescription('')
-  }
-
-  async function sendData(body: FormData): PromiseResult<null, ApiError>{
+  async function sendData(body: { name: string, rfc: string, description: string }): PromiseResult<{id: string}, ApiError>{
     try {
+      const json_body = JSON.stringify(body)
       const res = await fetch(`${env.VITE_BACK_BASE}/companies/`, {
         method: 'POST',
-        body,
+        headers: { 'Content-Type': 'application/json' },
+        body: json_body,
         credentials: 'include',
       })
 
       if (res.ok) {
-        return success(null)
+        return success(await res.json())
       }
 
       const parsed = errorSchema.safeParse(await res.json().catch(() => null))
@@ -59,17 +51,21 @@ function RouteComponent() {
     event.preventDefault()
     if (isSubmitting) return
 
-    const body = new FormData()
-    body.append('')
-    body.append('password', password)
+    const body = {'name': name, 'description': description, 'rfc': RFC}
 
     setIsSubmitting(true)
 
     try {
-      const { success: ok, error } = await sendData(body)
+      const { success: ok, data,  error } = await sendData(body)
       if (ok) {
-        toast.success('Cuenta verificada', { position: 'bottom-center' })
-        navigate({ to: '/' })
+        toast.success('Empresa registrada', { position: 'bottom-center' })
+        navigate(
+          {
+            to: '/business-profile/$companyId',
+            params: {companyId: data.id}
+          }
+
+        )
         return
       }
 
@@ -79,12 +75,8 @@ function RouteComponent() {
           navigate({ to: '/login' })
           return
         case 403:
-          if (error.error === 'Unauthorized') {
-            toast.error('Sin sesión', { position: 'bottom-center' })
-            navigate({ to: '/login' })
-          } else {
-            toast.error('Firma no valida', { position: 'bottom-center' })
-          }
+          toast.error('Sin sesión', { position: 'bottom-center' })
+          navigate({ to: '/login' })
           return
         case 400:
           toast.error(error.error, { position: 'bottom-center' })
@@ -96,8 +88,7 @@ function RouteComponent() {
           return
       }
     } finally {
-      setIsLoading(false)
-      setPassword('')
+      setIsSubmitting(false)
     }
   }
 
@@ -129,6 +120,7 @@ function RouteComponent() {
               placeholder="Ej. Coca Cola"
               value={name}
               onChange={(event) => setName(event.target.value)}
+              maxLength={30}
             />
           </div>
 
@@ -160,20 +152,9 @@ function RouteComponent() {
                 textarea.style.height = 'auto'
                 textarea.style.height = `${textarea.scrollHeight}px`
               }}
+              maxLength={280}
             />
           </div>
-
-          {submitError && (
-            <p role="alert" className="text-sm text-destructive">
-              {submitError}
-            </p>
-          )}
-
-          {isSuccess && (
-            <p role="status" className="text-sm font-semibold text-success">
-              Vacante registrada correctamente.
-            </p>
-          )}
 
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Registrando...' : 'Registrar empresa'}

@@ -11,6 +11,7 @@ export const createCompanie = z.object({
     .min(12)
     .max(13)
     .refine((inp) => Rfc.isValid(inp)),
+  description: z.string().trim().max(280).optional(),
 });
 
 export const updateCompany = z.object({

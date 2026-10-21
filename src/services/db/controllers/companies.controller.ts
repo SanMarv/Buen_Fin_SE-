@@ -56,7 +56,7 @@ export class CompaniesController {
   }
   static async create(companie: CompanieInput): CreateCompanyResult {
     const id = uuid();
-    const { name, rfc, user_id } = companie;
+    const { name, rfc, user_id, description } = companie;
     const {
       success: isInBucket,
       error,
@@ -73,6 +73,7 @@ export class CompaniesController {
           profile_picture: url,
           rfc,
           user_id,
+          description: description,
         })
         .returning();
 
