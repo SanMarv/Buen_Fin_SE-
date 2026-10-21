@@ -5,8 +5,12 @@ import { Header } from '#/components/Header'
 import { BranchCard, ProductCard, VacancyCard } from '#/components/ElementCard'
 import type { Branch, vacancy } from '#/components/ElementCard'
 import { HorizontalScroll } from '#/components/ui/Horizontalscroll'
+import { env } from '#/config/env'
 
-export const Route = createFileRoute('/business-profile')({
+export const Route = createFileRoute('/business-profile/$companyId')({
+  loader: async () => {
+    await fetch(`${env.VITE_BACK_BASE}/company/`)
+  },
   component: BusinessProfile,
 })
 
@@ -46,6 +50,7 @@ const branches: Branch[] = [
 ]
 
 function BusinessProfile() {
+  const { companyId } = Route.useParams()
   return (
     <>
       <Header />

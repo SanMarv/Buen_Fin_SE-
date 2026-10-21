@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutusRouteImport } from './routes/aboutus'
-import { Route as BusinessProfileRouteImport } from './routes/business-profile'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterConsumerRouteImport } from './routes/register-consumer'
@@ -20,6 +19,7 @@ import { Route as RegisterLocationRouteImport } from './routes/register-location
 import { Route as RegisterProductsRouteImport } from './routes/register-products'
 import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as BusinessProfileCompanyIdRouteImport } from './routes/business-profile/$companyId'
 import { Route as SearchProductsIndexRouteImport } from './routes/search-products/index'
 import { Route as SearchProductsPostidRouteImport } from './routes/search-products/$postid'
 
@@ -31,11 +31,6 @@ const IndexRoute = IndexRouteImport.update({
 const AboutusRoute = AboutusRouteImport.update({
   id: '/aboutus',
   path: '/aboutus',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BusinessProfileRoute = BusinessProfileRouteImport.update({
-  id: '/business-profile',
-  path: '/business-profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -78,6 +73,12 @@ const WishlistRoute = WishlistRouteImport.update({
   path: '/wishlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BusinessProfileCompanyIdRoute =
+  BusinessProfileCompanyIdRouteImport.update({
+    id: '/business-profile/$companyId',
+    path: '/business-profile/$companyId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const SearchProductsIndexRoute = SearchProductsIndexRouteImport.update({
   id: '/search-products/',
   path: '/search-products/',
@@ -92,7 +93,6 @@ const SearchProductsPostidRoute = SearchProductsPostidRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aboutus': typeof AboutusRoute
-  '/business-profile': typeof BusinessProfileRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/register-consumer': typeof RegisterConsumerRoute
@@ -101,13 +101,13 @@ export interface FileRoutesByFullPath {
   '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
   '/wishlist': typeof WishlistRoute
+  '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products/': typeof SearchProductsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aboutus': typeof AboutusRoute
-  '/business-profile': typeof BusinessProfileRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/register-consumer': typeof RegisterConsumerRoute
@@ -116,6 +116,7 @@ export interface FileRoutesByTo {
   '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
   '/wishlist': typeof WishlistRoute
+  '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products': typeof SearchProductsIndexRoute
 }
@@ -123,7 +124,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aboutus': typeof AboutusRoute
-  '/business-profile': typeof BusinessProfileRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/register-consumer': typeof RegisterConsumerRoute
@@ -132,6 +132,7 @@ export interface FileRoutesById {
   '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
   '/wishlist': typeof WishlistRoute
+  '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products/': typeof SearchProductsIndexRoute
 }
@@ -140,7 +141,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/aboutus'
-    | '/business-profile'
     | '/faq'
     | '/login'
     | '/register-consumer'
@@ -149,13 +149,13 @@ export interface FileRouteTypes {
     | '/register-products'
     | '/verification'
     | '/wishlist'
+    | '/business-profile/$companyId'
     | '/search-products/$postid'
     | '/search-products/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/aboutus'
-    | '/business-profile'
     | '/faq'
     | '/login'
     | '/register-consumer'
@@ -164,13 +164,13 @@ export interface FileRouteTypes {
     | '/register-products'
     | '/verification'
     | '/wishlist'
+    | '/business-profile/$companyId'
     | '/search-products/$postid'
     | '/search-products'
   id:
     | '__root__'
     | '/'
     | '/aboutus'
-    | '/business-profile'
     | '/faq'
     | '/login'
     | '/register-consumer'
@@ -179,6 +179,7 @@ export interface FileRouteTypes {
     | '/register-products'
     | '/verification'
     | '/wishlist'
+    | '/business-profile/$companyId'
     | '/search-products/$postid'
     | '/search-products/'
   fileRoutesById: FileRoutesById
@@ -186,7 +187,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutusRoute: typeof AboutusRoute
-  BusinessProfileRoute: typeof BusinessProfileRoute
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   RegisterConsumerRoute: typeof RegisterConsumerRoute
@@ -195,6 +195,7 @@ export interface RootRouteChildren {
   RegisterProductsRoute: typeof RegisterProductsRoute
   VerificationRoute: typeof VerificationRoute
   WishlistRoute: typeof WishlistRoute
+  BusinessProfileCompanyIdRoute: typeof BusinessProfileCompanyIdRoute
   SearchProductsPostidRoute: typeof SearchProductsPostidRoute
   SearchProductsIndexRoute: typeof SearchProductsIndexRoute
 }
@@ -213,13 +214,6 @@ declare module '@tanstack/react-router' {
       path: '/aboutus'
       fullPath: '/aboutus'
       preLoaderRoute: typeof AboutusRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/business-profile': {
-      id: '/business-profile'
-      path: '/business-profile'
-      fullPath: '/business-profile'
-      preLoaderRoute: typeof BusinessProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -278,6 +272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WishlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/business-profile/$companyId': {
+      id: '/business-profile/$companyId'
+      path: '/business-profile/$companyId'
+      fullPath: '/business-profile/$companyId'
+      preLoaderRoute: typeof BusinessProfileCompanyIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search-products/': {
       id: '/search-products/'
       path: '/search-products'
@@ -298,7 +299,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutusRoute: AboutusRoute,
-  BusinessProfileRoute: BusinessProfileRoute,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   RegisterConsumerRoute: RegisterConsumerRoute,
@@ -307,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterProductsRoute: RegisterProductsRoute,
   VerificationRoute: VerificationRoute,
   WishlistRoute: WishlistRoute,
+  BusinessProfileCompanyIdRoute: BusinessProfileCompanyIdRoute,
   SearchProductsPostidRoute: SearchProductsPostidRoute,
   SearchProductsIndexRoute: SearchProductsIndexRoute,
 }

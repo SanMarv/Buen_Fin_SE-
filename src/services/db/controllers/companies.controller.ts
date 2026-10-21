@@ -1,9 +1,21 @@
 import { db } from "@db/conection.js";
-import { companies, users, validation_table } from "@db/schema.js";
+import {
+  companies,
+  jobs as jobs_table,
+  products as products_table,
+  imageProducts,
+  users,
+  validation_table,
+  locations,
+  images,
+  categories,
+  category_product,
+} from "@db/schema.js";
 import { v4 as uuid } from "uuid";
 import { UploadProfile as getProfilePicture } from "@images-service";
 import type {
   CompanyBasicInfo,
+  CompanyResultById,
   CreateCompanyResult,
 } from "@db/interfaces/companies.interface.js";
 import {
@@ -21,7 +33,19 @@ import type { CompaniesSelectUser } from "@backend/types";
 import { COMPANY_ID_KEY } from "@backend/const.js";
 import type { ErrorFormat } from "../../types/errors.ts";
 import { manager } from "@backend/logger/manager.js";
+import type { CompanyPageItem } from "@lib/types/company.js";
+import type { ProductPageItem } from "@lib/types/products.js";
+import type { Category } from "@lib/types/categories.js";
 
+class DataNotFound extends Error {
+  status: number = 404;
+  error: string = "Element to found in database";
+  table: string;
+  constructor(table: string) {
+    super(`Element not found in database ${table}`);
+    this.table = table;
+  }
+}
 export class CompaniesController {
   static async isRfcPresent(rfc: string) {
     const results = await db
@@ -92,6 +116,88 @@ export class CompaniesController {
     } catch (e) {
       console.error(e);
       return fail({ status: 500, error: "Error while tring to querry" });
+    }
+  }
+  static async getCompanyData(id: string): CompanyResultById {
+    try {
+      const res = await db.transaction(async (tx) => {
+        const [company] = await tx
+          .select({
+            name: companies.name,
+            profile_picture: companies.profile_picture,
+            description: companies.description,
+          })
+          .from(companies)
+          .where(eq(companies.id, id));
+        if (!company) throw new DataNotFound("Companies");
+        const jobs = await tx
+          .select({
+            id: jobs_table.id,
+            name: jobs_table.name,
+            description: jobs_table.description,
+            location: {
+              state: locations.state,
+              city: locations.city,
+            },
+          })
+          .from(jobs_table)
+          .innerJoin(locations, eq(locations.id, jobs_table.location_id))
+          .where(eq(jobs_table.company_id, id));
+        const products = await tx.query.products.findMany({
+          columns: {
+            id: true,
+            name: true,
+            description: true,
+            newPrice: true,
+            price: true,
+            link: true,
+          },
+          where: {
+            company_id: id,
+          },
+          with: {
+            images: {
+              columns: {
+                url: true,
+                alt: true,
+              },
+            },
+            categories: {
+              columns: {
+                name: true,
+              },
+            },
+          },
+        });
+        const values: CompanyPageItem = {
+          name: company.name,
+          description: company.description,
+          profile_picture: company.profile_picture,
+          jobs,
+          products: products.map<Omit<ProductPageItem, "company">>((v) => ({
+            id: v.id,
+            categories: v.categories.map((c) => c.name as Category),
+            description: v.description ?? "",
+            name: v.name,
+            images: v.images,
+            link: v.link,
+            newPrice: v.newPrice,
+            price: v.price,
+          })),
+        };
+        return values;
+      });
+      return success(res);
+    } catch (e) {
+      if (e instanceof DataNotFound)
+        return fail({
+          error: "Company not found",
+          status: 404,
+        });
+      return fail({
+        error: "Error getting data from database",
+        status: 500,
+      });
     }
   }
   static async getBasicData(

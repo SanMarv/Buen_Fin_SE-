@@ -16,10 +16,28 @@ import { CompaniesController } from "@db/controllers/companies.controller.js";
 import { Router } from "express";
 import { satValidation } from "@auth/satValidation.middleware.js";
 import type { Request, Response } from "express";
+import { checkRequestParameterV4 } from "@backend/schemas/app.schema.js";
 
 const app = Router();
 
+app.get("/info/:companyId", async (req, res) => {
+  const { success, data: companyId } = checkRequestParameterV4(
+    "companyId",
+    req.params,
+  );
+  if (!success)
+    return res.status(400).json({ status: 400, error: "Bad request in id" });
+  const {
+    success: isQuerrySuccess,
+    data,
+    error,
+  } = await CompaniesController.getCompanyData(companyId);
+  if (!isQuerrySuccess) return res.status(error.status).json(error);
+  return res.json(data);
+});
+
 app.use(protectRoute, protectWithValidation);
+
 app.post("/", companiesInputValidation, async (_, res: RequestWithCompany) => {
   const { companie } = res.locals;
   const { success, data, error } = await CompaniesController.create(companie);
