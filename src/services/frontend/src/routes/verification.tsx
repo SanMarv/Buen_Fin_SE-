@@ -134,7 +134,7 @@ function VerificationPage() {
               Contraseña
               <span className="relative">
                 <input
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 pr-11 text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/20"
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 pr-12 text-base text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   autoComplete="current-password"

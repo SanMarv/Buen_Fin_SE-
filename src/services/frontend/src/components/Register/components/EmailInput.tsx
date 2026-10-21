@@ -13,7 +13,7 @@ export function EmailField({ ...rest }: Props) {
   const errorCode = useErrorValue('email')
   return (
     <label
-      className={'h-[6vh] flex items-center justify-start px-2 text-[12px]'}
+      className="flex h-12 items-center justify-start px-2"
     >
       <input
         placeholder="Email"
@@ -24,7 +24,7 @@ export function EmailField({ ...rest }: Props) {
         onChange={(e) => setInput(e.target.value)}
         className={cn(
           styles['input'],
-          'w-full px-4 border-input border h-full rounded-md',
+          'h-full w-full',
           !!errorCode && 'border-destructive',
           rest.className,
         )}
