@@ -20,13 +20,12 @@ const sections = [
   },
 ] as const
 
-const itemClass =
-  'block border-b border-border pb-2 text-xs break-words text-muted-foreground'
-const linkClass = `${itemClass} transition-colors hover:text-primary`
+const itemClass = 'block border-b border-white/20 pb-2 text-xs break-words'
+const linkClass = `${itemClass} hover:text-accent`
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-card px-4 py-10 text-card-foreground">
+    <footer className="bg-brand-ink px-4 py-10 text-brand-ink-foreground">
       <p className="text-xl font-black">El Buen Fin</p>
       <p className="mt-2 max-w-xs text-sm opacity-80">
         Sitio oficial de la campaña comercial El Buen Fin 2026. Guarda, organiza
@@ -36,7 +35,7 @@ export function Footer() {
       <div className="mt-8 grid grid-cols-3 gap-3">
         {sections.map(({ title, items }) => (
           <nav key={title} aria-labelledby={`footer-${title}`}>
-            <h2 id={`footer-${title}`} className="text-sm font-bold text-primary">
+            <h2 id={`footer-${title}`} className="text-sm font-bold text-accent">
               {title}
             </h2>
             <ul className="mt-3 flex flex-col gap-2">
@@ -56,7 +55,7 @@ export function Footer() {
         ))}
       </div>
 
-      <hr className="mt-10 border-border" />
+      <hr className="mt-10 border-white/20" />
     </footer>
   )
 }
