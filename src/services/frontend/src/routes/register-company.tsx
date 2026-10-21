@@ -4,6 +4,10 @@ import type { SubmitEvent } from 'react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { Button } from '#/components/ui/button.tsx'
+import { errorSchema, type ApiError } from '../../../../lib/schemas/errors.schema'
+import { fail, success, type PromiseResult } from '../../../../lib/types/generics'
+import { env } from '#/config/env'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/register-company')({
   component: RouteComponent,
@@ -29,8 +33,72 @@ function RouteComponent() {
     setDescription('')
   }
 
+  async function sendData(body: FormData): PromiseResult<null, ApiError>{
+    try {
+      const res = await fetch(`${env.VITE_BACK_BASE}/companies/`, {
+        method: 'POST',
+        body,
+        credentials: 'include',
+      })
+
+      if (res.ok) {
+        return success(null)
+      }
+
+      const parsed = errorSchema.safeParse(await res.json().catch(() => null))
+
+      if (parsed.success) return fail(parsed.data)
+
+      return fail({ status: res.status, error: 'Error desconocido' })
+    } catch {
+      return fail({ status: 500, error: 'Error desconocido' })
+    }
+  }
+
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>){
     event.preventDefault()
+    if (isSubmitting) return
+
+    const body = new FormData()
+    body.append('')
+    body.append('password', password)
+
+    setIsSubmitting(true)
+
+    try {
+      const { success: ok, error } = await sendData(body)
+      if (ok) {
+        toast.success('Cuenta verificada', { position: 'bottom-center' })
+        navigate({ to: '/' })
+        return
+      }
+
+      switch (error.status) {
+        case 401:
+          toast.error(error.error, { position: 'bottom-center' })
+          navigate({ to: '/login' })
+          return
+        case 403:
+          if (error.error === 'Unauthorized') {
+            toast.error('Sin sesión', { position: 'bottom-center' })
+            navigate({ to: '/login' })
+          } else {
+            toast.error('Firma no valida', { position: 'bottom-center' })
+          }
+          return
+        case 400:
+          toast.error(error.error, { position: 'bottom-center' })
+          return
+        default:
+          toast.error('Ocurrio un error, revisa bien los parámetros', {
+            position: 'bottom-center',
+          })
+          return
+      }
+    } finally {
+      setIsLoading(false)
+      setPassword('')
+    }
   }
 
   return (

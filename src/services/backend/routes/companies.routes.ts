@@ -36,7 +36,7 @@ app.get("/info/:companyId", async (req, res) => {
   return res.json(data);
 });
 
-app.use(protectRoute, protectWithValidation);
+app.use(protectRoute);
 
 app.post("/", companiesInputValidation, async (_, res: RequestWithCompany) => {
   const { companie } = res.locals;
@@ -46,6 +46,9 @@ app.post("/", companiesInputValidation, async (_, res: RequestWithCompany) => {
   if (!success) return res.status(error.status).json(error);
   return res.json(data);
 });
+
+app.use(protectWithValidation);
+
 app.get("/user", getUsersCompanies, (_, res: RequestWithCompaniesInfo) => {
   const { companies } = res.locals;
   if (companies.length <= 0) return res.sendStatus(204);
