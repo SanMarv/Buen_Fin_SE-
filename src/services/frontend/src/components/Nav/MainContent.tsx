@@ -33,7 +33,8 @@ export function MainContentNav() {
         return
       }
 
-      await queryClient.invalidateQueries({queryKey: ['me']})
+      await queryClient.invalidateQueries({ queryKey: ['me'] })
+      toast.success('Sesión cerrada satisfactoriamente', { position: 'bottom-center' })
       navigate({ to: "/" })
     }
     catch (e: unknown) {
