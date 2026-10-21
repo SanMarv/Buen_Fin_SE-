@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ChangeEvent, SubmitEvent } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { Eye, EyeClosed, FileText, Upload, X } from 'lucide-react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
@@ -20,6 +21,7 @@ export const Route = createFileRoute('/verification')({
 
 function VerificationPage() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [isLoading, setIsLoading] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -82,6 +84,7 @@ function VerificationPage() {
     try {
       const { success: ok, error } = await sendValidation(body)
       if (ok) {
+        await queryClient.invalidateQueries({ queryKey: ['me'] })
         toast.success('Cuenta verificada', { position: 'bottom-center' })
         navigate({ to: '/' })
         return
