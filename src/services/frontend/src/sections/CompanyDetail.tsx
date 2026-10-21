@@ -58,7 +58,7 @@ export function CompanyDetail({ company, isOwner = false, children }: Props) {
             isOwner={isOwner}
           >
             {products.map((product) => (
-              <div key={product.name} className="w-44 shrink-0 snap-start">
+              <div key={product.id} className="w-44 shrink-0 snap-start">
                 <ProductCardCompany product={product} />
               </div>
             ))}

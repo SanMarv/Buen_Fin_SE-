@@ -6,8 +6,10 @@ import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { Button } from '#/components/ui/button'
 import { env } from '#/config/env'
-import { fail, success, type PromiseResult } from 'lib/types'
-import { errorSchema, type ApiError } from 'lib/schemas'
+import { fail, success } from 'lib/types'
+import type { PromiseResult } from 'lib/types'
+import { errorSchema } from 'lib/schemas'
+import type { ApiError } from 'lib/schemas'
 import { toast } from 'sonner'
 import { Toaster } from '#/components/ui/sonner'
 import { Spinner } from '#/components/ui/spinner'
@@ -18,7 +20,7 @@ export const Route = createFileRoute('/verification-company')({
 
 function VerificationPage() {
   const navigate = useNavigate()
-  const [isLoading, setIsLoading ] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [files, setFiles] = useState<File[]>([])
@@ -33,56 +35,55 @@ function VerificationPage() {
     setFiles((current) => current.filter((_, index) => index !== indexToRemove))
   }
 
+  const getExt = (file: File) => file.name.split('.').pop()?.toLowerCase()
+  const count = (ext: string) => files.filter((f) => getExt(f) === ext).length
+  const hasValidFiles =
+    files.length === 2 && count('cer') === 1 && count('key') === 1
 
-  const getExt = (file: File) => file.name.split('.').pop()?.toLowerCase();
-  const count = (ext: string) => files.filter((f) => getExt(f) === ext).length;
-  const hasValidFiles = files.length === 2 && count("cer") === 1 && count("key") === 1;
-
-  async function sendValidation(body: FormData): PromiseResult<null, ApiError>{
+  async function sendValidation(body: FormData): PromiseResult<null, ApiError> {
     try {
       const res = await fetch(`${env.VITE_BACK_BASE}/auth/validate`, {
         method: 'PUT',
         body,
-        credentials: 'include'
-      });
+        credentials: 'include',
+      })
 
       if (res.ok) {
         return success(null)
       }
 
-      const parsed = errorSchema.safeParse(await res.json().catch(() => null));
+      const parsed = errorSchema.safeParse(await res.json().catch(() => null))
 
       if (parsed.success) return fail(parsed.data)
 
       return fail({ status: res.status, error: 'Error desconocido' })
-    }
-    catch {
+    } catch {
       return fail({ status: 500, error: 'Error desconocido' })
     }
   }
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
+    event.preventDefault()
     if (isLoading) return
-    const cer = files.find((f) => getExt(f) === "cer");
-    const key = files.find((f) => getExt(f) === "key");
+    const cer = files.find((f) => getExt(f) === 'cer')
+    const key = files.find((f) => getExt(f) === 'key')
 
     if (!cer || !key) {
       return
     }
 
-    const body = new FormData();
-    body.append('cer', cer);
-    body.append('key', key);
-    body.append('password', password);
+    const body = new FormData()
+    body.append('cer', cer)
+    body.append('key', key)
+    body.append('password', password)
 
-    setIsLoading(true);
+    setIsLoading(true)
 
-    try{
+    try {
       const { success: ok, error } = await sendValidation(body)
       if (ok) {
-        toast.success('Cuenta verificada' , { position: 'bottom-center' });
-        navigate({ to: '/' });
+        toast.success('Cuenta verificada', { position: 'bottom-center' })
+        navigate({ to: '/' })
         return
       }
 
@@ -92,11 +93,10 @@ function VerificationPage() {
           navigate({ to: '/login' })
           return
         case 403:
-          if (error.error === "Unauthorized") {
+          if (error.error === 'Unauthorized') {
             toast.error('Sin sesión', { position: 'bottom-center' })
             navigate({ to: '/login' })
-          }
-          else {
+          } else {
             toast.error('Firma no valida', { position: 'bottom-center' })
           }
           return
@@ -104,15 +104,16 @@ function VerificationPage() {
           toast.error(error.error, { position: 'bottom-center' })
           return
         default:
-          toast.error('Ocurrio un error, revisa bien los parámetros', { position: 'bottom-center' })
+          toast.error('Ocurrio un error, revisa bien los parámetros', {
+            position: 'bottom-center',
+          })
           return
       }
+    } finally {
+      setIsLoading(false)
+      setPassword('')
     }
-    finally {
-      setIsLoading(false);
-      setPassword('');
-      }
-    }
+  }
 
   return (
     <div className="min-h-screen">
@@ -168,7 +169,7 @@ function VerificationPage() {
               </p>
               <p className="mb-5 text-sm text-muted-foreground">
                 Adjunta los documentos para verificar tu comercio.
-            </p>
+              </p>
 
               <label className="flex cursor-pointer flex-col items-center rounded-lg border-2 border-dashed border-input px-4 py-6 text-center hover:border-primary">
                 <Upload className="mb-2 size-6 text-primary" />
@@ -218,13 +219,17 @@ function VerificationPage() {
                 </ul>
               )}
             </div>
-            <Button className="mt-1 w-full" type="submit" disabled={!password || !hasValidFiles || isLoading}>
+            <Button
+              className="mt-1 w-full"
+              type="submit"
+              disabled={!password || !hasValidFiles || isLoading}
+            >
               {isLoading && <Spinner />}
               {isLoading ? 'Validando…' : 'Enviar'}
             </Button>
           </form>
         </section>
-        <Toaster/>
+        <Toaster />
       </main>
 
       <Footer />
