@@ -14,6 +14,7 @@ import { Route as AboutusRouteImport } from './routes/aboutus'
 import { Route as BusinessProfileRouteImport } from './routes/business-profile'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterCompanyRouteImport } from './routes/register-company'
 import { Route as RegisterConsumerRouteImport } from './routes/register-consumer'
 import { Route as RegisterJobRouteImport } from './routes/register-job'
 import { Route as RegisterLocationRouteImport } from './routes/register-location'
@@ -46,6 +47,11 @@ const FaqRoute = FaqRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterCompanyRoute = RegisterCompanyRouteImport.update({
+  id: '/register-company',
+  path: '/register-company',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterConsumerRoute = RegisterConsumerRouteImport.update({
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/business-profile': typeof BusinessProfileRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
+  '/register-company': typeof RegisterCompanyRoute
   '/register-consumer': typeof RegisterConsumerRoute
   '/register-job': typeof RegisterJobRoute
   '/register-location': typeof RegisterLocationRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/business-profile': typeof BusinessProfileRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
+  '/register-company': typeof RegisterCompanyRoute
   '/register-consumer': typeof RegisterConsumerRoute
   '/register-job': typeof RegisterJobRoute
   '/register-location': typeof RegisterLocationRoute
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/business-profile': typeof BusinessProfileRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
+  '/register-company': typeof RegisterCompanyRoute
   '/register-consumer': typeof RegisterConsumerRoute
   '/register-job': typeof RegisterJobRoute
   '/register-location': typeof RegisterLocationRoute
@@ -143,6 +152,7 @@ export interface FileRouteTypes {
     | '/business-profile'
     | '/faq'
     | '/login'
+    | '/register-company'
     | '/register-consumer'
     | '/register-job'
     | '/register-location'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/business-profile'
     | '/faq'
     | '/login'
+    | '/register-company'
     | '/register-consumer'
     | '/register-job'
     | '/register-location'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/business-profile'
     | '/faq'
     | '/login'
+    | '/register-company'
     | '/register-consumer'
     | '/register-job'
     | '/register-location'
@@ -189,6 +201,7 @@ export interface RootRouteChildren {
   BusinessProfileRoute: typeof BusinessProfileRoute
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
+  RegisterCompanyRoute: typeof RegisterCompanyRoute
   RegisterConsumerRoute: typeof RegisterConsumerRoute
   RegisterJobRoute: typeof RegisterJobRoute
   RegisterLocationRoute: typeof RegisterLocationRoute
@@ -234,6 +247,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register-company': {
+      id: '/register-company'
+      path: '/register-company'
+      fullPath: '/register-company'
+      preLoaderRoute: typeof RegisterCompanyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register-consumer': {
@@ -301,6 +321,7 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessProfileRoute: BusinessProfileRoute,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
+  RegisterCompanyRoute: RegisterCompanyRoute,
   RegisterConsumerRoute: RegisterConsumerRoute,
   RegisterJobRoute: RegisterJobRoute,
   RegisterLocationRoute: RegisterLocationRoute,
