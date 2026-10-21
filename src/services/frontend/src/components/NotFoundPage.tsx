@@ -1,9 +1,8 @@
-import type { NotFoundRouteProps } from '@tanstack/react-router'
 import { Header } from './Header'
 import { Footer } from './Footer'
 import { Cable } from 'lucide-react'
 
-export function NotFoundPage(_: NotFoundRouteProps) {
+export function NotFoundPage() {
   return (
     <>
       <div className="grid grid-rows-[auto_1fr_auto] min-h-[90dvh]">

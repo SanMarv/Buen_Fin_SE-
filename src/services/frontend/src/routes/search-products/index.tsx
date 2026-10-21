@@ -5,7 +5,7 @@ import { ProductCard } from '#/components/ElementCard'
 import { CATEGORIES_ENUM } from 'lib/types'
 import type { CategoriesRecord, ProductPageItem } from 'lib/types'
 import { env } from '#/config/env'
-import { ApiError } from '#/errors'
+import { ApiError } from '#/components/Errors'
 
 const fetchProduts = async (): Promise<ProductPageItem[]> => {
   const res = await fetch(`${env.VITE_BACK_BASE}/products`)

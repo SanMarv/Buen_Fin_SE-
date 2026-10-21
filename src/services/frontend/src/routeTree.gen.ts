@@ -20,6 +20,7 @@ import { Route as RegisterProductsRouteImport } from './routes/register-products
 import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as BusinessProfileCompanyIdRouteImport } from './routes/business-profile/$companyId'
+import { Route as EditCompanyIdRouteImport } from './routes/edit/$companyId'
 import { Route as SearchProductsIndexRouteImport } from './routes/search-products/index'
 import { Route as SearchProductsPostidRouteImport } from './routes/search-products/$postid'
 
@@ -79,6 +80,11 @@ const BusinessProfileCompanyIdRoute =
     path: '/business-profile/$companyId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const EditCompanyIdRoute = EditCompanyIdRouteImport.update({
+  id: '/edit/$companyId',
+  path: '/edit/$companyId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchProductsIndexRoute = SearchProductsIndexRouteImport.update({
   id: '/search-products/',
   path: '/search-products/',
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/verification': typeof VerificationRoute
   '/wishlist': typeof WishlistRoute
   '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
+  '/edit/$companyId': typeof EditCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products/': typeof SearchProductsIndexRoute
 }
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/verification': typeof VerificationRoute
   '/wishlist': typeof WishlistRoute
   '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
+  '/edit/$companyId': typeof EditCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products': typeof SearchProductsIndexRoute
 }
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/verification': typeof VerificationRoute
   '/wishlist': typeof WishlistRoute
   '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
+  '/edit/$companyId': typeof EditCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products/': typeof SearchProductsIndexRoute
 }
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/verification'
     | '/wishlist'
     | '/business-profile/$companyId'
+    | '/edit/$companyId'
     | '/search-products/$postid'
     | '/search-products/'
   fileRoutesByTo: FileRoutesByTo
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/verification'
     | '/wishlist'
     | '/business-profile/$companyId'
+    | '/edit/$companyId'
     | '/search-products/$postid'
     | '/search-products'
   id:
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/verification'
     | '/wishlist'
     | '/business-profile/$companyId'
+    | '/edit/$companyId'
     | '/search-products/$postid'
     | '/search-products/'
   fileRoutesById: FileRoutesById
@@ -196,6 +208,7 @@ export interface RootRouteChildren {
   VerificationRoute: typeof VerificationRoute
   WishlistRoute: typeof WishlistRoute
   BusinessProfileCompanyIdRoute: typeof BusinessProfileCompanyIdRoute
+  EditCompanyIdRoute: typeof EditCompanyIdRoute
   SearchProductsPostidRoute: typeof SearchProductsPostidRoute
   SearchProductsIndexRoute: typeof SearchProductsIndexRoute
 }
@@ -279,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BusinessProfileCompanyIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/edit/$companyId': {
+      id: '/edit/$companyId'
+      path: '/edit/$companyId'
+      fullPath: '/edit/$companyId'
+      preLoaderRoute: typeof EditCompanyIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search-products/': {
       id: '/search-products/'
       path: '/search-products'
@@ -308,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerificationRoute: VerificationRoute,
   WishlistRoute: WishlistRoute,
   BusinessProfileCompanyIdRoute: BusinessProfileCompanyIdRoute,
+  EditCompanyIdRoute: EditCompanyIdRoute,
   SearchProductsPostidRoute: SearchProductsPostidRoute,
   SearchProductsIndexRoute: SearchProductsIndexRoute,
 }
