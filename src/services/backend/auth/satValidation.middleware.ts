@@ -45,7 +45,7 @@ export const satValidation = async (
       return res.status(Dberror.status).json(Dberror);
     }
 
-    res.locals.validation = { validation_id: validation };
+    res.locals.validation = { validation_id: validation, rfc: data.rfc };
 
     next();
   } catch {

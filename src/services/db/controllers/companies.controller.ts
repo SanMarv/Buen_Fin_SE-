@@ -32,7 +32,7 @@ export class CompaniesController {
   }
   static async create(companie: CompanieInput): CreateCompanyResult {
     const id = uuid();
-    const { name, rfc, user_id, validation_id } = companie;
+    const { name, rfc, user_id } = companie;
     const {
       success: isInBucket,
       error,
@@ -49,7 +49,6 @@ export class CompaniesController {
           profile_picture: url,
           rfc,
           user_id,
-          validation_id,
         })
         .returning();
 
@@ -175,16 +174,20 @@ export class CompaniesController {
   static async updateValidation(
     company_id: string,
     validation: string,
+    rfc: string,
   ): Promise<Result<boolean, ErrorFormat>> {
     try {
-      const validation_ready = await db
+      const [validation_ready] = await db
         .update(companies)
         .set({ validation_id: validation })
-        .where(eq(companies.id, company_id))
+        .where(and(eq(companies.id, company_id), eq(companies.rfc, rfc)))
         .returning();
 
       if (!validation_ready) {
-        return fail({ status: 404, error: "Record to update not found" });
+        await db
+          .delete(validation_table)
+          .where(eq(validation_table.id, validation));
+        return fail({ status: 400, error: "RFC mismatch" });
       }
 
       return success(true);

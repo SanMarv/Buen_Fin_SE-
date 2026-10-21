@@ -41,7 +41,7 @@ interface ProductUpdate extends ValidationData {
   [COMPANY_ID_KEY]: string;
 }
 interface Company extends ValidationData {
-  companie: ValidatedCompanieInput;
+  companie: Omit<ValidatedCompanieInput, "user_id">;
 }
 interface OwnerRequest extends ValidationData {
   [COMPANY_ID_KEY]: string;

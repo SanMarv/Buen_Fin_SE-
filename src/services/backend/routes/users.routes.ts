@@ -167,4 +167,11 @@ userRouter.put(
   signResponseWithAuth,
 );
 
+userRouter.get("/me", protectRoute, (_, res) => {
+  const { user_id, validation_id } = res.locals.auth;
+  return res
+    .status(200)
+    .json({ isUser: !!user_id, isValidated: !!validation_id });
+});
+
 export default userRouter;

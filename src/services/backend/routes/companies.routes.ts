@@ -22,7 +22,9 @@ const app = Router();
 app.use(protectRoute, protectWithValidation);
 app.post("/", companiesInputValidation, async (_, res: RequestWithCompany) => {
   const { companie } = res.locals;
-  const { success, data, error } = await CompaniesController.create(companie);
+  const companie_data = { ...companie, user_id: res.locals.auth.user_id };
+  const { success, data, error } =
+    await CompaniesController.create(companie_data);
   if (!success) return res.status(error.status).json(error);
   return res.json(data);
 });
@@ -45,13 +47,12 @@ app.put(
   satValidation,
   async (req: Request, res: Response) => {
     const { companyId, validation } = res.locals;
-
-    const { company_id } = companyId;
-    const { validation_id } = validation;
+    const { validation_id, rfc } = validation;
 
     const { success, error } = await CompaniesController.updateValidation(
-      company_id,
+      companyId,
       validation_id,
+      rfc,
     );
 
     if (!success) {

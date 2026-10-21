@@ -4,20 +4,22 @@ import z from "zod";
 
 export const createCompanie = z.object({
   name: z.string().min(5).max(30),
-  user_id: z.uuidv7(),
   rfc: z
     .string()
+    .trim()
+    .toUpperCase()
     .min(12)
     .max(13)
     .refine((inp) => Rfc.isValid(inp)),
-  validation_id: z.uuidv4().optional(),
 });
 
 export const updateCompany = z.object({
   name: z.string(),
 });
 
-export type CompanieInput = z.infer<typeof createCompanie>;
+export type CompanieInput = z.infer<typeof createCompanie> & {
+  user_id: string;
+};
 export const companiesInputValidation = inputValidationMiddleware(
   createCompanie,
   "companie",

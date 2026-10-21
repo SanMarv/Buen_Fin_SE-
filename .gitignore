@@ -44,7 +44,7 @@ bun.lock
 src/test/outputs
 
 # Ignore logs
-./logs.txt
+logs.txt
 
 # TLS
 buen-fin.cer
