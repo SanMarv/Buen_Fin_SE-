@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
-import type { Branch } from '#/components/ElementCard'
 import { fetchCompany, fetchIsOwner } from '#/lib/fetch'
 import { CompanyDetail } from '#/sections/CompanyDetail'
 import { GoEdit } from '#/components/ui/GoEdit'
@@ -15,16 +14,6 @@ export const Route = createFileRoute('/business-profile/$companyId')({
   },
   component: BusinessProfile,
 })
-
-const branches: Branch[] = [
-  { name: 'Sucursal Centro', address: 'Calle 27, Col.Lilas', region: 'CDMX' },
-  { name: 'Sucursal Norte', address: 'Av.Reforma 120', region: 'Nuevo León' },
-  {
-    name: 'Sucursal Online',
-    address: 'Compras por internet',
-    region: 'Todo el país',
-  },
-]
 
 function BusinessProfile() {
   const { company, companyId, isOwner } = Route.useLoaderData()

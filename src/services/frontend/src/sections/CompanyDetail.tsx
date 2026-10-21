@@ -14,6 +14,17 @@ type Props = {
   isOwner?: boolean
 } & PropsWithChildren
 
+// import type { Branch } from '#/components/ElementCard'
+// const branches: Branch[] = [
+//   { name: 'Sucursal Centro', address: 'Calle 27, Col.Lilas', region: 'CDMX' },
+//   { name: 'Sucursal Norte', address: 'Av.Reforma 120', region: 'Nuevo León' },
+//   {
+//     name: 'Sucursal Online',
+//     address: 'Compras por internet',
+//     region: 'Todo el país',
+//   },
+// ]
+
 export function CompanyDetail({ company, isOwner = false, children }: Props) {
   const { products } = company
   return (
@@ -28,7 +39,7 @@ export function CompanyDetail({ company, isOwner = false, children }: Props) {
               {company.profile_picture ? (
                 <img
                   src={company.profile_picture}
-                  alt={'Logo de ${business.name}'}
+                  alt={`Logo de ${company.name}`}
                   className="size-20 shrink-0 rounded-xl object-cover"
                 />
               ) : (
@@ -73,9 +84,7 @@ export function CompanyDetail({ company, isOwner = false, children }: Props) {
             isOwner={isOwner}
           >
             {company.jobs.map((job) => (
-              <div key={job.id} className="w-72 shrink-0 snap-start">
-                <JobCardCompany job={job} />
-              </div>
+              <JobCardCompany job={job} key={job.id} />
             ))}
           </HorizontalScroll>
         </section>

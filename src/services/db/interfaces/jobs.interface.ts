@@ -22,6 +22,7 @@ export interface NewJob {
   name: string;
   description: string;
   [COMPANY_ID_KEY]: string;
+  link: string;
   location: LocationEntry;
 }
 export type GetJobByIdInput = Pick<jobsRecord, "id">;

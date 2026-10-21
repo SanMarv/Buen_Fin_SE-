@@ -2,14 +2,9 @@ import { db } from "@db/conection.js";
 import {
   companies,
   jobs as jobs_table,
-  products as products_table,
-  imageProducts,
   users,
   validation_table,
   locations,
-  images,
-  categories,
-  category_product,
 } from "@db/schema.js";
 import { v4 as uuid } from "uuid";
 import { UploadProfile as getProfilePicture } from "@images-service";
@@ -27,7 +22,7 @@ import {
   successNoContent,
   type Result,
 } from "@app/types";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import type { CompanieInput } from "@backend/schemas/company.schema.js";
 import type { CompaniesSelectUser } from "@backend/types";
 import { COMPANY_ID_KEY } from "@backend/const.js";
@@ -36,6 +31,7 @@ import { manager } from "@backend/logger/manager.js";
 import type { CompanyPageItem } from "@lib/types/company.js";
 import type { ProductPageItem } from "@lib/types/products.js";
 import type { Category } from "@lib/types/categories.js";
+import type { State } from "@lib/schemas/locations.schema.js";
 
 class DataNotFound extends Error {
   status: number = 404;
@@ -135,8 +131,9 @@ export class CompaniesController {
             id: jobs_table.id,
             name: jobs_table.name,
             description: jobs_table.description,
+            link: jobs_table.link,
             location: {
-              state: locations.state,
+              state: sql<State>`${locations.state}`,
               city: locations.city,
             },
           })

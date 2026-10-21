@@ -13,6 +13,7 @@ export const jobs = pgTable(TABLE_NAMES.JOBS, {
   location_id: serial().references(() => locations.id, {
     onDelete: "cascade",
   }),
+  link: varchar({ length: 2048 }).notNull(),
   company_id: uuid()
     .references(() => companies.id)
     .notNull(),

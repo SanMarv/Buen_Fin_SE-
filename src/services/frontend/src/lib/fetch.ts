@@ -2,9 +2,9 @@ import { ApiError } from '#/components/Errors'
 import { env } from '#/config/env'
 import type { CompanyPageItem } from 'lib/types'
 
-export const fetchIsOwner = async (companyId: string) => {
+export const fetchIsOwner = async (clientId: string): Promise<boolean> => {
   try {
-    const res = await fetch(`${env.VITE_BACK_BASE}/auth/company/${companyId}`, {
+    const res = await fetch(`${env.VITE_BACK_BASE}/auth/company/${clientId}`, {
       credentials: 'include',
     })
     return res.status === 204

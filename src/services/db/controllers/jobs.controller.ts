@@ -63,6 +63,7 @@ export class JobsController {
         const { id: location_id } = record;
         await tx.insert(jobs).values({
           id,
+          link: newJob.link,
           company_id: newJob[COMPANY_ID_KEY],
           location_id,
           name: newJob.name,

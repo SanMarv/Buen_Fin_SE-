@@ -38,7 +38,7 @@ export function HorizontalScroll({
           </Button>
         )}
       </div>
-      <div className="mt-4 flex snap-x  snap-mandatory gap-3 overflow-x-auto pb-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
+      <div className="mt-4 flex w-full min-h-[15dvh] snap-x  snap-mandatory gap-3 overflow-x-auto pb-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
         {children}
       </div>
     </div>

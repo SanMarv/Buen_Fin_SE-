@@ -2,7 +2,7 @@ import { OnePage } from '#/components/OnePage'
 import { env } from '#/config/env'
 import { ApiError } from '#/components/Errors'
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
-import { ArrowLeft, ArrowUpRight, Unlink } from 'lucide-react'
+import { ArrowUpRight, Unlink } from 'lucide-react'
 import { CATEGORIES_ENUM } from 'lib/types'
 import type { CategoriesRecord, ProductImage, ProductPageItem } from 'lib/types'
 import { Button } from '#/components/ui/button'
@@ -14,6 +14,13 @@ import {
   QueryErrorResetBoundary,
   useSuspenseQuery,
 } from '@tanstack/react-query'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '#/components/ui/breadcrumb'
 
 const CATEGORIES: CategoriesRecord<string> = {
   [CATEGORIES_ENUM['tecnologies']]: 'Tecnología',
@@ -89,18 +96,18 @@ const OtherPosts = () => {
   })
   if (isFetching) return null
   return (
-    <div className="flex gap-2 max-w-full overflow-x-scroll size-full">
-      {data.map((v) => (
+    <div className="flex gap-2 max-w-full overflow-x-scroll size-full scrollbar-none py-2">
+      {data.slice(0, 10).map((v) => (
         <a
           href={`/search-products/${v.id}`}
           key={v.id}
-          className="grid grid-rows-[1fr_auto] gap-2 size-full"
+          className="grid grid-rows-[1fr_auto] gap-2 h-full aspect-square"
         >
           <ImageProduct
             image={v.images[0]}
-            className="min-h-full rounded-md bg-neutral-500/30 aspect-square object-cover "
+            className="size-full rounded-md bg-neutral-500/30 object-cover "
           />
-          <span>{v.name}</span>
+          <span className="font-semibold text-md">{v.name}</span>
         </a>
       ))}
     </div>
@@ -108,15 +115,54 @@ const OtherPosts = () => {
 }
 function RouteComponent() {
   const { product } = Route.useLoaderData()
+  const { company } = product
   return (
     <OnePage className="grid bg-card grid-rows-[1fr_30dvh] grid-cols-1 gap-y-2">
       <article className="flex flex-col justify-start px-[5%] size-full py-2">
+        <Breadcrumb>
+          <BreadcrumbList className="py-2">
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/search-products">Productos</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link
+                  to="/search-products/$postid"
+                  params={{ postid: product.id }}
+                >
+                  {product.name}
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <ImageProduct
           image={product.images[0]}
           className="row-span-2 bg-foreground/30 object-cover max-w-full overflow-hidden size-full rounded-md"
         />
-        <div className="flex size-full flex-col gap-2">
+        <div className="flex size-full flex-col gap-3">
           <h1 className="font-semibold text-3xl pt-2">{product.name}</h1>
+          <Link
+            to="/business-profile/$companyId"
+            params={{ companyId: company.id }}
+            className="flex h-7 items-center gap-x-2"
+          >
+            <img
+              src={company.profile_picture}
+              alt={`Logo de ${company.name}`}
+              className="h-full aspect-square rounded-full "
+            />
+            <span className="font-semibold">{company.name}</span>
+          </Link>
           <Button
             type="button"
             variant="outline"
@@ -152,22 +198,13 @@ function RouteComponent() {
           </p>
         </div>
       </article>
-      <aside className="flex flex-col items-start justify-end h-full px-5 gap-2 pb-2 ">
+      <aside className="flex flex-col items-start justify-end h-full px-5 gap-2 mb-2 ">
+        <h2 className="font-bold text-xl">Otros productos de {company.name}</h2>
         <QueryErrorResetBoundary>
           <Suspense fallback={<LoaderCards />}>
             <OtherPosts />
           </Suspense>
         </QueryErrorResetBoundary>
-        <Button
-          asChild
-          variant={'outline'}
-          className="text-primary border-primary border-2 flex items-center justify-center gap-1 bg-transparent"
-        >
-          <Link to="/search-products">
-            <ArrowLeft className="size-6" />
-            <span>Go Back</span>
-          </Link>
-        </Button>
       </aside>
     </OnePage>
   )

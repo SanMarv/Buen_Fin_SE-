@@ -85,11 +85,6 @@ router.delete(
       user: { id: companyDB.id, name: companyDB.name },
     });
     if (!isUploaded) return res.status(errorUpload.status).json(errorUpload);
-    console.log({
-      new: data.url,
-      old: companyDB,
-      url_old: companyDB.profile_picture,
-    });
     if (data.url !== companyDB.profile_picture)
       await profileBucket.deleteOne({
         key: companyDB.profile_picture.split("/").pop()!,

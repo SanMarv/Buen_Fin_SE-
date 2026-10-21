@@ -12,7 +12,7 @@ type Props = {
 };
 type ProfilePicture = {
   file: Buffer;
-  format: "svg" | "webp";
+  format: "svg+xml" | "webp";
   filename: string;
 };
 export class ProfileImage {
@@ -57,7 +57,7 @@ export class ProfileImage {
     if (this.image === null)
       return {
         file: this.generateFallback(),
-        format: "svg",
+        format: "svg+xml",
         filename: this.filename,
       };
     const file = await this.convertImage();

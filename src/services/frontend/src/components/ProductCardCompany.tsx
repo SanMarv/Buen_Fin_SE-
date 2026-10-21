@@ -72,23 +72,23 @@ export function ProductCardCompany({
 
 export function JobCardCompany({ job }: { job: Job }) {
   return (
-    <article className="flex flex-col rounded-2xl bg-card p-4 sdhadow-sm gap-y-2">
+    <article className="grid grid-rows-[auto_1fr_auto] grid-cols-[minmax(1fr,25ch)] rounded-2xl bg-card p-4 shadow-sm gap-y-2">
       <div className="flex flex-col gap-y-1">
         <h3 className="text-md leading-tight font-bold">{job.name}</h3>
-        <span className="shrink-0 rounded bg-card text-[11px] font-medium">
+        <span className="text-[11px] font-medium">
           {job.location.city}, {job.location.state}
         </span>
       </div>
-      <p className="mt-2 text-sm text-muted-foreground min-h-20">
-        {job.description}
-      </p>
-
+      <p className="text-sm text-muted-foreground h-full ">{job.description}</p>
       <Button
         type="button"
         variant="outline"
         className="mt-4 w-full border-primary font-bold text-primary hover:bg-primary hover:text-primary-foreground"
+        asChild
       >
-        Ver detalles
+        <a href={job.link} target="_blank">
+          Ver detalles
+        </a>
       </Button>
     </article>
   )

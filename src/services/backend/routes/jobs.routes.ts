@@ -57,6 +57,7 @@ app.post(
       companyId,
       name: newJob.name,
       description: newJob.description,
+      link: newJob.link,
       location: newJob.location,
     });
     if (!success) console.error(error);
