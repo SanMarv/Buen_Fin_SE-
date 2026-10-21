@@ -62,10 +62,10 @@ export function SideBar() {
         verifiedCompany && (
           <SheetClose asChild>
             <Link
-              to="/business-profile/$companyId"
-              params={{ companyId: verifiedCompany.companyId }}
-              className="border-b py-3 text-base font-medium hover:underline decoration-foreground">
-              Perfil de Negocio/s
+              to="/businesses"
+              className="border-b py-3 text-base font-medium hover:underline decoration-foreground"
+            >
+              Mis negocios
             </Link>
           </SheetClose>
         )}

@@ -15,6 +15,17 @@ export type Branch = {
   region: string
 }
 
+export type BusinessCardItem = {
+  companyId: string
+  name: string
+  profile_picture: string
+  certification: {
+    rfc: string
+    legal_name: string
+    valid_until: string
+  } | null
+}
+
 const money = new Intl.NumberFormat(
   'es-MX', // herramienta para poner formato de dinero
   {
@@ -93,6 +104,44 @@ export function ProductCard({ product }: { product: ProductPageItem }) {
   )
 }
 // este ultimo botón es el que despues va a mandar a un link de la compañia
+
+export function BusinessCard({ company }: { company: BusinessCardItem }) {
+  return (
+    <article className="flex flex-col rounded-2xl bg-card p-2.5">
+      {company.profile_picture ? (
+        <img
+          src={company.profile_picture}
+          alt={`Logo de ${company.name}`}
+          className="aspect-square w-full rounded-xl bg-muted object-cover"
+        />
+      ) : (
+        <div
+          aria-hidden="true"
+          className="flex aspect-square w-full items-center justify-center rounded-xl bg-muted text-4xl font-bold text-muted-foreground"
+        >
+          {company.name.charAt(0).toUpperCase()}
+        </div>
+      )}
+      <h2 className="mt-3 truncate text-base font-bold">{company.name}</h2>
+      <p className="mt-1 text-xs text-muted-foreground">
+        {company.certification ? 'Empresa verificada' : 'Verificación pendiente'}
+      </p>
+      <Button
+        type="button"
+        variant="outline"
+        className="mt-3 flex w-full items-center border-primary font-bold text-primary hover:bg-primary hover:text-primary-foreground"
+        asChild
+      >
+        <Link
+          to="/business-profile/$companyId"
+          params={{ companyId: company.companyId }}
+        >
+          <span>Ver perfil</span>
+        </Link>
+      </Button>
+    </article>
+  )
+}
 
 export function VacancyCard({ vacancy }: { vacancy: vacancy }) {
   return (
