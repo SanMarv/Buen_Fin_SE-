@@ -2,8 +2,8 @@ import { test, expect } from "vitest";
 import { manager } from "@backend/logger/manager.js";
 import { v4 } from "uuid";
 
-test("DB log acceptance", async () => {
-  const success = await manager.addLog({
+test("DB log acceptance", () => {
+  const success = manager.addLog({
     type: "DB",
     action: "CREATE",
     id: v4(),
@@ -12,8 +12,8 @@ test("DB log acceptance", async () => {
   expect(success).toBe(true);
 });
 
-test("Session log acceptance", async () => {
-  const success = await manager.addLog({
+test("Session log acceptance", () => {
+  const success = manager.addLog({
     type: "Session",
     action: "LOGIN",
     id: v4(),
@@ -21,11 +21,12 @@ test("Session log acceptance", async () => {
   expect(success).toBe(true);
 });
 
-test("Request log acceptance", async () => {
-  const success = await manager.addLog({
+test("Request log acceptance", () => {
+  const success = manager.addLog({
     type: "Request",
     action: "GET",
     status: 200,
+    endpoint: "/helth",
     id: v4(),
   });
   expect(success).toBe(true);

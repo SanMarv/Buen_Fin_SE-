@@ -39,7 +39,7 @@ export class RequestLogger implements Logger {
   }
 
   logMessage(): string {
-    const { id, start_time, action, status } = this.data;
-    return `${start_time} user: ${id} Has made a ${action} request with status ${status}`;
+    const { id, start_time, action, status, endpoint } = this.data;
+    return `${start_time} user: ${id} Has made a ${action} request with status ${status} on ${endpoint}`;
   }
 }

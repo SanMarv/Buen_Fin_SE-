@@ -143,7 +143,7 @@ export class ProductsController {
         name: result.name,
         description: result.description ?? "",
         link: result.link,
-        categories: result.categories.map((v) => v.name),
+        categories: result.categories.map<Category>((v) => v.name as Category),
         images: result.images,
         newPrice: result.newPrice,
         price: result.price,

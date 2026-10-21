@@ -10,6 +10,7 @@ import { env } from "@env";
 import { protectWithValidation } from "@auth/validation.middleware.js";
 import { editModeCompany } from "@auth/edit.middleware.js";
 import { protectRoute } from "@auth/jwt.middleware.js";
+import { requestLogger } from "./middleware/logger.middleware.ts";
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,9 @@ if (env.NODE_ENV === "production")
   app.use(
     cors({ origin: ["localhost", "nicolas-amaya.dev"], credentials: true }),
   );
+
+app.use(requestLogger);
+
 // Routers
 app.get("/", (_, res) => res.send("Server up"));
 app.use("/auth", userRouter);

@@ -16,6 +16,7 @@ export interface RequestData extends Data {
   type: "Request";
   action: RequestActions;
   status: number;
+  endpoint: string;
 }
 
 export interface SessionData extends Data {
