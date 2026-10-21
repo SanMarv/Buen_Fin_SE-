@@ -1,9 +1,18 @@
 import { Link } from '@tanstack/react-router'
-import { Moon, Sun } from 'lucide-react'
 import type { ComponentProps } from 'react'
 
 import { Button } from '#/components/ui/button'
-import {Sheet,SheetClose,SheetContent,SheetDescription,SheetHeader,SheetTitle,SheetTrigger,} from '#/components/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '#/components/ui/sheet'
+import { SideBar } from './Nav/SideBar'
+import { Controls } from './Nav/Controls'
+import { MainContentNav } from './Nav/MainContent'
 
 function Icon(props: ComponentProps<'svg'>) {
   return (
@@ -31,18 +40,10 @@ function Icon(props: ComponentProps<'svg'>) {
   )
 }
 
-function toggleTheme() {
-  const isDark = document.documentElement.classList.toggle('dark')
-  try {
-    localStorage.setItem('theme', isDark ? 'dark' : 'light')
-  } catch {
-}
-  }
-
-function Logo () {
+function Logo() {
   return (
     <Link to="/" aria-label="Ir a la página de inicio">
-      <img src="/logo.png" alt ="El Buen Fin Logo" className= "h-8 w-auto" />
+      <img src="/logo.png" alt="El Buen Fin Logo" className="h-8 w-auto" />
     </Link>
   )
 }
@@ -50,68 +51,39 @@ function Logo () {
 export function Toggle() {
   return (
     <SheetTrigger asChild>
-      <Button type="button" variant="ghost" size="icon" aria-label="Abrir menú" className="text-primary">
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        aria-label="Abrir menú"
+        className="text-primary"
+      >
         <Icon className="size-8" />
       </Button>
     </SheetTrigger>
   )
 }
 
-const navLinks = [
-  { to: '/', label: 'Inicio' },
-  { to: '/aboutus', label: 'Acerca De' },
-  { to: '/search-products', label: 'Productos' },
-  { to: '/faq', label: 'Preguntas frecuentes' },
-] as const
-
-
 export function Header() {
   return (
     <Sheet>
       <header className="sticky top-0 z-40 flex items-center justify-between border-b bg-background px-4 py-3">
-        <Logo/>
+        <Logo />
         <Toggle />
       </header>
 
       <SheetContent side="right" className="flex flex-col">
         <SheetHeader>
           <SheetTitle>
-            <Logo/>
+            <Logo />
           </SheetTitle>
           <SheetDescription className="sr-only">
             Menú de navegación
           </SheetDescription>
         </SheetHeader>
-
-        <nav className="flex flex-col px-4">
-          {navLinks.map((item) => (
-            <SheetClose asChild key={item.to}>
-              <Link to={item.to} className="border-b py-3 text-base font-medium hover:underline decoration-foreground">
-                {item.label}
-              </Link>
-            </SheetClose>
-          ))}
-        </nav>
-
-        <div className="flex flex-col gap-2 px-4">
-          <SheetClose asChild>
-            <Button asChild variant="outline">
-              <Link to="/login">Iniciar sesión</Link>
-            </Button>
-          </SheetClose>
-          <SheetClose asChild>
-            <Button asChild variant="outline">
-              <Link to="/register-consumer"> Crear una cuenta de usuario</Link>
-            </Button>
-          </SheetClose>
-        </div>
-
-        <div className="mt-auto flex gap-2 px-4 pb-4">
-          <Button variant="outline" size="icon" aria-label="Modo oscuro" onClick = {toggleTheme}>
-            <Moon className = "dark:hidden"/>
-            <Sun className ="hidden dark:block"/>
-          </Button>
-        </div>
+        <SideBar />
+        <MainContentNav />
+        <Controls />
       </SheetContent>
     </Sheet>
   )

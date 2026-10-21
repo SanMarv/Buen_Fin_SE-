@@ -12,6 +12,7 @@ import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { NotFoundPage } from '#/components/NotFoundPage'
+import { ErrorPage } from '#/components/Errors/ErrorPage'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -40,6 +41,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   }),
   shellComponent: RootDocument,
   notFoundComponent: NotFoundPage,
+  errorComponent: ErrorPage,
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
