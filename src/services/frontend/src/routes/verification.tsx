@@ -167,7 +167,7 @@ function VerificationPage() {
                 Documentos
               </p>
               <p className="mb-5 text-sm text-muted-foreground">
-                Adjunta los documentos para verificar tu comercio.
+                Adjunta los documentos para verificar tu cuenta.
             </p>
 
               <label className="flex cursor-pointer flex-col items-center rounded-lg border-2 border-dashed border-input px-4 py-6 text-center hover:border-primary">
@@ -178,7 +178,7 @@ function VerificationPage() {
                 </span>
 
                 <span className="mt-1 text-xs text-muted-foreground">
-                  Puedes seleccionar más de un archivo
+                  Selecciona solo tus archivos .cer y .key
                 </span>
 
                 <input

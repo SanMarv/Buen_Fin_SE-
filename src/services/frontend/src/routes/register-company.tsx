@@ -4,7 +4,6 @@ import type { SubmitEvent } from 'react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { Button } from '#/components/ui/button.tsx'
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from '#/components/ui/select.tsx'
 
 export const Route = createFileRoute('/register-company')({
   component: RouteComponent,
@@ -67,14 +66,14 @@ function RouteComponent() {
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="company-rfc" className="text-sm font-semibold">
-              Nombre de la empresa <span aria-hidden="true"></span>
+              RFC de la empresa <span aria-hidden="true"></span>
             </label>
             <input
               id="company-rfc"
               type="text"
               required
               className={inputClass}
-              value={name}
+              value={RFC}
               onChange={(event) => setRFC(event.target.value)}
             />
           </div>

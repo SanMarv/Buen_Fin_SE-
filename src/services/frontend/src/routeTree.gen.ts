@@ -20,6 +20,7 @@ import { Route as RegisterJobRouteImport } from './routes/register-job'
 import { Route as RegisterLocationRouteImport } from './routes/register-location'
 import { Route as RegisterProductsRouteImport } from './routes/register-products'
 import { Route as VerificationRouteImport } from './routes/verification'
+import { Route as VerificationCompanyRouteImport } from './routes/verification-company'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as SearchProductsIndexRouteImport } from './routes/search-products/index'
 import { Route as SearchProductsPostidRouteImport } from './routes/search-products/$postid'
@@ -79,6 +80,11 @@ const VerificationRoute = VerificationRouteImport.update({
   path: '/verification',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerificationCompanyRoute = VerificationCompanyRouteImport.update({
+  id: '/verification-company',
+  path: '/verification-company',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
   path: '/wishlist',
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/register-location': typeof RegisterLocationRoute
   '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
+  '/verification-company': typeof VerificationCompanyRoute
   '/wishlist': typeof WishlistRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products/': typeof SearchProductsIndexRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/register-location': typeof RegisterLocationRoute
   '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
+  '/verification-company': typeof VerificationCompanyRoute
   '/wishlist': typeof WishlistRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products': typeof SearchProductsIndexRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/register-location': typeof RegisterLocationRoute
   '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
+  '/verification-company': typeof VerificationCompanyRoute
   '/wishlist': typeof WishlistRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products/': typeof SearchProductsIndexRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/register-location'
     | '/register-products'
     | '/verification'
+    | '/verification-company'
     | '/wishlist'
     | '/search-products/$postid'
     | '/search-products/'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/register-location'
     | '/register-products'
     | '/verification'
+    | '/verification-company'
     | '/wishlist'
     | '/search-products/$postid'
     | '/search-products'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/register-location'
     | '/register-products'
     | '/verification'
+    | '/verification-company'
     | '/wishlist'
     | '/search-products/$postid'
     | '/search-products/'
@@ -207,6 +219,7 @@ export interface RootRouteChildren {
   RegisterLocationRoute: typeof RegisterLocationRoute
   RegisterProductsRoute: typeof RegisterProductsRoute
   VerificationRoute: typeof VerificationRoute
+  VerificationCompanyRoute: typeof VerificationCompanyRoute
   WishlistRoute: typeof WishlistRoute
   SearchProductsPostidRoute: typeof SearchProductsPostidRoute
   SearchProductsIndexRoute: typeof SearchProductsIndexRoute
@@ -291,6 +304,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerificationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verification-company': {
+      id: '/verification-company'
+      path: '/verification-company'
+      fullPath: '/verification-company'
+      preLoaderRoute: typeof VerificationCompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wishlist': {
       id: '/wishlist'
       path: '/wishlist'
@@ -327,6 +347,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterLocationRoute: RegisterLocationRoute,
   RegisterProductsRoute: RegisterProductsRoute,
   VerificationRoute: VerificationRoute,
+  VerificationCompanyRoute: VerificationCompanyRoute,
   WishlistRoute: WishlistRoute,
   SearchProductsPostidRoute: SearchProductsPostidRoute,
   SearchProductsIndexRoute: SearchProductsIndexRoute,
