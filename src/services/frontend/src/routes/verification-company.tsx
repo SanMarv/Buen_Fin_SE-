@@ -42,7 +42,7 @@ function VerificationPage() {
 
   async function sendValidation(body: FormData): PromiseResult<null, ApiError> {
     try {
-      const res = await fetch(`${env.VITE_BACK_BASE}/auth/validate`, {
+      const res = await fetch(`${env.VITE_BACK_BASE}/companies/validate`, {
         method: 'PUT',
         body,
         credentials: 'include',
