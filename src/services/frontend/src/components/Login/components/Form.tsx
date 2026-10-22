@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import type { PromiseResult } from 'lib/types'
 import type { UserLoginInput } from 'lib/schemas'
 import { env } from '#/config/env'
-import { userLoginInput } from 'lib/schemas'
 import { fail, success } from 'lib/types'
 import { useChangeErrorFn, useIsUploading } from '../context'
 import { cn } from 'cn'
@@ -53,24 +52,20 @@ export default function Form({ children, ...rest }: FormProps) {
     if (isSending) return
     setIsSending(true)
     const form = new FormData(e.currentTarget)
-    const {
-      success: isValidInput,
-      data,
-      error,
-    } = userLoginInput.safeParse(Object.fromEntries(form))
+    const email = String(form.get('email') ?? '').trim()
+    const password = String(form.get('password') ?? '')
+    const data: UserLoginInput = { email, password }
     try {
-      if (!isValidInput) {
-        const errorMessges = error.issues.reduce(
-          (prev, curr) => ({ ...prev, [curr.path[0]]: curr.message }),
-          {},
-        )
-        const eleme = e.currentTarget.elements.namedItem(
-          String(error.issues[0].path[0]),
-        )
-        if (eleme instanceof HTMLElement) {
-          eleme.focus()
-        }
-        changeErros(errorMessges)
+      const emailIsMissing = !email
+      const passwordIsMissing = !password.trim()
+      changeErros({
+        email: emailIsMissing ? 'EMAIL_NOT_PROVIDED' : undefined,
+        password: passwordIsMissing ? 'PASSWORD_NOT_PROVIDED' : undefined,
+      })
+      if (emailIsMissing || passwordIsMissing) {
+        const missingField = emailIsMissing ? 'email' : 'password'
+        const element = e.currentTarget.elements.namedItem(missingField)
+        if (element instanceof HTMLElement) element.focus()
         return
       }
       const { success: wasCreated, error: errorCreating } = await SendData(data)
@@ -78,11 +73,15 @@ export default function Form({ children, ...rest }: FormProps) {
         await queryClient.invalidateQueries({ queryKey: ['me'] })
         toast.success('Login de usuario satisfactorio', { position: 'bottom-center' })
         navigate({ to: '/' })
+      } else if ([400, 401, 404].includes(errorCreating.status)) {
+        changeErros({
+          email: 'INVALID_CREDENTIALS',
+          password: 'INVALID_CREDENTIALS',
+        })
       } else {
-        toast.error(
-          `El usuario o la contraseña son incorrectos`,
-          { position: 'bottom-center' },
-        )
+        toast.error('No se pudo iniciar sesión. Intenta de nuevo.', {
+          position: 'bottom-center',
+        })
       }
     } finally {
       setIsSending(false)
@@ -91,6 +90,7 @@ export default function Form({ children, ...rest }: FormProps) {
   return (
     <form
       {...rest}
+      noValidate
       onSubmit={handleSubmit}
       className={cn(
         rest.className,

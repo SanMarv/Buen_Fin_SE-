@@ -3,6 +3,7 @@ import type { ComponentProps } from 'react'
 import styles from '../styles.module.css'
 import { cn } from 'cn'
 import { useBlurFunction, useErrorValue, useFocusFunction } from '../context'
+import { Error } from './Error'
 
 type Props = ComponentProps<'input'>
 
@@ -12,10 +13,9 @@ export function EmailField({ ...rest }: Props) {
   const onFocus = useFocusFunction('email')
   const errorCode = useErrorValue('email')
   return (
-    <label
-      className="flex h-12 items-center justify-start px-2"
-    >
+    <Error name="email" className="px-2">
       <input
+        id="input-email"
         placeholder="Email"
         {...rest}
         name="email"
@@ -31,6 +31,6 @@ export function EmailField({ ...rest }: Props) {
         onBlur={onBlur}
         onFocus={onFocus}
       />
-    </label>
+    </Error>
   )
 }

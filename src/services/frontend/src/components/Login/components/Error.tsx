@@ -5,9 +5,10 @@ import styles from '../styles.module.css'
 import { useErrorValue } from '../context'
 import { cn } from 'cn'
 
-type UserName = keyof Omit<UserLoginInput, 'email'>
+type UserName = keyof UserLoginInput
 const errors: Record<UserName, Record<string, string>> = {
   password: messages.es_password,
+  email: messages.es_email,
 }
 
 type Props = {
@@ -18,13 +19,14 @@ export function Error({ name, children, ...rest }: Props) {
   const errorMessages = errors[name]
   const errorCode = useErrorValue(name)
   const hasError = !!errorCode
+  const showMessage = hasError && !(name === 'email' && errorCode === 'INVALID_CREDENTIALS')
   return (
     <label
       htmlFor={`input-${name}`}
       className={cn(styles['error-label'], rest.className)}
       data-error={hasError}
     >
-      {hasError && (
+      {showMessage && (
         <span className={styles['error-mss']}>
           <span>{errorMessages[errorCode]}</span>
         </span>

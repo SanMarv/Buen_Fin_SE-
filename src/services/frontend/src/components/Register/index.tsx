@@ -23,11 +23,13 @@ export default function Register() {
                 name="name"
                 placeholder="Nombre"
                 autoComplete="given-name"
+                maxLength={30}
               />
               <Input
                 name="lastname"
                 placeholder="Apellido"
                 autoComplete="family-name"
+                maxLength={30}
               />
             </div>
             <PasswordInput />

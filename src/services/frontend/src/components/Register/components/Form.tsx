@@ -53,24 +53,32 @@ export default function Form({ children, ...rest }: FormProps) {
     if (isSending) return
     setIsSending(true)
     const form = new FormData(e.currentTarget)
+    const formValues = Object.fromEntries(form)
     const {
       success: isValidInput,
       data,
       error,
-    } = userRegisterInput.safeParse(Object.fromEntries(form))
+    } = userRegisterInput.safeParse(formValues)
     try {
       if (!isValidInput) {
-        const errorMessges = error.issues.reduce(
-          (prev, curr) => ({ ...prev, [curr.path[0]]: curr.message }),
-          {},
-        )
+        const errorMessages: Partial<Record<keyof UserRegisterInput, string>> = {}
+        for (const issue of error.issues) {
+          const field = issue.path[0] as keyof UserRegisterInput
+          errorMessages[field] = issue.message
+        }
+        if (!String(formValues.email).trim()) {
+          errorMessages.email = 'EMAIL_NOT_PROVIDED'
+        }
+        if (!String(formValues.password).trim()) {
+          errorMessages.password = 'PASSWORD_NOT_PROVIDED'
+        }
         const eleme = e.currentTarget.elements.namedItem(
           String(error.issues[0].path[0]),
         )
         if (eleme instanceof HTMLElement) {
           eleme.focus()
         }
-        changeErros(errorMessges)
+        changeErros(errorMessages)
         return
       }
       const { success: wasCreated, error: errorCreating } = await SendData(data)
@@ -78,6 +86,8 @@ export default function Form({ children, ...rest }: FormProps) {
         await queryClient.invalidateQueries({ queryKey: ['me'] })
         toast.success('Usuario Registrado', { position: 'bottom-center' })
         navigate({ to: '/' })
+      } else if (errorCreating.status === 409) {
+        changeErros({ email: 'EMAIL_ALREADY_USED' })
       } else {
         toast.error(
           `Error registrando el usarios status: ${errorCreating.status}`,

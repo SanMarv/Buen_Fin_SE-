@@ -41,7 +41,7 @@
 }
 .error-label .error-mss {
   grid-area: mss;
-  font-size: 9px;
+  font-size: 11px;
   order: 2;
   display: flex;
   justify-content: center;
@@ -52,6 +52,6 @@
   background-color: var(--color-destructive);
   color: white;
   border-radius: var(--radius-sm);
-  padding: 0.2rem 10px;
-  line-height: 12px;
+  padding: 0.25rem 10px;
+  line-height: 1.2;
 }

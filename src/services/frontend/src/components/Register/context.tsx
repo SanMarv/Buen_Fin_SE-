@@ -60,7 +60,13 @@ export function FormProvider({ children }: PropsWithChildren) {
       const { error } = userRegisterInput.shape[key].safeParse(
         value.target.value,
       )
-      const errorMess = error?.issues[0].message
+      const isEmpty = !value.target.value.trim()
+      const errorMess =
+        key === 'email' && isEmpty
+          ? 'EMAIL_NOT_PROVIDED'
+          : key === 'password' && isEmpty
+            ? 'PASSWORD_NOT_PROVIDED'
+            : error?.issues[0].message
       changeError((prev) => ({ ...prev, [key]: errorMess }))
     }
   }

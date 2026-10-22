@@ -1,10 +1,10 @@
-import type { ERRORS_PASSWORD } from 'lib/schemas'
+export const es_credentials = 'Mail o contraseña incorrectos'
 
-
-
-export const es_password: Record<ERRORS_PASSWORD, string> = {
-  PASSWORD_NOT_PROVIDED: 'Contraseña incorrecta',
-  PASSWORD_SHORT: 'Hace falta la contraseña',
+export const es_password = {
+  PASSWORD_NOT_PROVIDED: 'Hace falta contraseña',
+  INVALID_CREDENTIALS: es_credentials,
 }
 
-export const es_email = 'Email incorrecto'
+export const es_email: Record<string, string> = {
+  EMAIL_NOT_PROVIDED: 'Hace falta mail',
+}

@@ -5,11 +5,12 @@ import styles from '../styles.module.css'
 import { useErrorValue } from '../context'
 import { cn } from 'cn'
 
-type UserName = keyof Omit<UserRegisterInput, 'email'>
-const errors: Record<UserName, Record<string, string>> = {
+type UserName = keyof UserRegisterInput
+const errors: Record<UserName, Partial<Record<string, string>>> = {
   lastname: messages.es_lastname,
   name: messages.es_name,
   password: messages.es_password,
+  email: messages.es_email,
 }
 
 type Props = {
@@ -20,15 +21,16 @@ export function Error({ name, children, ...rest }: Props) {
   const errorMessages = errors[name]
   const errorCode = useErrorValue(name)
   const hasError = !!errorCode
+  const errorMessage = errorCode ? errorMessages[errorCode] : undefined
   return (
     <label
       htmlFor={`input-${name}`}
       className={cn(styles['error-label'], rest.className)}
       data-error={hasError}
     >
-      {hasError && (
+      {hasError && errorMessage && (
         <span className={styles['error-mss']}>
-          <span>{errorMessages[errorCode]}</span>
+          <span>{errorMessage}</span>
         </span>
       )}
       {children}

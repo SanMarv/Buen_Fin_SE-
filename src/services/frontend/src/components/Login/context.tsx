@@ -1,6 +1,5 @@
 import type { UserLoginInput } from 'lib/schemas'
 import type { FocusEvent, PropsWithChildren } from 'react'
-import { userLoginInput } from 'lib/schemas'
 import { createContext, useContext, useState } from 'react'
 
 interface Context {
@@ -57,16 +56,28 @@ export function FormProvider({ children }: PropsWithChildren) {
   const [isUploading, setUploading] = useState(false)
   const handleBlur: Context['handleBlur'] = (key) => {
     return (value) => {
-      const { error } = userLoginInput.shape[key].safeParse(
-        value.target.value,
-      )
-      const errorMess = error?.issues[0].message
+      const isEmpty = !value.target.value.trim()
+      const errorMess = isEmpty
+        ? key === 'email'
+          ? 'EMAIL_NOT_PROVIDED'
+          : 'PASSWORD_NOT_PROVIDED'
+        : undefined
       changeError((prev) => ({ ...prev, [key]: errorMess }))
     }
   }
   const handleFocus: Context['handleFocus'] = (key) => {
     return () =>
       changeError((prev) => {
+        if (
+          prev.email === 'INVALID_CREDENTIALS' ||
+          prev.password === 'INVALID_CREDENTIALS'
+        ) {
+          return {
+            ...prev,
+            email: undefined,
+            password: undefined,
+          }
+        }
         const { [key]: _, ...rest } = prev
         return rest
       })
