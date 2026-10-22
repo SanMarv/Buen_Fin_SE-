@@ -6,7 +6,7 @@ import type {
   ImageMoveUrl,
   ImageVisibilityResult,
 } from "@db/interfaces/images.interfaces.js";
-import { images, type VisibilityValue } from "@db/schema.js";
+import { images } from "@db/schema.js";
 import { and, eq } from "drizzle-orm";
 import {
   noContentError,
@@ -16,6 +16,7 @@ import {
   type NoContentResult,
   type PromiseResult,
 } from "@app/types";
+import type { VisibilityValue } from "@lib/types/products.js";
 
 export class ImageController {
   static async create(newImage: ImageCreate): ImageCreateResult {

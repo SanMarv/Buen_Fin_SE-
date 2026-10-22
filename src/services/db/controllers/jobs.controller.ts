@@ -15,7 +15,8 @@ import type {
 } from "@db/interfaces/jobs.interface.js";
 import { COMPANY_ID_KEY, JOB_ID_KEY } from "@backend/const.js";
 import type { NewJob } from "@db/interfaces/jobs.interface.js";
-import { jobs, locations, type VisibilityValue } from "@db/schema.js";
+import { jobs, locations } from "@db/schema.js";
+import type { VisibilityValue } from "@lib/types/products.js";
 import { v7 as uuid } from "uuid";
 import { and, eq } from "drizzle-orm";
 import type { Result } from "@lib/types/types.js";

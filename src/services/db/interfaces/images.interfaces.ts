@@ -1,6 +1,6 @@
 import type { PromiseResult, Result } from "@app/types";
-import type { VisibilityValue } from "@db/enums.js";
 import type { ImageRecord } from "@db/models/image.model.js";
+import type { VisibilityValue } from "@lib/types/products.js";
 export interface ProductMetadata {
   user_provided_id?: string;
 }

@@ -52,10 +52,9 @@ export function CreateProduct() {
         position: 'bottom-center',
       })
     }
-    console.log(Object.fromEntries(data))
   }
   return (
-    <Dialog open>
+    <Dialog>
       <DialogTrigger asChild>
         <MoreBtn />
       </DialogTrigger>
