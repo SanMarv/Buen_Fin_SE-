@@ -85,7 +85,7 @@ export function JobCardCompany({ job, isOwner }: { job: Job, isOwner?: boolean }
       })
 
       if (res.ok) {
-        toast.success('Trabajo eliminado correctamente')
+        toast.success('Trabajo eliminado correctamente', {position: 'bottom-center'})
         await router.invalidate()
         return
       }
