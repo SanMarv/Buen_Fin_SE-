@@ -110,12 +110,14 @@ const OtherPosts = () => {
         <a
           href={`/search-products/${v.id}`}
           key={v.id}
-          className="grid grid-rows-[1fr_auto] gap-2 h-full aspect-square"
+          className="flex flex-col gap-2 w-32 shrink-0"
         >
-          <ImageProduct
-            image={v.images[0]}
-            className="size-full rounded-md bg-neutral-500/30 object-cover "
-          />
+          <div className="aspect-square w-full overflow-hidden rounded-md bg-neutral-500/30">
+            <ImageProduct
+              image={v.images[0]}
+              className="size-full object-cover"
+            />
+          </div>
           <span className="font-semibold text-md">{v.name}</span>
         </a>
       ))}
@@ -157,25 +159,29 @@ function RouteComponent() {
         {product.images.length > 1 ? (
           <Carousel
             opts={{ loop: true }}
-            className="row-span-2 relative w-full overflow-hidden rounded-md bg-foreground/30"
-          >
+            className="row-span-2 relative w-full overflow-hidden rounded-md bg-foreground/30">
             <CarouselContent className="ml-0">
               {product.images.map((image) => (
                 <CarouselItem key={image.url} className="pl-0">
+                <div className="h-[40vh] w-full overflow-hidden bg-foreground/30">
                   <ImageProduct
                     image={image}
-                    className="h-[40vh] w-full object-contain"/>
-                </CarouselItem>
+                    className="size-full object-cover"
+                  />
+                </div>
+              </CarouselItem>
               ))}
             </CarouselContent>
             <CarouselPrevious className="left-2" />
             <CarouselNext className="right-2" />
           </Carousel>
         ) : (
-          <ImageProduct
-            image={product.images[0]}
-            className="row-span-2 bg-foreground/30 object-cover max-w-full overflow-hidden size-full rounded-md"
-          />
+          <div className="h-[40vh] w-full overflow-hidden rounded-md bg-foreground/30">
+            <ImageProduct
+              image={product.images[0]}
+              className="size-full object-cover"
+            />
+          </div>
         )}
         <div className="flex size-full flex-col gap-3">
           <h1 className="font-semibold text-3xl pt-2">{product.name}</h1>
