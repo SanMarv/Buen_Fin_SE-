@@ -148,7 +148,7 @@ function VerificationPage() {
 
           <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
             <label className="flex flex-col gap-1 text-sm font-medium text-foreground">
-              Contraseña
+              Contraseña efiel
               <span className="relative">
                 <input
                   className={`w-full rounded-xl border ${passwordError ? 'border-destructive' : 'border-input'} bg-background px-4 py-3 pr-12 text-base text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50`}

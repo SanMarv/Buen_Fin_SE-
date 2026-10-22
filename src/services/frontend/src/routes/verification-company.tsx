@@ -98,7 +98,7 @@ function VerificationPage() {
           queryClient.invalidateQueries({ queryKey: ['userVerifiedCompany'] }),
           queryClient.invalidateQueries({ queryKey: ['userCompanies'] }),
         ])
-        toast.success('Cuenta verificada', { position: 'bottom-center' })
+        toast.success('Empresa verificada', { position: 'bottom-center' })
         navigate({ to: '/' })
         return
       }
@@ -147,7 +147,7 @@ function VerificationPage() {
 
           <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
             <label className="flex flex-col gap-1 text-sm font-medium text-foreground">
-              Contraseña
+              Contraseña efiel
               <span className="relative">
                 <input
                   className={`w-full rounded-md border ${passwordError ? 'border-destructive' : 'border-input'} bg-background px-3 py-2 pr-11 text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/20`}
