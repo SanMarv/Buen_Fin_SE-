@@ -306,7 +306,7 @@ function RouteComponent() {
           <div className="flex justify-between">
             <PublishBtn
               visibility={initialValues.visibility}
-              className=""
+              productId={productId}
               type="button"
             />
             <Button type="submit" disabled={isSuccess} className="">
