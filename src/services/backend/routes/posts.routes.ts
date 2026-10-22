@@ -3,7 +3,11 @@ import type { Response, Request, NextFunction } from "express";
 import { gerPostIdSchema, getProduct } from "@backend/schemas/posts.schemas.js";
 import { ProductsController } from "@db/controllers/products.controller.js";
 import { inputValidationMiddleware } from "@backend/middleware/inputValidation.middleware.js";
-import { createProductSchema } from "@lib/schemas/produts.schema.js";
+import {
+  categoriesProductSchema,
+  createProductSchema,
+  updateProductSchema,
+} from "@lib/schemas/produts.schema.js";
 import { refreshEditMode } from "@auth/edit.middleware.js";
 import { COMPANY_ID_KEY } from "@backend/const.js";
 import type {
@@ -96,6 +100,55 @@ postsRouter.put(
         visibility,
       },
     );
+    if (!success) console.error(error);
+    return res.sendStatus(status);
+  },
+);
+
+postsRouter.put(
+  "/product/:productId",
+  protectRoute,
+  refreshEditMode,
+  refreshEditModePost,
+  inputValidationMiddleware(updateProductSchema, "newProduct"),
+  async (req, res) => {
+    const { success: isValidId, data: productId } = checkRequestParameter(
+      "productId",
+      req.params,
+    );
+    if (!isValidId)
+      return res.status(400).json({ error: "Bad format in id", status: 400 });
+    const product = res.locals.newProduct;
+    const companyId = res.locals[COMPANY_ID_KEY];
+    const { status, success, error } = await ProductsController.updateProduct({
+      companyId,
+      productId,
+      product,
+    });
+    if (!success) console.error(error);
+    return res.sendStatus(status);
+  },
+);
+
+postsRouter.put(
+  "/product/:productId/categories",
+  protectRoute,
+  refreshEditMode,
+  refreshEditModePost,
+  inputValidationMiddleware(categoriesProductSchema, "newCategories"),
+  async (req, res) => {
+    const { success: isValidId, data: productId } = checkRequestParameter(
+      "productId",
+      req.params,
+    );
+    if (!isValidId)
+      return res.status(400).json({ error: "Bad format in id", status: 400 });
+    const { categories } = res.locals.newCategories;
+    const { status, success, error } =
+      await ProductsController.updateCategories({
+        productId,
+        categories,
+      });
     if (!success) console.error(error);
     return res.sendStatus(status);
   },

@@ -1,12 +1,6 @@
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
-import {
-  JobCardCompany,
-  ProductCardProductPage,
-} from '#/components/ProductCardCompany'
-import { HorizontalScrollWithTitle } from '#/components/ui/Horizontalscroll'
 import type { CompanyPageItem } from 'lib/types'
-import { Ticket } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
 
 type Props = {
@@ -25,8 +19,7 @@ type Props = {
 //   },
 // ]
 
-export function CompanyDetail({ company, isOwner = false, children }: Props) {
-  const { products } = company
+export function CompanyDetail({ children }: Props) {
   return (
     <>
       <Header />

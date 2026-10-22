@@ -82,7 +82,7 @@ export function ProductCardProductPage({
 }
 // este ultimo botón es el que despues va a mandar a un link de la compañia
 
-export function JobCardCompany({ job }: { job: Job }) {
+export function JobCardCompany({ job }: { job: Job; isOwner?: boolean }) {
   return (
     <article className="grid grid-rows-[auto_1fr_auto] grid-cols-[minmax(1fr,25ch)] rounded-2xl bg-card p-4 shadow-sm gap-y-2">
       <div className="flex flex-col gap-y-1">

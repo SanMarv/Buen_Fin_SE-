@@ -9,6 +9,38 @@ export const PRODUCT_CREATE_ERROS = {
 };
 const filterNonCategories = (str: string): str is Category =>
   z.enum(CATEGORIES).safeParse(str).success;
+export const updateProductSchema = z
+  .object({
+    name: z.string(PRODUCT_CREATE_ERROS.not_provided).min(1).max(200),
+    description: z.string(PRODUCT_CREATE_ERROS.not_provided).min(1).max(280),
+    price: z.number(PRODUCT_CREATE_ERROS.not_provided).min(1),
+    newPrice: z.number(PRODUCT_CREATE_ERROS.not_provided).min(1),
+    categories: z
+      .string()
+      .array()
+      .transform<Category[]>((val) => val.filter<Category>(filterNonCategories))
+      .default([]),
+    link: z
+      .url(PRODUCT_CREATE_ERROS.not_provided)
+      .min(1, PRODUCT_CREATE_ERROS.not_provided)
+      .max(2045, PRODUCT_CREATE_ERROS.url_large),
+    metadata: z
+      .record(
+        z.string(PRODUCT_CREATE_ERROS.not_provided),
+        z.union(
+          [z.string().max(50), z.number().max(1_000_000_000)],
+          PRODUCT_CREATE_ERROS.metadata,
+        ),
+        PRODUCT_CREATE_ERROS.metadata,
+      )
+      .default({}),
+  })
+  .partial();
+
+export const categoriesProductSchema = z.object({
+  categories: updateProductSchema.shape.categories,
+});
+
 export const createProductSchema = z
   .object({
     name: z.string(PRODUCT_CREATE_ERROS.not_provided).min(1).max(200),

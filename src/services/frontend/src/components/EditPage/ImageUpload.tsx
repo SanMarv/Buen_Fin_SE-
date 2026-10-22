@@ -23,7 +23,6 @@ async function submitImage(id: string, body: FormData): Promise<null | string> {
       method: 'POST',
       body,
     })
-    console.log(res)
     if (res.status !== 204) return 'Error in request'
     return null
   } catch {

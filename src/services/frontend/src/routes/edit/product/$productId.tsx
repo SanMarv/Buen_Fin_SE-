@@ -1,7 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
-import type { Dispatch, SetStateAction, SubmitEvent } from 'react'
-import { XIcon } from 'lucide-react'
+import type { SubmitEvent } from 'react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { Button } from '#/components/ui/button.tsx'
@@ -12,13 +11,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '#/components/ui/select.tsx'
-import { CATEGORIES_ENUM } from 'lib/types'
-import type { CategoriesRecord, Category } from 'lib/types'
 import { fetchProduct, fetchProductSelect } from '#/lib/fetch'
 import { ApiError } from '#/components/Errors'
 import { ErrorPage } from '#/components/Errors/ErrorPage'
-import { Badge } from '#/components/ui/badge'
 import { ImagesUpload } from '#/components/EditPage/ImageUpload'
+import { updateProductSchema } from 'lib/schemas'
+import { env } from '#/config/env'
+import { PublishBtn } from '#/components/EditPage/PublishBtn'
+import {
+  CATEGORIES_LABLE,
+  CategoriesInput,
+} from '#/components/EditPage/CategoriesInput'
+import type { CategoryItem } from '#/components/EditPage/CategoriesInput'
 
 export const Route = createFileRoute('/edit/product/$productId')({
   ssr: false,
@@ -43,14 +47,6 @@ export const Route = createFileRoute('/edit/product/$productId')({
   errorComponent: ErrorPage,
 })
 
-const CATEGORIES: CategoriesRecord<string> = {
-  [CATEGORIES_ENUM['tecnologies']]: 'Tecnología',
-  [CATEGORIES_ENUM['home']]: 'Hogar',
-  [CATEGORIES_ENUM['fashion']]: 'Moda',
-  [CATEGORIES_ENUM['sports']]: 'Deportes',
-  [CATEGORIES_ENUM['appliances']]: 'Electrodomésticos',
-  [CATEGORIES_ENUM['toys']]: 'Juguetes',
-}
 const DISCOUNTS = [10, 15, 20, 25, 30, 35, 40]
 const precioNuevo = (n: number) => Math.round(n * 100) / 100
 
@@ -60,52 +56,6 @@ const inputClass =
 const triggerClass =
   'w-full rounded-xl border border-input bg-background px-4 text-base text-foreground data-[size=default]:h-12'
 
-type CategoryItem = { category: Category; name: string }
-type PropsCategoryInput = {
-  categories: CategoryItem[]
-  setCategory: Dispatch<SetStateAction<CategoryItem[]>>
-}
-function CategoriesInput({ categories, setCategory }: PropsCategoryInput) {
-  const options = Object.entries(CATEGORIES)
-    .filter(([category]) => !categories.some((c) => c.category === category))
-    .map<CategoryItem>(([k, v]) => ({ category: k as Category, name: v }))
-  const handleChange = (value: Category) => {
-    setCategory((p) => [...p, { category: value, name: CATEGORIES[value] }])
-  }
-  const handleDelete = (value: Category) => {
-    setCategory((p) => p.filter(({ category }) => category !== value))
-  }
-  return (
-    <>
-      {options.length > 0 && (
-        <Select required value={''} onValueChange={handleChange}>
-          <SelectTrigger id="product-category" className={triggerClass}>
-            <SelectValue placeholder="Selecciona una categoría" />
-          </SelectTrigger>
-          <SelectContent position="popper">
-            {options.map(({ category, name }) => (
-              <SelectItem key={category} value={category}>
-                {name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      )}
-      <div className="flex gap-2 flex-wrap max-w-full pt-2">
-        {categories.map(({ category, name }) => (
-          <Badge
-            key={category}
-            onClick={() => handleDelete(category)}
-            className="flex items-center gap-x-3 justify-center px-2 text-sm"
-          >
-            <span>{name}</span>
-            <XIcon className="size-5" />
-          </Badge>
-        ))}
-      </div>
-    </>
-  )
-}
 function RouteComponent() {
   const { initialValues, productId } = Route.useLoaderData()
   const [name, setName] = useState(initialValues.name)
@@ -116,7 +66,7 @@ function RouteComponent() {
   const initialCategories: CategoryItem[] = initialValues.categories.map(
     (v) => ({
       category: v,
-      name: CATEGORIES[v],
+      name: CATEGORIES_LABLE[v],
     }),
   )
   const [categories, setCategory] = useState<CategoryItem[]>([
@@ -138,6 +88,7 @@ function RouteComponent() {
   }
 
   function handlePercent(value: string) {
+    setIsSuccess(false)
     if (value === 'none') {
       setPercent('')
       setNewPrice(initialValues.newPrice)
@@ -155,16 +106,16 @@ function RouteComponent() {
     setPercent('')
   }
 
-  function resetForm() {
-    setName(initialValues.name)
-    setOldPrice(initialValues.price)
-    setNewPrice(initialValues.newPrice)
-    setPercent('')
-    setDescription(initialValues.description)
-    setCategory([...initialCategories])
-  }
+  // function resetForm() {
+  //   setName(initialValues.name)
+  //   setOldPrice(initialValues.price)
+  //   setNewPrice(initialValues.newPrice)
+  //   setPercent('')
+  //   setDescription(initialValues.description)
+  //   setCategory([...initialCategories])
+  // }
 
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     setIsSuccess(false)
 
@@ -172,12 +123,35 @@ function RouteComponent() {
       setFormError('El precio nuevo debe ser menor que el precio viejo.')
       return
     }
-
-    setFormError('')
-    setIsSuccess(true)
-    resetForm()
+    const {
+      data: body,
+      success,
+      error,
+    } = updateProductSchema.safeParse({
+      name,
+      description,
+      newPrice,
+      price: oldPrice,
+      categories: categories.map((v) => v.category),
+    })
+    if (!success) {
+      setFormError(error.issues[0].message)
+    } else {
+      setFormError('')
+    }
+    setIsSuccess(success)
+    if (success) {
+      await fetch(`${env.VITE_BACK_BASE}/product/${productId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        method: 'PUT',
+        body: JSON.stringify(body),
+      })
+    }
+    // resetForm()
   }
-
   return (
     <>
       <Header />
@@ -205,7 +179,10 @@ function RouteComponent() {
               className={inputClass}
               placeholder="Ej. Audífonos inalámbricos"
               value={name}
-              onChange={(event) => setName(event.target.value)}
+              onChange={(event) => {
+                setName(event.target.value)
+                setIsSuccess(false)
+              }}
             />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -224,7 +201,10 @@ function RouteComponent() {
               className={inputClass}
               placeholder="0.00"
               value={oldPrice}
-              onChange={(event) => handleOldPrice(Number(event.target.value))}
+              onChange={(event) => {
+                handleOldPrice(Number(event.target.value))
+                setIsSuccess(false)
+              }}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -265,7 +245,10 @@ function RouteComponent() {
                 className={inputClass}
                 placeholder="0"
                 value={newPrice}
-                onChange={(event) => handleNewPrice(Number(event.target.value))}
+                onChange={(event) => {
+                  handleNewPrice(Number(event.target.value))
+                  setIsSuccess(false)
+                }}
               />
             </div>
           </div>
@@ -286,7 +269,10 @@ function RouteComponent() {
               rows={1}
               className={`${inputClass} resize-none overflow-hidden`}
               value={description}
-              onChange={(event) => setDescription(event.target.value)}
+              onChange={(event) => {
+                setDescription(event.target.value)
+                setIsSuccess(false)
+              }}
               onInput={(event) => {
                 const textarea = event.currentTarget
                 textarea.style.height = 'auto'
@@ -307,6 +293,7 @@ function RouteComponent() {
               Categoría <span aria-hidden="true"></span>
             </label>
             <CategoriesInput
+              productId={productId}
               categories={categories}
               setCategory={setCategory}
             />
@@ -316,12 +303,16 @@ function RouteComponent() {
               {formError}
             </p>
           )}
-          {isSuccess && (
-            <p role="status" className="text-sm font-semibold text-success">
-              Producto registrado correctamente.
-            </p>
-          )}
-          <Button type="submit">Registrar producto</Button>
+          <div className="flex justify-between">
+            <PublishBtn
+              visibility={initialValues.visibility}
+              className=""
+              type="button"
+            />
+            <Button type="submit" disabled={isSuccess} className="">
+              {isSuccess ? 'Guardado' : 'Guardar'}
+            </Button>
+          </div>
         </form>
       </main>
 
