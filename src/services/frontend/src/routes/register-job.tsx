@@ -31,6 +31,7 @@ function RouteComponent() {
   const [estado, setEstado] = useState<State | null>(null)
   const [ciudad, setCiudad] = useState('')
   const [description, setDescription] = useState('')
+  const [link, setLink] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [isSuccess, setIsSuccess] = useState(false)
@@ -47,6 +48,7 @@ function RouteComponent() {
     setEstado(null)
     setCiudad('')
     setDescription('')
+    setLink('')
   }
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
@@ -59,6 +61,7 @@ function RouteComponent() {
       name,
       description,
       location: { city: ciudad, state: estado as State },
+      link,
     }
     try {
       const response = await fetch('/api/jobs', {
@@ -177,6 +180,20 @@ function RouteComponent() {
                 textarea.style.height = `${textarea.scrollHeight}px`
               }}
             />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="job-link" className="text-sm font-semibold">
+              Enlace para postularse <span aria-hidden="true"></span>
+            </label>
+            <input
+              id="job-link"
+              type="url"
+              required
+              className={inputClass}
+              placeholder="https://ejemplo.com/vacante"
+              value={link}
+              onChange={(event) => setLink(event.target.value)}/>
           </div>
 
           {submitError && (
