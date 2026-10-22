@@ -50,6 +50,8 @@ export interface CompaniesSelectUser {
   [COMPANY_ID_KEY]: string;
   name: string;
   profile_picture: string;
+  description: string;
+  rfc: string;
   certification: {
     rfc: string;
     legal_name: string;

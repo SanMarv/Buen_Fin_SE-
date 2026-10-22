@@ -258,6 +258,8 @@ export class CompaniesController {
           [COMPANY_ID_KEY]: companies.id,
           name: companies.name,
           profile_picture: companies.profile_picture,
+          description: companies.description,
+          rfc: companies.rfc,
           certification: {
             rfc: validation_table.rfc,
             legal_name: validation_table.name,

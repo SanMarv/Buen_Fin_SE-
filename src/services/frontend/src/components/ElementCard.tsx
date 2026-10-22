@@ -18,11 +18,8 @@ export type Branch = {
 export type BusinessCardItem = {
   companyId: string
   name: string
-  certification: {
-    rfc: string
-    legal_name: string
-    valid_until: string
-  } | null
+  description: string
+  rfc: string
 }
 
 const money = new Intl.NumberFormat(
@@ -108,8 +105,12 @@ export function BusinessCard({ company }: { company: BusinessCardItem }) {
   return (
     <article className="flex flex-col rounded-2xl bg-card p-4">
       <h2 className="truncate text-base font-bold">{company.name}</h2>
-      <p className="mt-1 text-xs text-muted-foreground">
-        {company.certification ? 'Empresa verificada' : 'Verificación pendiente'}
+      <p className="mt-2 text-sm text-muted-foreground">
+        {company.description || 'Sin descripción'}
+      </p>
+      <p className="mt-2 text-xs text-muted-foreground">
+        <span className="font-semibold text-foreground">RFC: </span>
+        {company.rfc}
       </p>
       <Button
         type="button"
