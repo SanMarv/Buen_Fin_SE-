@@ -14,6 +14,4 @@ This service has all the related pacakages and orquestation for the image upload
 
 Is important to check for the .env.example to provide the correct enviroment for this service. Also check the config file for any further customisation of it.
 
-#### Developed by:
 
-Nicolas Amaya
