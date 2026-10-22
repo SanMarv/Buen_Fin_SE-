@@ -22,6 +22,13 @@ import {
   BreadcrumbSeparator,
 } from '#/components/ui/breadcrumb'
 import { ErrorPage } from '#/components/Errors/ErrorPage'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '#/components/ui/carousel'
 
 const CATEGORIES: CategoriesRecord<string> = {
   [CATEGORIES_ENUM['tecnologies']]: 'Tecnología',
@@ -147,10 +154,29 @@ function RouteComponent() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <ImageProduct
-          image={product.images[0]}
-          className="row-span-2 bg-foreground/30 object-cover max-w-full overflow-hidden size-full rounded-md"
-        />
+        {product.images.length > 1 ? (
+          <Carousel
+            opts={{ loop: true }}
+            className="row-span-2 relative w-full overflow-hidden rounded-md bg-foreground/30"
+          >
+            <CarouselContent className="ml-0">
+              {product.images.map((image) => (
+                <CarouselItem key={image.url} className="pl-0">
+                  <ImageProduct
+                    image={image}
+                    className="h-[40vh] w-full object-contain"/>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2" />
+            <CarouselNext className="right-2" />
+          </Carousel>
+        ) : (
+          <ImageProduct
+            image={product.images[0]}
+            className="row-span-2 bg-foreground/30 object-cover max-w-full overflow-hidden size-full rounded-md"
+          />
+        )}
         <div className="flex size-full flex-col gap-3">
           <h1 className="font-semibold text-3xl pt-2">{product.name}</h1>
           <Link
