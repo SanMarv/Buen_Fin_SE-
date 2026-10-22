@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { fetchCompany, fetchDrafts, fetchIsOwner } from '#/lib/fetch'
 import { CompanyDetail } from '#/sections/CompanyDetail'
 import { HorizontalScroll } from '#/components/ui/Horizontalscroll'
@@ -31,6 +31,7 @@ function BusinessProfile() {
   const [products, updateProducts] = useState(company.products)
   const [clientDraft, updateDrafts] = useState(drafts)
   const editProduct = useEditProduct()
+  const navigate = useNavigate()
   return (
     <CompanyDetail company={company} isOwner>
       <section className="relative overflow-hidden bg-primary px-4 py-8">
@@ -118,11 +119,18 @@ function BusinessProfile() {
         <section>
           <SectionHeader>
             <SectionHeader.H2>Vacantes</SectionHeader.H2>
-            <MoreBtn />
+            <MoreBtn
+              aria-label="Registrar trabajo"
+              onClick={() =>
+                navigate({
+                  to: '/register-job',
+                })
+              }
+            />
           </SectionHeader>
           <HorizontalScroll>
             {company.jobs.map((job) => (
-              <JobCardCompany job={job} key={job.id} />
+              <JobCardCompany job={job} key={job.id} isOwner />
             ))}
           </HorizontalScroll>
         </section>

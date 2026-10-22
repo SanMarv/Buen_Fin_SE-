@@ -18,13 +18,14 @@ import {
   category_product,
   products,
   categories as categories_table,
+  images,
 } from "@db/schema.js";
 import type { NewProduct } from "@lib/schemas/produts.schema.js";
 import { COMPANY_ID_KEY } from "@backend/const.js";
 import { v7 as uuid } from "uuid";
 import type { ProductsRecord } from "@db/models/products.model.js";
-import { and, eq, type InferInsertModel } from "drizzle-orm";
-import type { VisibilityValue } from "@db/enums.js";
+import { and, eq, inArray, type InferInsertModel } from "drizzle-orm";
+import type { VisibilityValue } from "@lib/types/products.js";
 import { imageProducts } from "@db/schema.js";
 import type { Category } from "@lib/types/categories.js";
 
@@ -165,6 +166,18 @@ export class ProductsController {
         .where(
           and(eq(products.id, productId), eq(products.company_id, companyId)),
         );
+      await db
+        .update(images)
+        .set({ visibility })
+        .where(
+          inArray(
+            images.id,
+            db
+              .select({ id: imageProducts.image_id })
+              .from(imageProducts)
+              .where(eq(imageProducts.product_id, productId)),
+          ),
+        );
       return successNoContent();
     } catch {
       return noContentError({
@@ -173,6 +186,66 @@ export class ProductsController {
       });
     }
   }
+
+  static async updateProduct(update: {
+    productId: string;
+    [COMPANY_ID_KEY]: string;
+    product: Partial<NewProduct>;
+  }): Promise<NoContentResult> {
+    const { productId, product } = update;
+    const companyId = update[COMPANY_ID_KEY];
+    try {
+      await db
+        .update(products)
+        .set(product)
+        .where(
+          and(eq(products.id, productId), eq(products.company_id, companyId)),
+        )
+        .returning();
+      return successNoContent();
+    } catch {
+      return noContentError({
+        error: "Error trying to update product",
+        status: 500,
+      });
+    }
+  }
+
+  static async updateCategories(update: {
+    productId: string;
+    categories: NewProduct["categories"];
+  }): Promise<NoContentResult> {
+    const { productId, categories } = update;
+    try {
+      await db.transaction(async (tx) => {
+        await tx
+          .delete(category_product)
+          .where(eq(category_product.product_id, productId));
+        if (categories.length <= 0) return;
+        const categoriesIds = await tx
+          .select({ id: categories_table.id })
+          .from(categories_table)
+          .where(inArray(categories_table.name, categories));
+        type Inserting = InferInsertModel<typeof category_product>;
+        const inserting = categoriesIds.map<Inserting>(
+          ({ id: categoryId }) => ({
+            id: uuid(),
+            product_id: productId,
+            category_id: categoryId,
+          }),
+        );
+        await tx.insert(category_product).values(inserting);
+      });
+      return successNoContent();
+    } catch (e) {
+      console.error(e);
+      return noContentError({
+        error: "Error trying to update product",
+        status: 500,
+      });
+    }
+  }
+
   static async getProductByID(data: GetProductByIdInput): GetProductQueryOne {
     try {
       const result = await db.query.products.findFirst({

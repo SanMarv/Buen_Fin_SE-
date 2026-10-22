@@ -1,9 +1,7 @@
 import { CATEGORIES } from "@lib/types/categories.js";
 import { pgEnum } from "drizzle-orm/pg-core";
+import { visibilityValues } from "@lib/types/products.js";
 
-export const visibilityValues = ["PUBLIC", "PRIVATE", "SUSPENDED"] as const;
-
-export type VisibilityValue = (typeof visibilityValues)[number];
 export const VISIBILITY = {
   public: visibilityValues[0],
   private: visibilityValues[1],

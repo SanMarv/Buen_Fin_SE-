@@ -1,18 +1,7 @@
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
-import {
-  JobCardCompany,
-  ProductCardProductPage,
-} from '#/components/ProductCardCompany'
-<<<<<<< HEAD
-import { HorizontalScroll } from '#/components/ui/Horizontalscroll'
 import { Toaster } from '#/components/ui/sonner'
-import { Link } from '@tanstack/react-router'
-=======
-import { HorizontalScrollWithTitle } from '#/components/ui/Horizontalscroll'
->>>>>>> 5480fd0 (feat(upload): adding preliminary upload of images)
 import type { CompanyPageItem } from 'lib/types'
-import { BadgeCheck, ShieldAlert, Ticket } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
 
 type Props = {
@@ -31,8 +20,7 @@ type Props = {
 //   },
 // ]
 
-export function CompanyDetail({ company, isOwner = false, children }: Props) {
-  const { products } = company
+export function CompanyDetail({ children }: Props) {
   return (
     <>
       <Header />
@@ -54,7 +42,7 @@ export function CompanyDetail({ company, isOwner = false, children }: Props) {
         </section>
         */}
       </main>
-      <Toaster/>
+      <Toaster />
       <Footer />
     </>
   )
