@@ -12,6 +12,7 @@ import { MoreBtn } from '#/components/EditPage/MoreBtn'
 import { useEditProduct } from '#/components/EditPage/useEdtiProduct'
 import { DeletePost } from '#/components/EditPage/DeletePost'
 import { useState } from 'react'
+import { CreateProduct } from '#/components/CreateProduct'
 
 export const Route = createFileRoute('/edit/$companyId')({
   shouldReload: true,
@@ -92,7 +93,7 @@ function BusinessProfile() {
         <section>
           <SectionHeader>
             <SectionHeader.H2>Borradores</SectionHeader.H2>
-            <MoreBtn />
+            <CreateProduct />
           </SectionHeader>
           <HorizontalScroll>
             {clientDraft.map((product) => (

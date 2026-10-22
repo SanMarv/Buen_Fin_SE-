@@ -1,0 +1,11 @@
+.lable {
+  display: flex;
+  flex-direction: column;
+}
+.lable span {
+  font-weight: 300;
+  font-size: 18px;
+}
+.lable input {
+  border: var(--color-muted-foreground) 1px solid;
+}
