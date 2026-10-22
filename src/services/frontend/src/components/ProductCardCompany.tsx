@@ -5,6 +5,7 @@ import type { Job, ProductPageItem } from 'lib/types'
 import { env } from '#/config/env'
 import { toast } from 'sonner'
 import { errorSchema } from 'lib/schemas'
+import type { ComponentProps } from 'react'
 
 const money = new Intl.NumberFormat(
   'es-MX', // herramienta para poner formato de dinero
@@ -14,23 +15,15 @@ const money = new Intl.NumberFormat(
     maximumFractionDigits: 0, // le quita los centavos
   },
 )
-
-// se recibe el producto y se checa que tenga el formato correcto
-export function ProductCardCompany({
-  product,
-}: {
+type Props = {
   product: Omit<ProductPageItem, 'company'>
-}) {
-  const navigate = useNavigate()
+} & ComponentProps<'article'>
+// se recibe el producto y se checa que tenga el formato correcto
+export function ProductCardCompany({ product, ...rest }: Props) {
   return (
     <article
       className="flex flex-col rounded-2xl bg-card p-2.5 cursor-pointer"
-      onClick={() =>
-        navigate({
-          to: '/search-products/$postid',
-          params: { postid: product.id },
-        })
-      }
+      {...rest}
     >
       {product.images.length > 0 ? (
         <img
@@ -71,21 +64,48 @@ export function ProductCardCompany({
     </article>
   )
 }
+
+export const useNavigateProductPage = (
+  product: Omit<ProductPageItem, 'company'>,
+) => {
+  const navigate = useNavigate()
+  return () => {
+    navigate({
+      to: '/search-products/$postid',
+      params: { postid: product.id },
+    })
+  }
+}
+export function ProductCardProductPage({
+  product,
+  ...rest
+}: Omit<Props, 'onClick'>) {
+  const nav = useNavigateProductPage(product)
+  return <ProductCardCompany product={product} onClick={nav} {...rest} />
+}
 // este ultimo botón es el que despues va a mandar a un link de la compañia
 
-export function JobCardCompany({ job, isOwner }: { job: Job, isOwner?: boolean }) {
-  const router = useRouter();
-  const navigate = useNavigate();
+export function JobCardCompany({
+  job,
+  isOwner,
+}: {
+  job: Job
+  isOwner?: boolean
+}) {
+  const router = useRouter()
+  const navigate = useNavigate()
 
   async function handleDelete() {
     try {
       const res = await fetch(`${env.VITE_BACK_BASE}/jobs/${job.id}`, {
         method: 'DELETE',
-        credentials: 'include'
+        credentials: 'include',
       })
 
       if (res.ok) {
-        toast.success('Trabajo eliminado correctamente', {position: 'bottom-center'})
+        toast.success('Trabajo eliminado correctamente', {
+          position: 'bottom-center',
+        })
         await router.invalidate()
         return
       }
@@ -95,28 +115,35 @@ export function JobCardCompany({ job, isOwner }: { job: Job, isOwner?: boolean }
 
       switch (res.status) {
         case 401:
-          toast.error('Inicia sesión para poder eliminar un trabajo', { position: 'bottom-center' })
+          toast.error('Inicia sesión para poder eliminar un trabajo', {
+            position: 'bottom-center',
+          })
           navigate({ to: '/login' })
           return
         case 403:
           if (message === 'Unauthorized') {
-            toast.error('Inicia sesión para poder eliminar un puesto', { position: 'bottom-center' })
+            toast.error('Inicia sesión para poder eliminar un puesto', {
+              position: 'bottom-center',
+            })
             navigate({ to: '/login' })
-          }
-          else if (message === 'Prohibited') {
-            toast.error('Inicia sesión para poder eliminar un puesto', { position: 'bottom-center' })
+          } else if (message === 'Prohibited') {
+            toast.error('Inicia sesión para poder eliminar un puesto', {
+              position: 'bottom-center',
+            })
             navigate({ to: `/business-profile/${job.id}` })
-          }
-          else {
-            toast.error('Inicia sesión para poder eliminar un puesto', { position: 'bottom-center' })
+          } else {
+            toast.error('Inicia sesión para poder eliminar un puesto', {
+              position: 'bottom-center',
+            })
           }
           return
         default:
-          toast.error('No se pudo eliminar el puesto', { position: 'bottom-center' })
+          toast.error('No se pudo eliminar el puesto', {
+            position: 'bottom-center',
+          })
           return
       }
-    }
-    catch {
+    } catch {
       toast.error('Error de conexión', { position: 'bottom-center' })
     }
   }
@@ -136,19 +163,19 @@ export function JobCardCompany({ job, isOwner }: { job: Job, isOwner?: boolean }
           className="mt-4 w-full border-primary font-bold text-primary hover:bg-primary hover:text-primary-foreground"
           onClick={handleDelete}
         >
-            Eliminar
+          Eliminar
         </Button>
-      ):(
-      <Button
-        type="button"
-        variant="outline"
-        className="mt-4 w-full border-primary font-bold text-primary hover:bg-primary hover:text-primary-foreground"
-        asChild
-      >
-        <a href={job.link} target="_blank">
-          Ver detalles
-        </a>
-      </Button>
+      ) : (
+        <Button
+          type="button"
+          variant="outline"
+          className="mt-4 w-full border-primary font-bold text-primary hover:bg-primary hover:text-primary-foreground"
+          asChild
+        >
+          <a href={job.link} target="_blank">
+            Ver detalles
+          </a>
+        </Button>
       )}
     </article>
   )

@@ -152,6 +152,7 @@ export class CompaniesController {
           },
           where: {
             company_id: id,
+            visibility: "PUBLIC",
           },
           with: {
             images: {

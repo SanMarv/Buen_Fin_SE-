@@ -21,6 +21,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '#/components/ui/breadcrumb'
+import { ErrorPage } from '#/components/Errors/ErrorPage'
 
 const CATEGORIES: CategoriesRecord<string> = {
   [CATEGORIES_ENUM['tecnologies']]: 'Tecnología',
@@ -52,6 +53,7 @@ export const Route = createFileRoute('/search-products/$postid')({
   },
   component: RouteComponent,
   notFoundComponent: Error,
+  errorComponent: ErrorPage,
 })
 
 function Error() {

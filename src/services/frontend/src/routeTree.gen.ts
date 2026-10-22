@@ -18,13 +18,13 @@ import { Route as RegisterCompanyRouteImport } from './routes/register-company'
 import { Route as RegisterConsumerRouteImport } from './routes/register-consumer'
 import { Route as RegisterJobRouteImport } from './routes/register-job'
 import { Route as RegisterLocationRouteImport } from './routes/register-location'
-import { Route as RegisterProductsRouteImport } from './routes/register-products'
 import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as VerificationCompanyRouteImport } from './routes/verification-company'
 import { Route as BusinessProfileCompanyIdRouteImport } from './routes/business-profile/$companyId'
 import { Route as EditCompanyIdRouteImport } from './routes/edit/$companyId'
 import { Route as SearchProductsIndexRouteImport } from './routes/search-products/index'
 import { Route as SearchProductsPostidRouteImport } from './routes/search-products/$postid'
+import { Route as EditProductProductIdRouteImport } from './routes/edit/product/$productId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -71,11 +71,6 @@ const RegisterLocationRoute = RegisterLocationRouteImport.update({
   path: '/register-location',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RegisterProductsRoute = RegisterProductsRouteImport.update({
-  id: '/register-products',
-  path: '/register-products',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const VerificationRoute = VerificationRouteImport.update({
   id: '/verification',
   path: '/verification',
@@ -107,6 +102,11 @@ const SearchProductsPostidRoute = SearchProductsPostidRouteImport.update({
   path: '/search-products/$postid',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EditProductProductIdRoute = EditProductProductIdRouteImport.update({
+  id: '/edit/product/$productId',
+  path: '/edit/product/$productId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -118,13 +118,13 @@ export interface FileRoutesByFullPath {
   '/register-consumer': typeof RegisterConsumerRoute
   '/register-job': typeof RegisterJobRoute
   '/register-location': typeof RegisterLocationRoute
-  '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
   '/verification-company': typeof VerificationCompanyRoute
   '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
   '/edit/$companyId': typeof EditCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products/': typeof SearchProductsIndexRoute
+  '/edit/product/$productId': typeof EditProductProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -136,13 +136,13 @@ export interface FileRoutesByTo {
   '/register-consumer': typeof RegisterConsumerRoute
   '/register-job': typeof RegisterJobRoute
   '/register-location': typeof RegisterLocationRoute
-  '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
   '/verification-company': typeof VerificationCompanyRoute
   '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
   '/edit/$companyId': typeof EditCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products': typeof SearchProductsIndexRoute
+  '/edit/product/$productId': typeof EditProductProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -155,13 +155,13 @@ export interface FileRoutesById {
   '/register-consumer': typeof RegisterConsumerRoute
   '/register-job': typeof RegisterJobRoute
   '/register-location': typeof RegisterLocationRoute
-  '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
   '/verification-company': typeof VerificationCompanyRoute
   '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
   '/edit/$companyId': typeof EditCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
   '/search-products/': typeof SearchProductsIndexRoute
+  '/edit/product/$productId': typeof EditProductProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -175,13 +175,13 @@ export interface FileRouteTypes {
     | '/register-consumer'
     | '/register-job'
     | '/register-location'
-    | '/register-products'
     | '/verification'
     | '/verification-company'
     | '/business-profile/$companyId'
     | '/edit/$companyId'
     | '/search-products/$postid'
     | '/search-products/'
+    | '/edit/product/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -193,13 +193,13 @@ export interface FileRouteTypes {
     | '/register-consumer'
     | '/register-job'
     | '/register-location'
-    | '/register-products'
     | '/verification'
     | '/verification-company'
     | '/business-profile/$companyId'
     | '/edit/$companyId'
     | '/search-products/$postid'
     | '/search-products'
+    | '/edit/product/$productId'
   id:
     | '__root__'
     | '/'
@@ -211,13 +211,13 @@ export interface FileRouteTypes {
     | '/register-consumer'
     | '/register-job'
     | '/register-location'
-    | '/register-products'
     | '/verification'
     | '/verification-company'
     | '/business-profile/$companyId'
     | '/edit/$companyId'
     | '/search-products/$postid'
     | '/search-products/'
+    | '/edit/product/$productId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -230,13 +230,13 @@ export interface RootRouteChildren {
   RegisterConsumerRoute: typeof RegisterConsumerRoute
   RegisterJobRoute: typeof RegisterJobRoute
   RegisterLocationRoute: typeof RegisterLocationRoute
-  RegisterProductsRoute: typeof RegisterProductsRoute
   VerificationRoute: typeof VerificationRoute
   VerificationCompanyRoute: typeof VerificationCompanyRoute
   BusinessProfileCompanyIdRoute: typeof BusinessProfileCompanyIdRoute
   EditCompanyIdRoute: typeof EditCompanyIdRoute
   SearchProductsPostidRoute: typeof SearchProductsPostidRoute
   SearchProductsIndexRoute: typeof SearchProductsIndexRoute
+  EditProductProductIdRoute: typeof EditProductProductIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -304,13 +304,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterLocationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/register-products': {
-      id: '/register-products'
-      path: '/register-products'
-      fullPath: '/register-products'
-      preLoaderRoute: typeof RegisterProductsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/verification': {
       id: '/verification'
       path: '/verification'
@@ -353,6 +346,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchProductsPostidRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/edit/product/$productId': {
+      id: '/edit/product/$productId'
+      path: '/edit/product/$productId'
+      fullPath: '/edit/product/$productId'
+      preLoaderRoute: typeof EditProductProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -366,13 +366,13 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterConsumerRoute: RegisterConsumerRoute,
   RegisterJobRoute: RegisterJobRoute,
   RegisterLocationRoute: RegisterLocationRoute,
-  RegisterProductsRoute: RegisterProductsRoute,
   VerificationRoute: VerificationRoute,
   VerificationCompanyRoute: VerificationCompanyRoute,
   BusinessProfileCompanyIdRoute: BusinessProfileCompanyIdRoute,
   EditCompanyIdRoute: EditCompanyIdRoute,
   SearchProductsPostidRoute: SearchProductsPostidRoute,
   SearchProductsIndexRoute: SearchProductsIndexRoute,
+  EditProductProductIdRoute: EditProductProductIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

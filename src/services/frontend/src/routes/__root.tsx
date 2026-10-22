@@ -48,6 +48,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <head>
+        <link rel="icon" type="image/png" href="/favicon.png" />
         <HeadContent />
       </head>
       <body>
