@@ -24,12 +24,20 @@ function VerificationPage() {
   const queryClient = useQueryClient()
   const [isLoading, setIsLoading] = useState(false)
   const [password, setPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [files, setFiles] = useState<File[]>([])
+  const [fileError, setFileError] = useState('')
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const selectedFiles = Array.from(event.currentTarget.files ?? [])
-    setFiles((current) => [...current, ...selectedFiles])
+    const validFiles = selectedFiles.filter((file) => {
+      const extension = file.name.split('.').pop()?.toLowerCase()
+      return extension === 'cer' || extension === 'key'
+    })
+    const hasInvalidFiles = validFiles.length !== selectedFiles.length
+    setFiles((current) => [...current, ...validFiles])
+    setFileError(hasInvalidFiles ? 'Archivo no válido. Solo se permiten archivos .cer y .key.' : '' )
     event.currentTarget.value = ''
   }
 
@@ -38,9 +46,6 @@ function VerificationPage() {
   }
 
   const getExt = (file: File) => file.name.split('.').pop()?.toLowerCase()
-  const count = (ext: string) => files.filter((f) => getExt(f) === ext).length
-  const hasValidFiles =
-    files.length === 2 && count('cer') === 1 && count('key') === 1
 
   async function sendValidation(body: FormData): PromiseResult<null, ApiError> {
     try {
@@ -69,10 +74,15 @@ function VerificationPage() {
     if (isLoading) return
     const cer = files.find((f) => getExt(f) === 'cer')
     const key = files.find((f) => getExt(f) === 'key')
+    const missingPassword = !password.trim()
+    const missingFiles = !cer || !key || files.length !== 2
 
-    if (!cer || !key) {
-      return
+    setPasswordError(missingPassword ? 'Hace falta contraseña' : '')
+    if (missingFiles && !fileError) {
+      setFileError('Este campo es necesario; adjunta un archivo .cer y uno .key.')
     }
+    if (missingPassword || missingFiles) return
+    setFileError('')
 
     const body = new FormData()
     body.append('cer', cer)
@@ -135,19 +145,25 @@ function VerificationPage() {
             Verificación de empresa
           </h1>
 
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
             <label className="flex flex-col gap-1 text-sm font-medium text-foreground">
               Contraseña
               <span className="relative">
                 <input
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 pr-11 text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/20"
+                  className={`w-full rounded-md border ${passwordError ? 'border-destructive' : 'border-input'} bg-background px-3 py-2 pr-11 text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/20`}
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   autoComplete="current-password"
                   placeholder="Contraseña"
                   value={password}
-                  onChange={(event) => setPassword(event.currentTarget.value)}
-                  required
+                  onBlur={() => {
+                    if (!password.trim()) setPasswordError('Hace falta contraseña')
+                  }}
+                  onChange={(event) => {
+                    const value = event.currentTarget.value
+                    setPassword(value)
+                    if (value.trim()) setPasswordError('')
+                  }}
                 />
 
                 <Button
@@ -168,6 +184,13 @@ function VerificationPage() {
                 </Button>
               </span>
             </label>
+            {passwordError && (
+              <p role="alert" className="flex justify-center text-[11px] font-medium">
+                <span className="rounded-full bg-destructive px-[10px] py-[3px] leading-[1.2] text-center text-white">
+                  {passwordError}
+                </span>
+              </p>
+            )}
 
             <div>
               <p className="mb-1 text-sm font-medium text-foreground">
@@ -193,9 +216,18 @@ function VerificationPage() {
                   type="file"
                   name="documents"
                   multiple
+                  aria-invalid={!!fileError}
                   onChange={handleFileChange}
                 />
               </label>
+
+              {fileError && (
+                <p role="alert" className="mt-2 flex justify-center text-[11px] font-medium">
+                  <span className="rounded-full bg-destructive px-[10px] py-[3px] leading-[1.2] text-center text-white">
+                    {fileError}
+                  </span>
+                </p>
+              )}
 
               {files.length > 0 && (
                 <ul className="mt-3 space-y-2">
@@ -228,7 +260,7 @@ function VerificationPage() {
             <Button
               className="mt-1 w-full"
               type="submit"
-              disabled={!password || !hasValidFiles || isLoading}
+              disabled={isLoading}
             >
               {isLoading && <Spinner />}
               {isLoading ? 'Validando…' : 'Enviar'}
