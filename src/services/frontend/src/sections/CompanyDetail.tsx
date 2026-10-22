@@ -5,8 +5,10 @@ import {
   ProductCardCompany,
 } from '#/components/ProductCardCompany'
 import { HorizontalScroll } from '#/components/ui/Horizontalscroll'
+import { Toaster } from '#/components/ui/sonner'
+import { Link } from '@tanstack/react-router'
 import type { CompanyPageItem } from 'lib/types'
-import { Ticket } from 'lucide-react'
+import { BadgeCheck, ShieldAlert, Ticket } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
 
 type Props = {
@@ -58,6 +60,22 @@ export function CompanyDetail({ company, isOwner = false, children }: Props) {
               <Ticket className="size-4 text-primary" />
               Ha participado 3 veces en el sorteo
             </p>
+            {company.isValidated ? (
+              <p className='inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-xs font-bold'>
+                <BadgeCheck className='size-4 text-primary' />
+                Empresa Verificada
+              </p>
+            ) : (
+                isOwner && (
+                  <Link to='/verification-company'
+                    className='inline-flex items-center gap-2
+                    rounded-full border border-primary px-3 py-1.5
+                    text-xs font-bold text-primary hover:bg-primary
+                    hover:text-primary-foreground'>
+                    <ShieldAlert className='size-4'/>
+                    Verificar empresa</Link>
+                )
+            )}
           </div>
         </section>
 
@@ -106,6 +124,7 @@ export function CompanyDetail({ company, isOwner = false, children }: Props) {
         </section>
         */}
       </main>
+      <Toaster/>
       <Footer />
     </>
   )

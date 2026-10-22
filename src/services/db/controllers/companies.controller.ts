@@ -122,6 +122,7 @@ export class CompaniesController {
             name: companies.name,
             profile_picture: companies.profile_picture,
             description: companies.description,
+            validation_id: companies.validation_id,
           })
           .from(companies)
           .where(eq(companies.id, id));
@@ -181,6 +182,7 @@ export class CompaniesController {
             newPrice: v.newPrice,
             price: v.price,
           })),
+          isValidated: company.validation_id !== null,
         };
         return values;
       });

@@ -1,16 +1,13 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import {useState } from 'react'
 import type { SubmitEvent } from 'react'
 import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { Button } from '#/components/ui/button.tsx'
-import { errorSchema } from 'lib/schemas'
-import type { ApiError } from 'lib/schemas'
-import { fail, success } from 'lib/types'
-import type { PromiseResult } from 'lib/types'
+import { errorSchema, type ApiError } from '../../../../lib/schemas/errors.schema'
+import { fail, success, type PromiseResult } from '../../../../lib/types/generics'
 import { env } from '#/config/env'
 import { toast } from 'sonner'
-import { Toaster } from '#/components/ui/sonner'
 
 export const Route = createFileRoute('/register-company')({
   component: RouteComponent,
@@ -26,11 +23,7 @@ function RouteComponent() {
   const [description, setDescription] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  async function sendData(body: {
-    name: string
-    rfc: string
-    description: string
-  }): PromiseResult<{ id: string }, ApiError> {
+  async function sendData(body: { name: string, rfc: string, description: string }): PromiseResult<{id: string}, ApiError>{
     try {
       const json_body = JSON.stringify(body)
       const res = await fetch(`${env.VITE_BACK_BASE}/companies/`, {
@@ -54,22 +47,25 @@ function RouteComponent() {
     }
   }
 
-  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>){
     event.preventDefault()
     if (isSubmitting) return
 
-    const body = { name: name, description: description, rfc: RFC }
+    const body = {'name': name, 'description': description, 'rfc': RFC}
 
     setIsSubmitting(true)
 
     try {
-      const { success: ok, data, error } = await sendData(body)
+      const { success: ok, data,  error } = await sendData(body)
       if (ok) {
         toast.success('Empresa registrada', { position: 'bottom-center' })
-        navigate({
-          to: '/business-profile/$companyId',
-          params: { companyId: data.id },
-        })
+        navigate(
+          {
+            to: '/business-profile/$companyId',
+            params: {companyId: data.id}
+          }
+
+        )
         return
       }
 
@@ -98,8 +94,8 @@ function RouteComponent() {
 
   return (
     <>
-      <Header />
-      <section className="relative overflow-hidden bg-primary px-4 py-8 text-primary-foreground">
+    <Header/>
+    <section className="relative overflow-hidden bg-primary px-4 py-8 text-primary-foreground">
         <div className="absolute -top-10 -right-10 size-32 rounded-full bg-accent" />
         <div className="relative">
           <h1 className="text-3xl leading-tight font-extrabold">
@@ -143,10 +139,7 @@ function RouteComponent() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="company-description"
-              className="text-sm font-semibold"
-            >
+            <label htmlFor="company-description" className="text-sm font-semibold">
               Descripción <span aria-hidden="true"></span>
             </label>
             <textarea
@@ -168,7 +161,7 @@ function RouteComponent() {
           </Button>
         </form>
       </main>
-      <Toaster />
+
       <Footer />
     </>
   )

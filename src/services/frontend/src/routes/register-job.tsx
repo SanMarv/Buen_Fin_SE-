@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 import type { SubmitEvent } from 'react'
 import { Footer } from '#/components/Footer'
@@ -11,14 +11,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '#/components/ui/select.tsx'
-import { CITIES } from 'lib/schemas'
+import { CITIES, errorSchema, validateJobInput } from 'lib/schemas'
 import type { NewJob, State } from 'lib/schemas'
+import { env } from '#/config/env'
+import { Toaster } from '#/components/ui/sonner'
+import { noContentError, successNoContent, type NoContentResult } from '../../../../lib/types/generics'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/register-job')({
   component: RouteComponent,
 })
 
 const estados = Object.keys(CITIES) as State[]
+
+const JOB_ERROR_MESSAGES: Record<string, string> = {
+  NOT_PROVIDED: 'Completa todos los campos',
+  MAX_LENGTH: 'Uno de los campos es muy largo',
+  ERROR_LINK: 'El enlace no es válido',
+  MISMATCH: 'La ciudad no pertenece al estado seleccionado',
+  INVALID_STATE: 'Selecciona un estado válido'
+}
 
 const inputClass =
   'w-full rounded-xl border border-input bg-background px-4 py-3 text-base text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50'
@@ -27,14 +39,14 @@ const triggerClass =
   'w-full rounded-xl border border-input bg-background px-4 text-base text-foreground data-[size=default]:h-12'
 
 function RouteComponent() {
+  const router = useRouter()
+  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [estado, setEstado] = useState<State | null>(null)
   const [ciudad, setCiudad] = useState('')
   const [description, setDescription] = useState('')
   const [link, setLink] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState('')
-  const [isSuccess, setIsSuccess] = useState(false)
 
   const ciudades = estado ? (CITIES[estado] ?? []) : []
 
@@ -51,10 +63,37 @@ function RouteComponent() {
     setLink('')
   }
 
+  async function sendJobData(job: NewJob): Promise<NoContentResult>{
+    try {
+      const res = await fetch(`${env.VITE_BACK_BASE}/jobs/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(job),
+      })
+
+      if (res.ok) return successNoContent()
+
+      const parsedError = errorSchema.safeParse(await res.json().catch(() => null))
+      return noContentError({
+        status: res.status,
+        error: parsedError.success ? parsedError.data.error: 'Error desconocido'
+      })
+    }
+    catch {
+      return noContentError({
+        status: 500,
+        error: 'Error interno del servidor'
+      })
+    }
+  }
+
+  const toJobMessage = (error: string) => {
+    const code = error.split(': ').at(-1) ?? error
+    return JOB_ERROR_MESSAGES[code]?? 'Revisa que los datos de el puesto sean correctos'
+  }
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
-    setSubmitError('')
-    setIsSuccess(false)
     setIsSubmitting(true)
 
     const job: NewJob = {
@@ -63,28 +102,42 @@ function RouteComponent() {
       location: { city: ciudad, state: estado as State },
       link,
     }
+
+    const parsed = validateJobInput.safeParse(job)
+    if (!parsed.success) {
+      toast.error(toJobMessage(parsed.error.issues[0].message), { position: 'bottom-center' })
+      return
+    }
     try {
-      const response = await fetch('/api/jobs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(job),
-      })
-      if (response.ok) {
-        setIsSuccess(true)
+      const { success: ok, status, error } = await sendJobData(job);
+      if (ok) {
+        toast.success('Puesto registrado', {position: 'bottom-center'})
         resetForm()
+        router.history.back()
         return
       }
 
-      setSubmitError(
-        response.status === 400
-          ? 'Revisa los datos de la vacante.'
-          : response.status === 401 || response.status === 403
-            ? 'Inicia sesión para registrar una vacante.'
-            : 'No se pudo registrar la vacante. Intenta de nuevo.',
-      )
-    } catch {
-      setSubmitError('No hay conexión con el servidor. Intenta de nuevo.')
+      switch (status) {
+        case 400:
+          toast.error(toJobMessage(error), { position: 'bottom-center' })
+          return
+        case 401:
+          toast.error('Inicia sesión para registrar un puesto', { position: 'bottom-center' })
+          navigate({ to: '/login' })
+          return
+        case 403:
+          if (error === 'Unauthorized') {
+            toast.error('Tu sesión expiró', { position: 'bottom-center' })
+            navigate({to: '/login'})
+          }
+          else {
+            toast.error('Vuelve a entrar desde la página de tu empresa', {position: 'bottom-center'})
+          }
+          return
+        default:
+          toast.error('No se pudo registrar un puesto, intenta de nuevo', { position: 'bottom-center' })
+          return
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -196,24 +249,12 @@ function RouteComponent() {
               onChange={(event) => setLink(event.target.value)}/>
           </div>
 
-          {submitError && (
-            <p role="alert" className="text-sm text-destructive">
-              {submitError}
-            </p>
-          )}
-
-          {isSuccess && (
-            <p role="status" className="text-sm font-semibold text-success">
-              Vacante registrada correctamente.
-            </p>
-          )}
-
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Registrando...' : 'Registrar vacante'}
           </Button>
         </form>
       </main>
-
+      <Toaster/>
       <Footer />
     </>
   )

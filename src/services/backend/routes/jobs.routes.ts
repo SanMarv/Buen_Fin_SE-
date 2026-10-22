@@ -84,7 +84,7 @@ app.delete(
     return res.sendStatus(status);
   },
 );
-app.get("jobs", async (req, res) => {
+app.get("/", async (req, res) => {
   const parsed_query = getJobs.safeParse(req.query);
 
   if (!parsed_query.success) {
@@ -108,7 +108,7 @@ app.get("jobs", async (req, res) => {
   return res.status(200).json(jobs);
 });
 
-app.get("jobs/:id", async (req, res) => {
+app.get("/:id", async (req, res) => {
   const parsed_job_id = gerPostIdSchema.safeParse(req.params.id);
   if (!parsed_job_id.success) {
     return res.status(400).json({

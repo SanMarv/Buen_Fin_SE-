@@ -15,4 +15,5 @@ export type CompanyPageItem = {
   description: string;
   jobs: Job[];
   products: Omit<ProductPageItem, "company">[];
+  isValidated: boolean;
 };
