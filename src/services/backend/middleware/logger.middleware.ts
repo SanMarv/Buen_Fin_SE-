@@ -9,7 +9,7 @@ export const requestLogger: RequestHandler = (req, res, next) => {
         type: "Request",
         action: req.method as RequestActions,
         status: res.statusCode,
-        endpoint: req.route.path,
+        endpoint: req.route.path ? req.route.path : "Undefined path",
         id: res.locals.auth?.user_id ?? "Anonymus",
       });
     } catch (e: unknown) {
