@@ -102,7 +102,7 @@ export function CompanyDetail({ company, isOwner = false, children }: Props) {
             isOwner={isOwner}
           >
             {company.jobs.map((job) => (
-              <JobCardCompany job={job} key={job.id} />
+              <JobCardCompany job={job} key={job.id} isOwner={ isOwner } />
             ))}
           </HorizontalScroll>
         </section>
