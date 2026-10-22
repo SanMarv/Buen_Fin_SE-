@@ -1,4 +1,6 @@
 import type { ComponentProps, PropsWithChildren, SubmitEvent } from 'react'
+import { useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import type { PromiseResult } from 'lib/types'
 import type { UserLoginInput } from 'lib/schemas'
 import { env } from '#/config/env'
@@ -42,6 +44,8 @@ async function SendData(
 }
 
 export default function Form({ children, ...rest }: FormProps) {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [isSending, setIsSending] = useIsUploading()
   const changeErros = useChangeErrorFn()
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
@@ -71,7 +75,9 @@ export default function Form({ children, ...rest }: FormProps) {
       }
       const { success: wasCreated, error: errorCreating } = await SendData(data)
       if (wasCreated) {
+        await queryClient.invalidateQueries({ queryKey: ['me'] })
         toast.success('Login de usuario satisfactorio', { position: 'bottom-center' })
+        navigate({ to: '/' })
       } else {
         toast.error(
           `El usuario o la contraseña son incorrectos`,

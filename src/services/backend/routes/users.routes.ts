@@ -60,7 +60,8 @@ userRouter.post(
   inputValidationMiddleware(userRegisterInput, "newUser"),
   async (
     _: Request,
-    res: Response<unknown, { newUser: UserRegisterInput }>,
+    res: Response<unknown, { newUser: UserRegisterInput; auth: Auth }>,
+    next: NextFunction,
   ) => {
     if (!res.locals.newUser) {
       return res
@@ -72,17 +73,20 @@ userRouter.post(
     const name = `${firstName.toLocaleLowerCase()} ${lastname.toLocaleLowerCase()}`;
     const passwordHash = await argon2.hash(password, { parallelism: 1 });
 
-    const { success: created, error } = await UsersController.createRegister({
-      name,
-      email,
-      password: passwordHash,
-    });
+    const { success: created, data, error } =
+      await UsersController.createRegister({
+        name,
+        email,
+        password: passwordHash,
+      });
 
     if (!created) {
       return res.status(error.status).json(error);
     }
-    return res.sendStatus(201);
+    res.locals.auth = { user_id: data.id, validation_id: data.validation_id };
+    return next();
   },
+  signResponseWithAuth,
 );
 
 userRouter.post("/logout", protectRoute, (_, res: Response) => {
