@@ -2,6 +2,7 @@ import { Button } from '#/components/ui/button'
 import { useNavigate } from '@tanstack/react-router'
 import { ArrowUpRight } from 'lucide-react'
 import type { Job, ProductPageItem } from 'lib/types'
+import type { ComponentProps } from 'react'
 
 const money = new Intl.NumberFormat(
   'es-MX', // herramienta para poner formato de dinero
@@ -11,23 +12,15 @@ const money = new Intl.NumberFormat(
     maximumFractionDigits: 0, // le quita los centavos
   },
 )
-
-// se recibe el producto y se checa que tenga el formato correcto
-export function ProductCardCompany({
-  product,
-}: {
+type Props = {
   product: Omit<ProductPageItem, 'company'>
-}) {
-  const navigate = useNavigate()
+} & ComponentProps<'article'>
+// se recibe el producto y se checa que tenga el formato correcto
+export function ProductCardCompany({ product, ...rest }: Props) {
   return (
     <article
       className="flex flex-col rounded-2xl bg-card p-2.5 cursor-pointer"
-      onClick={() =>
-        navigate({
-          to: '/search-products/$postid',
-          params: { postid: product.id },
-        })
-      }
+      {...rest}
     >
       {product.images.length > 0 ? (
         <img
@@ -67,6 +60,25 @@ export function ProductCardCompany({
       </Button>
     </article>
   )
+}
+
+export const useNavigateProductPage = (
+  product: Omit<ProductPageItem, 'company'>,
+) => {
+  const navigate = useNavigate()
+  return () => {
+    navigate({
+      to: '/search-products/$postid',
+      params: { postid: product.id },
+    })
+  }
+}
+export function ProductCardProductPage({
+  product,
+  ...rest
+}: Omit<Props, 'onClick'>) {
+  const nav = useNavigateProductPage(product)
+  return <ProductCardCompany product={product} onClick={nav} {...rest} />
 }
 // este ultimo botón es el que despues va a mandar a un link de la compañia
 

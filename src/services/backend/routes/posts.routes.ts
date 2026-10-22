@@ -1,5 +1,5 @@
 import { Router } from "express";
-import type { Response, Request } from "express";
+import type { Response, Request, NextFunction } from "express";
 import { gerPostIdSchema, getProduct } from "@backend/schemas/posts.schemas.js";
 import { ProductsController } from "@db/controllers/products.controller.js";
 import { inputValidationMiddleware } from "@backend/middleware/inputValidation.middleware.js";
@@ -124,28 +124,58 @@ postsRouter.get("/products", async (req: Request, res: Response) => {
   return res.status(200).json(products);
 });
 
-postsRouter.get("/products/:id", async (req: Request, res: Response) => {
-  const parsed_product_id = gerPostIdSchema.safeParse(req.params);
-  if (!parsed_product_id.success) {
-    return res.status(400).json({
-      status: 400,
-      error: "Product id not written in the correct form",
-    });
-  }
+postsRouter.get(
+  "/products/drafts",
+  protectRoute,
+  refreshEditMode,
+  async (_, res: RequestWithOwner) => {
+    const {
+      success,
+      data: products,
+      error,
+    } = await ProductsController.getProductDraft(res.locals[COMPANY_ID_KEY]);
 
-  const product_id = parsed_product_id.data;
+    if (!success) {
+      return res.status(error.status).json(error);
+    }
 
-  const {
-    success,
-    data: product,
-    error,
-  } = await ProductsController.getProductByID(product_id);
+    return res.status(200).json(products);
+  },
+);
 
-  if (!success) {
-    return res.status(error.status).json(error);
-  }
+postsRouter.get(
+  "/products/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const parsed_product_id = gerPostIdSchema.safeParse(req.params);
+    if (!parsed_product_id.success) {
+      return res.status(400).json({
+        status: 400,
+        error: "Product id not written in the correct form",
+      });
+    }
 
-  return res.status(200).json(product);
-});
+    const product_id = parsed_product_id.data;
+
+    const {
+      success,
+      data: product,
+      error,
+    } = await ProductsController.getProductByID(product_id);
+    if (success && product.visibility !== "PUBLIC") {
+      res.locals.product = product;
+      return next();
+    }
+    if (!success) {
+      return res.status(error.status).json(error);
+    }
+    const { visibility: _, ...rest } = product;
+    return res.status(200).json(rest);
+  },
+  protectRoute,
+  refreshEditMode,
+  (_, res) => {
+    return res.json(res.locals.product);
+  },
+);
 
 export default postsRouter;

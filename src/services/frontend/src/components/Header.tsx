@@ -43,7 +43,7 @@ function Icon(props: ComponentProps<'svg'>) {
 function Logo() {
   return (
     <Link to="/" aria-label="Ir a la página de inicio">
-      <img src="/logo.png" alt="El Buen Fin Logo" className="h-8 w-auto" />
+      <img src="/favicon.png" alt="El Buen Fin Logo" className="h-8 w-auto" />
     </Link>
   )
 }

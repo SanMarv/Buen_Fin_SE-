@@ -27,7 +27,6 @@ import { and, eq, type InferInsertModel } from "drizzle-orm";
 import type { VisibilityValue } from "@db/enums.js";
 import { imageProducts } from "@db/schema.js";
 import type { Category } from "@lib/types/categories.js";
-import type { ProductPageItem } from "@lib/types/products.js";
 
 export class ProductsController {
   private static limit: number = 25;
@@ -46,6 +45,7 @@ export class ProductsController {
         where: {
           ...(data.category && { categories: { name: { in: data.category } } }),
           ...(data.company && { company: { name: data.company } }),
+          visibility: "PUBLIC",
         },
         orderBy: { name: data.sort },
         limit: this.limit + 1,
@@ -94,6 +94,63 @@ export class ProductsController {
     }
   }
 
+  static async getProductDraft(companyId: string) {
+    try {
+      const result = await db.query.products.findMany({
+        columns: {
+          id: true,
+          name: true,
+          description: true,
+          link: true,
+          price: true,
+          newPrice: true,
+        },
+        where: {
+          company_id: companyId,
+          visibility: "PRIVATE",
+        },
+        with: {
+          company: {
+            columns: {
+              id: true,
+              name: true,
+              validation_id: true,
+              profile_picture: true,
+            },
+          },
+          images: { columns: { url: true, alt: true }, limit: 1 },
+          categories: { columns: { name: true } },
+        },
+      });
+      if (!result) {
+        return fail({
+          status: ERROR_CODES.SERVER_ERROR.status,
+          error: "Db is not working",
+        });
+      }
+      type Product = NonNullable<Awaited<GetProductQuery>["data"]>[number];
+      const parse = result.map<Product>((v) => ({
+        id: v.id,
+        name: v.name,
+        description: v.description ?? "",
+        categories: v.categories.map((v) => v.name as Category),
+        link: v.link,
+        newPrice: v.newPrice,
+        price: v.price,
+        company: {
+          id: v.company!.id,
+          name: v.company!.name,
+          isVerified: !!v.company?.validation_id,
+          profile_picture: v.company!.profile_picture,
+        },
+        images: v.images,
+      }));
+      return success(parse);
+    } catch (e: unknown) {
+      console.error(e);
+      return fail(ERROR_CODES.SERVER_ERROR);
+    }
+  }
   static async updateVisibilty(update: {
     productId: string;
     [COMPANY_ID_KEY]: string;
@@ -126,6 +183,7 @@ export class ProductsController {
           price: true,
           newPrice: true,
           link: true,
+          visibility: true,
         },
         where: { id: data.id },
         with: {
@@ -149,7 +207,8 @@ export class ProductsController {
         });
       }
       const isVerified = !!result.company?.validation_id;
-      const parse: ProductPageItem = {
+      type ParseResult = NonNullable<Awaited<GetProductQueryOne>["data"]>;
+      const parse: ParseResult = {
         id: result.id,
         name: result.name,
         description: result.description ?? "",
@@ -164,6 +223,7 @@ export class ProductsController {
           profile_picture: result.company!.profile_picture,
           isVerified,
         },
+        visibility: result.visibility,
       };
       return success(parse);
     } catch (e: unknown) {

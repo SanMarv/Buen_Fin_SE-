@@ -1,16 +1,46 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
-import type { SubmitEvent } from 'react'
-import { ImagePlus } from 'lucide-react'
+import type { Dispatch, SetStateAction, SubmitEvent } from 'react'
+import { XIcon } from 'lucide-react'
 import { Footer } from '#/components/Footer'
-import {Header} from '#/components/Header'
-import {Button} from '#/components/ui/button.tsx'
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from '#/components/ui/select.tsx'
+import { Header } from '#/components/Header'
+import { Button } from '#/components/ui/button.tsx'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '#/components/ui/select.tsx'
 import { CATEGORIES_ENUM } from 'lib/types'
-import type { CategoriesRecord } from 'lib/types'
+import type { CategoriesRecord, Category } from 'lib/types'
+import { fetchProduct, fetchProductSelect } from '#/lib/fetch'
+import { ApiError } from '#/components/Errors'
+import { ErrorPage } from '#/components/Errors/ErrorPage'
+import { Badge } from '#/components/ui/badge'
+import { ImagesUpload } from '#/components/EditPage/ImageUpload'
 
-export const Route = createFileRoute('/register-products')({
+export const Route = createFileRoute('/edit/product/$productId')({
+  ssr: false,
   component: RouteComponent,
+  beforeLoad: async ({ params }) => {
+    try {
+      await fetchProductSelect(params.productId)
+    } catch (e) {
+      if (e instanceof ApiError) {
+        throw redirect({
+          to: '/search-products/$postid',
+          params: { postid: params.productId },
+        })
+      }
+      throw new ApiError(500, 'Unexpected Error')
+    }
+  },
+  loader: async ({ params }) => {
+    const product = await fetchProduct(params.productId)
+    return { initialValues: product, productId: params.productId }
+  },
+  errorComponent: ErrorPage,
 })
 
 const CATEGORIES: CategoriesRecord<string> = {
@@ -21,10 +51,8 @@ const CATEGORIES: CategoriesRecord<string> = {
   [CATEGORIES_ENUM['appliances']]: 'Electrodomésticos',
   [CATEGORIES_ENUM['toys']]: 'Juguetes',
 }
-
-const categoryEntries = Object.entries(CATEGORIES)
 const DISCOUNTS = [10, 15, 20, 25, 30, 35, 40]
-const precioNuevo = (n : number) => String(Math.round(n*100)/100)
+const precioNuevo = (n: number) => Math.round(n * 100) / 100
 
 const inputClass =
   'w-full rounded-xl border border-input bg-background px-4 py-3 text-base text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50'
@@ -32,54 +60,108 @@ const inputClass =
 const triggerClass =
   'w-full rounded-xl border border-input bg-background px-4 text-base text-foreground data-[size=default]:h-12'
 
+type CategoryItem = { category: Category; name: string }
+type PropsCategoryInput = {
+  categories: CategoryItem[]
+  setCategory: Dispatch<SetStateAction<CategoryItem[]>>
+}
+function CategoriesInput({ categories, setCategory }: PropsCategoryInput) {
+  const options = Object.entries(CATEGORIES)
+    .filter(([category]) => !categories.some((c) => c.category === category))
+    .map<CategoryItem>(([k, v]) => ({ category: k as Category, name: v }))
+  const handleChange = (value: Category) => {
+    setCategory((p) => [...p, { category: value, name: CATEGORIES[value] }])
+  }
+  const handleDelete = (value: Category) => {
+    setCategory((p) => p.filter(({ category }) => category !== value))
+  }
+  return (
+    <>
+      {options.length > 0 && (
+        <Select required value={''} onValueChange={handleChange}>
+          <SelectTrigger id="product-category" className={triggerClass}>
+            <SelectValue placeholder="Selecciona una categoría" />
+          </SelectTrigger>
+          <SelectContent position="popper">
+            {options.map(({ category, name }) => (
+              <SelectItem key={category} value={category}>
+                {name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+      <div className="flex gap-2 flex-wrap max-w-full pt-2">
+        {categories.map(({ category, name }) => (
+          <Badge
+            key={category}
+            onClick={() => handleDelete(category)}
+            className="flex items-center gap-x-3 justify-center px-2 text-sm"
+          >
+            <span>{name}</span>
+            <XIcon className="size-5" />
+          </Badge>
+        ))}
+      </div>
+    </>
+  )
+}
 function RouteComponent() {
-  const [name, setName] = useState('')
-  const [brand, setBrand] = useState('')
-  const [oldPrice, setOldPrice] = useState('')
-  const [newPrice, setNewPrice] = useState('')
+  const { initialValues, productId } = Route.useLoaderData()
+  const [name, setName] = useState(initialValues.name)
+  const [oldPrice, setOldPrice] = useState(initialValues.price)
+  const [newPrice, setNewPrice] = useState(initialValues.newPrice)
   const [percent, setPercent] = useState('')
-  const [description, setDescription] = useState('')
-  const [category, setCategory] = useState('')
+  const [description, setDescription] = useState(initialValues.description)
+  const initialCategories: CategoryItem[] = initialValues.categories.map(
+    (v) => ({
+      category: v,
+      name: CATEGORIES[v],
+    }),
+  )
+  const [categories, setCategory] = useState<CategoryItem[]>([
+    ...initialCategories,
+  ])
   const [formError, setFormError] = useState('')
   const [isSuccess, setIsSuccess] = useState(false)
 
   const old = Number(oldPrice)
   const now = Number(newPrice)
-  const savedPercent = old > 0 && now > 0 && now < old ? Math.round((1 - now / old) * 100) : null
+  const savedPercent =
+    old > 0 && now > 0 && now < old ? Math.round((1 - now / old) * 100) : null
 
-  function handleOldPrice(value: string){
+  function handleOldPrice(value: number) {
     setOldPrice(value)
-    if (percent && Number(value) > 0){
-      setNewPrice(precioNuevo(Number(value) * (1 - Number(percent)/100)))
+    if (percent && value > 0) {
+      setNewPrice(precioNuevo(value * (1 - Number(percent) / 100)))
     }
   }
 
-  function handlePercent(value: string){
+  function handlePercent(value: string) {
     if (value === 'none') {
       setPercent('')
-      setNewPrice('')
+      setNewPrice(initialValues.newPrice)
       return
     }
 
     setPercent(value)
-    if(old > 0){
+    if (old > 0) {
       setNewPrice(precioNuevo(old * (1 - Number(value) / 100)))
     }
   }
 
-  function handleNewPrice(value: string){
+  function handleNewPrice(value: number) {
     setNewPrice(value)
     setPercent('')
   }
 
-  function resetForm(){
-    setName('')
-    setBrand('')
-    setOldPrice('')
-    setNewPrice('')
+  function resetForm() {
+    setName(initialValues.name)
+    setOldPrice(initialValues.price)
+    setNewPrice(initialValues.newPrice)
     setPercent('')
-    setDescription('')
-    setCategory('')
+    setDescription(initialValues.description)
+    setCategory([...initialCategories])
   }
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
@@ -96,21 +178,22 @@ function RouteComponent() {
     resetForm()
   }
 
-  return(
+  return (
     <>
-    <Header/>
-    <section className="relative overflow-hidden bg-primary px-4 py-8 text-primary-foreground">
+      <Header />
+      <section className="relative overflow-hidden bg-primary px-4 py-8 text-primary-foreground">
         <div className="absolute -top-10 -right-10 size-32 rounded-full bg-accent" />
         <div className="relative">
           <h1 className="text-3xl leading-tight font-extrabold">
-            Registrar producto
+            Actualizar producto
           </h1>
         </div>
       </section>
       <main className="bg-background px-4 py-8">
         <form
           onSubmit={handleSubmit}
-          className="mx-auto flex max-w-lg flex-col gap-5 rounded-3xl border border-border bg-card p-6 text-card-foreground">
+          className="mx-auto flex max-w-lg flex-col gap-5 rounded-3xl border border-border bg-card p-6 text-card-foreground"
+        >
           <div className="flex flex-col gap-1.5">
             <label htmlFor="product-name" className="text-sm font-semibold">
               Nombre <span aria-hidden="true"></span>
@@ -126,21 +209,10 @@ function RouteComponent() {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="product-brand" className="text-sm font-semibold">
-              Marca <span aria-hidden="true"></span>
-            </label>
-            <input
-              id="product-brand"
-              type="text"
-              required
-              className={inputClass}
-              placeholder="Ej. Samsung"
-              value={brand}
-              onChange={(event) => setBrand(event.target.value)}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="product-old-price" className="text-sm font-semibold">
+            <label
+              htmlFor="product-old-price"
+              className="text-sm font-semibold"
+            >
               Precio original <span aria-hidden="true"></span>
             </label>
             <input
@@ -152,14 +224,15 @@ function RouteComponent() {
               className={inputClass}
               placeholder="0.00"
               value={oldPrice}
-              onChange={(event) => handleOldPrice(event.target.value)}
+              onChange={(event) => handleOldPrice(Number(event.target.value))}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1.5">
               <label
                 htmlFor="product-percent"
-                className="text-sm font-semibold">
+                className="text-sm font-semibold"
+              >
                 Descuento
               </label>
               <Select value={percent} onValueChange={handlePercent}>
@@ -169,7 +242,7 @@ function RouteComponent() {
                 <SelectContent position="popper">
                   <SelectItem value="none">Sin descuento</SelectItem>
                   {DISCOUNTS.map((discount) => (
-                    <SelectItem key={discount} value={String(discount)}>
+                    <SelectItem key={discount} value={discount.toString()}>
                       {discount}%
                     </SelectItem>
                   ))}
@@ -179,7 +252,8 @@ function RouteComponent() {
             <div className="flex flex-col gap-1.5">
               <label
                 htmlFor="product-new-price"
-                className="text-sm font-semibold">
+                className="text-sm font-semibold"
+              >
                 Precio nuevo <span aria-hidden="true"></span>
               </label>
               <input
@@ -189,9 +263,9 @@ function RouteComponent() {
                 min={0}
                 step="any"
                 className={inputClass}
-                placeholder="0.00"
+                placeholder="0"
                 value={newPrice}
-                onChange={(event) => handleNewPrice(event.target.value)}
+                onChange={(event) => handleNewPrice(Number(event.target.value))}
               />
             </div>
           </div>
@@ -222,27 +296,20 @@ function RouteComponent() {
           </div>
           <div className="flex flex-col gap-1.5">
             <span className="text-sm font-semibold">Imágenes</span>
-            <Button type="button" variant="outline">
-              <ImagePlus />
-              Subir imágenes
-            </Button>
+            <ImagesUpload id={productId} initialImages={initialValues.images} />
           </div>
+
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="product-category" className="text-sm font-semibold">
+            <label
+              htmlFor="product-category"
+              className="text-sm font-semibold pb-2"
+            >
               Categoría <span aria-hidden="true"></span>
             </label>
-            <Select required value={category} onValueChange={setCategory}>
-              <SelectTrigger id="product-category" className={triggerClass}>
-                <SelectValue placeholder="Selecciona una categoría" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                {categoryEntries.map(([value, label]) => (
-                  <SelectItem key={value} value={value}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <CategoriesInput
+              categories={categories}
+              setCategory={setCategory}
+            />
           </div>
           {formError && (
             <p role="alert" className="text-sm text-destructive">
