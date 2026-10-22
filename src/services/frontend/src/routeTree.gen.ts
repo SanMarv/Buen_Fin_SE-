@@ -21,7 +21,6 @@ import { Route as RegisterLocationRouteImport } from './routes/register-location
 import { Route as RegisterProductsRouteImport } from './routes/register-products'
 import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as VerificationCompanyRouteImport } from './routes/verification-company'
-import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as BusinessProfileCompanyIdRouteImport } from './routes/business-profile/$companyId'
 import { Route as EditCompanyIdRouteImport } from './routes/edit/$companyId'
 import { Route as SearchProductsIndexRouteImport } from './routes/search-products/index'
@@ -87,11 +86,6 @@ const VerificationCompanyRoute = VerificationCompanyRouteImport.update({
   path: '/verification-company',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WishlistRoute = WishlistRouteImport.update({
-  id: '/wishlist',
-  path: '/wishlist',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BusinessProfileCompanyIdRoute =
   BusinessProfileCompanyIdRouteImport.update({
     id: '/business-profile/$companyId',
@@ -127,7 +121,6 @@ export interface FileRoutesByFullPath {
   '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
   '/verification-company': typeof VerificationCompanyRoute
-  '/wishlist': typeof WishlistRoute
   '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
   '/edit/$companyId': typeof EditCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
@@ -146,7 +139,6 @@ export interface FileRoutesByTo {
   '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
   '/verification-company': typeof VerificationCompanyRoute
-  '/wishlist': typeof WishlistRoute
   '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
   '/edit/$companyId': typeof EditCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
@@ -166,7 +158,6 @@ export interface FileRoutesById {
   '/register-products': typeof RegisterProductsRoute
   '/verification': typeof VerificationRoute
   '/verification-company': typeof VerificationCompanyRoute
-  '/wishlist': typeof WishlistRoute
   '/business-profile/$companyId': typeof BusinessProfileCompanyIdRoute
   '/edit/$companyId': typeof EditCompanyIdRoute
   '/search-products/$postid': typeof SearchProductsPostidRoute
@@ -187,7 +178,6 @@ export interface FileRouteTypes {
     | '/register-products'
     | '/verification'
     | '/verification-company'
-    | '/wishlist'
     | '/business-profile/$companyId'
     | '/edit/$companyId'
     | '/search-products/$postid'
@@ -206,7 +196,6 @@ export interface FileRouteTypes {
     | '/register-products'
     | '/verification'
     | '/verification-company'
-    | '/wishlist'
     | '/business-profile/$companyId'
     | '/edit/$companyId'
     | '/search-products/$postid'
@@ -225,7 +214,6 @@ export interface FileRouteTypes {
     | '/register-products'
     | '/verification'
     | '/verification-company'
-    | '/wishlist'
     | '/business-profile/$companyId'
     | '/edit/$companyId'
     | '/search-products/$postid'
@@ -245,7 +233,6 @@ export interface RootRouteChildren {
   RegisterProductsRoute: typeof RegisterProductsRoute
   VerificationRoute: typeof VerificationRoute
   VerificationCompanyRoute: typeof VerificationCompanyRoute
-  WishlistRoute: typeof WishlistRoute
   BusinessProfileCompanyIdRoute: typeof BusinessProfileCompanyIdRoute
   EditCompanyIdRoute: typeof EditCompanyIdRoute
   SearchProductsPostidRoute: typeof SearchProductsPostidRoute
@@ -338,13 +325,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerificationCompanyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/wishlist': {
-      id: '/wishlist'
-      path: '/wishlist'
-      fullPath: '/wishlist'
-      preLoaderRoute: typeof WishlistRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/business-profile/$companyId': {
       id: '/business-profile/$companyId'
       path: '/business-profile/$companyId'
@@ -389,7 +369,6 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterProductsRoute: RegisterProductsRoute,
   VerificationRoute: VerificationRoute,
   VerificationCompanyRoute: VerificationCompanyRoute,
-  WishlistRoute: WishlistRoute,
   BusinessProfileCompanyIdRoute: BusinessProfileCompanyIdRoute,
   EditCompanyIdRoute: EditCompanyIdRoute,
   SearchProductsPostidRoute: SearchProductsPostidRoute,
