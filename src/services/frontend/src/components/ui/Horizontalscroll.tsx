@@ -6,7 +6,7 @@ import { Button } from '#/components/ui/button'
 type Props = {
   title: string
   addLabel: string
-  children: ReactNode // the cards are the children, any component between the openen and closing tags
+  children: ReactNode 
   href: string
   isOwner?: boolean
 }
@@ -18,14 +18,6 @@ export function HorizontalScroll({
   href,
   isOwner = false,
 }: Props) {
-  // const scroller = useRef<HTMLDivElement>(null) // create the empty box
-
-  // function scrollBy(direction: 1 | -1) {
-  //   // 1 is for right, -1 is for left
-  //   const el = scroller.current
-  //   if (!el) return
-  //   el.scrollBy({ left: direction * el.clientWidth + 0.8, behavior: 'smooth' })
-  // }
   return (
     <div>
       <div className="flex items-center justify-between gap-2">

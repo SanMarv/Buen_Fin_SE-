@@ -60,7 +60,7 @@ export function MainContentNav() {
         </>
       ) : (<>{session.isValidated ? (
         <Button asChild variant="outline">
-          <Link to="/register-company"> Crear una compañia</Link>
+          <Link to="/register-company"> Crear una compañía</Link>
         </Button>
         ) : (
           <Button asChild variant="outline">

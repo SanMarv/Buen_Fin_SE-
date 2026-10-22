@@ -17,6 +17,7 @@ export function Input({ name, ...rest }: Omit<Props, 'children'>) {
   const onFocus = useFocusFunction(name)
   return (
     <input
+      aria-label="Contraseña"
       name={name}
       value={input}
       id={`input-${name}`}

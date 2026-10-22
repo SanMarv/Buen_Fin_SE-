@@ -100,14 +100,14 @@ function VerificationPage() {
             toast.error('Sin sesión', { position: 'bottom-center' })
             navigate({ to: '/login' })
           } else {
-            toast.error('Firma no valida', { position: 'bottom-center' })
+            toast.error('Firma no válida', { position: 'bottom-center' })
           }
           return
         case 400:
           toast.error(error.error, { position: 'bottom-center' })
           return
         default:
-          toast.error('Ocurrio un error, revisa bien los parámetros', {
+          toast.error('Ocurrió un error, revisa bien los parámetros', {
             position: 'bottom-center',
           })
           return

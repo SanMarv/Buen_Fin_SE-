@@ -52,6 +52,7 @@ export function ImageCarousel() {
   return (
     <section>
       <Carousel
+        aria-label="Anuncios de El Buen Fin"
         opts={{ loop: true }}
         plugins={[autoplay.current]}
         setApi={setApi}
@@ -69,7 +70,7 @@ export function ImageCarousel() {
             <button
               key={slide.id}
               type="button"
-              aria-label={`Ir a la imagen ${index + 1}`}
+              aria-label={`Ir a la imagen ${index + 1} de ${slides.length}`}
               aria-current={index === current}
               onClick={() => api?.scrollTo(index)}
               className={`h-2 rounded-full shadow transition-all ${

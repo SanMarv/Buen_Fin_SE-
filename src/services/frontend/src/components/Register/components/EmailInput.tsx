@@ -15,6 +15,7 @@ export function EmailField({ ...rest }: Props) {
   return (
     <Error name="email" className="px-2">
       <input
+        aria-label="Correo electrónico"
         id="input-email"
         placeholder="Email"
         {...rest}

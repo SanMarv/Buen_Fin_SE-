@@ -89,6 +89,7 @@ export default function Form({ children, ...rest }: FormProps) {
   }
   return (
     <form
+      aria-label="Iniciar sesión"
       {...rest}
       noValidate
       onSubmit={handleSubmit}

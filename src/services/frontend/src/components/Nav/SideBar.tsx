@@ -4,7 +4,7 @@ import { useSession } from './MainContent'
 
 const navLinks = [
   { to: '/', label: 'Inicio' },
-  { to: '/aboutus', label: 'Acerca De' },
+  { to: '/aboutus', label: 'Acerca de' },
   { to: '/search-products', label: 'Productos' },
   { to: '/faq', label: 'Preguntas frecuentes' },
 ] as const

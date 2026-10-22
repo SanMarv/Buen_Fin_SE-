@@ -7,7 +7,7 @@ export function ErrorApi({ error }: { error: ApiError }) {
     console.error({ status: error.status, error: error.message })
   if (error.status === 404)
     return (
-      <Error Icon={DatabaseSearch} body="El recurso de buscas no se encontro" />
+      <Error Icon={DatabaseSearch} body="El recurso que buscas no se encontro" />
     )
   if (error.status === 403)
     return (

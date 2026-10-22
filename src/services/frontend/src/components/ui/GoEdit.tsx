@@ -13,6 +13,7 @@ export function GoEdit({ companyId, isOwner }: Props) {
       <Link
         to="/edit/$companyId"
         params={{ companyId }}
+        aria-label="Editar empresa"
         className="bg-primary text-white z-50 mr-5 rounded-full p-2"
       >
         <Pencil className="size-8" />

@@ -131,7 +131,7 @@ export function BusinessCard({ company }: { company: BusinessCardItem }) {
 
 export function VacancyCard({ vacancy }: { vacancy: vacancy }) {
   return (
-    <article className="flex flex-col rouded-2x1 bg-white p-4 sdhadow-sm">
+    <article className="flex flex-col rouded-2xl bg-white p-4 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-base leading-tight font-bold">{vacancy.name}</h3>
         <span className="shrink-0 rounded bg-card px-2 py-0.5 text-[11px] font-bold">
@@ -155,12 +155,12 @@ export function VacancyCard({ vacancy }: { vacancy: vacancy }) {
 
 export function BranchCard({ branch }: { branch: Branch }) {
   return (
-    <article className="flex aspect-square flex-col justify-between rounded-2x1 bg-muted p-3 shadow-sm">
+    <article className="flex aspect-square flex-col justify-between rounded-2xl bg-muted p-3 shadow-sm">
       <MapPin className="size-6 text-primary" />
       <div>
         <h3 className="text-sm leading-tight font-bold">{branch.name}</h3>
         <p className="mt-1 text-xs text-muted-foreground">{branch.address}</p>
-        <span className="mt-2 inline-block rounded bg-card px-2 py-0.5 text-[10px] font-bolt">
+        <span className="mt-2 inline-block rounded bg-card px-2 py-0.5 text-[10px] font-bold">
           {branch.region}
         </span>
       </div>

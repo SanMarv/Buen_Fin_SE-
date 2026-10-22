@@ -14,7 +14,7 @@ export function Controls() {
       <Button
         variant="outline"
         size="icon"
-        aria-label="Modo oscuro"
+        aria-label="Cambiar entre modo claro y modo oscuro"
         onClick={toggleTheme}
       >
         <Moon className="dark:hidden" />

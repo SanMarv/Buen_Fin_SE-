@@ -100,6 +100,7 @@ export default function Form({ children, ...rest }: FormProps) {
   }
   return (
     <form
+      aria-label="Crear cuenta"
       {...rest}
       onSubmit={handleSubmit}
       className={cn(rest.className, 'flex flex-col justify-center gap-y-5')}

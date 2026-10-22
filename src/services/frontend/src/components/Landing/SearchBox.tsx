@@ -10,10 +10,9 @@ export function SearchBox() {
         <h2 className="text-2xl leading-tight font-extrabold">
           Encuentra comercios o productos participantes
         </h2>
-        <p className="mt-2 text-sm">Busca un comercio o producto participante</p>
+        <p className="mt-2 text-sm">Busca un comercio</p>
 
-        <form
-          className="mt-4 flex flex-col gap-3"
+        <div className="mt-4 flex flex-col gap-3"
           onSubmit={(event) => event.preventDefault()}
         >
          
@@ -23,7 +22,7 @@ export function SearchBox() {
                 <ArrowRight />
             </Link>
         </Button>
-        </form>
+        </div>
       </div>
     </section>
   )

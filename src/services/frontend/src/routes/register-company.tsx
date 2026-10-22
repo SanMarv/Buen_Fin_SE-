@@ -86,7 +86,7 @@ function RouteComponent() {
           toast.error(error.error, { position: 'bottom-center' })
           return
         default:
-          toast.error('Ocurrio un error, revisa bien los parámetros', {
+          toast.error('Ocurrió un error, revisa bien los parámetros', {
             position: 'bottom-center',
           })
           return
