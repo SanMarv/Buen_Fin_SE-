@@ -67,26 +67,6 @@ function SearchProducts() {
                 ))}
               </div>
             </fieldset>
-
-            <div className="mt-4">
-              <label htmlFor="price" className="text-sm font-bold">
-                Rango de precio
-              </label>
-              <input
-                id="price"
-                type="range"
-                min={0}
-                max={30000}
-                step={500}
-                defaultValue={20000}
-                className="mt-2 w-full accent-primary"
-              />
-
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>$0</span>
-                <span>$30,000</span>
-              </div>
-            </div>
           </details>
 
           <h2 className="mt-6 text-xl font-medium">Productos:</h2>
