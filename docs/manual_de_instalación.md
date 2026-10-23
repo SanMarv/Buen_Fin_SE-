@@ -86,6 +86,7 @@ Abre otra terminal y ejecuta:
 
 ```bash
 cd src/services/frontend
+npm install
 npm run dev
 ```
 
@@ -94,7 +95,7 @@ npm run dev
 Cuando los servicios estén inciados, abre esta dirección en el navegador:
 
 ```text
-http://localhost:3000
+http://localhost:3002
 ```
 
 El proxy publica la aplicción en el puerto `3000`y dirige las solicitudes al frontend y al backend.
@@ -111,5 +112,5 @@ npm run dev:down
 
 - **No conecta a la base de datos:** revisa las variables de conexión en `.env`y confirma que PostgreSQL este iniciado.
 - **No se carga o guardan archivos:** confirma que el alamacenamiento S3 este activo, que la URL y las credenciales sean correctas, y que existan las buckets configuradas.
-- **El frontend no encuentra la API:** revisa que `VITE_BACK_BASE`sea `http://localhost:3000/back` y que el backend y el proxy estén activos.
+- **El frontend no encuentra la API:** revisa que `VITE_BACK_BASE`sea `http://localhost:3002/back` y que el backend y el proxy estén activos.
 - **Un puerto esta ocupado:** detén el proceso que lo está usando o ajusta la configuración correspondiente.
