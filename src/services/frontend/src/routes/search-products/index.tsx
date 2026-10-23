@@ -3,12 +3,19 @@ import { Footer } from '#/components/Footer'
 import { Header } from '#/components/Header'
 import { ProductCard } from '#/components/ElementCard'
 import { CATEGORIES_ENUM } from 'lib/types'
-import type { CategoriesRecord, ProductPageItem } from 'lib/types'
+import type { CategoriesRecord, Category, ProductPageItem } from 'lib/types'
 import { env } from '#/config/env'
 import { ApiError } from '#/components/Errors'
+import { useEffect, useEffectEvent, useState } from 'react'
+import type { ChangeEvent } from 'react'
 
-const fetchProduts = async (): Promise<ProductPageItem[]> => {
-  const res = await fetch(`${env.VITE_BACK_BASE}/products`)
+const fetchProduts = async (
+  filters: string[] = [],
+): Promise<ProductPageItem[]> => {
+  const url = new URL(`${env.VITE_BACK_BASE}/products`)
+  if (filters.length > 0)
+    url.searchParams.append('categories', filters.join(','))
+  const res = await fetch(url)
   const data = await res.json()
   if (res.status < 200 || res.status > 300)
     throw new ApiError(data.status, data.error)
@@ -34,6 +41,30 @@ const CATEGORIES: CategoriesRecord<string> = {
 // AUN NO FUNCIONA LOS FILTROS
 function SearchProducts() {
   const { products } = Route.useLoaderData()
+  const [filtered, setFilterData] = useState(products)
+  const fetchDataFilter = async (categoris: Category[]) => {
+    if (categoris.length <= 0) {
+      setFilterData([...products])
+      return
+    }
+    await fetchProduts(categoris).then((data) => setFilterData([...data]))
+  }
+  const refetch = useEffectEvent(() => fetchDataFilter(values))
+  const [values, setValues] = useState<Category[]>([])
+  useEffect(() => {
+    refetch()
+  }, [values])
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    category: Category,
+  ) => {
+    const isChecked = e.currentTarget.checked
+    setValues((v) => {
+      if (!isChecked) return v.filter((cat) => cat !== category)
+      if (v.includes(category)) return v
+      return [...v, category]
+    })
+  }
   return (
     <>
       <Header />
@@ -56,12 +87,18 @@ function SearchProducts() {
             <fieldset className="mt-4">
               <legend className="text-sm font-bold">Categoría</legend>
               <div className="mt-2 flex flex-col gap-2">
-                {Object.values(CATEGORIES).map((category) => (
+                {Object.entries(CATEGORIES).map(([id, category]) => (
                   <label
                     key={category}
+                    htmlFor={`checked-${id}`}
                     className="flex items-center gap-2 text-sm"
                   >
-                    <input type="checkbox" className="size-4 accent-primary" />
+                    <input
+                      type="checkbox"
+                      className="size-4 accent-primary"
+                      id={`checked-${id}`}
+                      onChange={(e) => handleChange(e, id as Category)}
+                    />
                     {category}
                   </label>
                 ))}
@@ -72,7 +109,7 @@ function SearchProducts() {
           <h2 className="mt-6 text-xl font-medium">Productos:</h2>
 
           <div className="mt-4 grid grid-cols-2 gap-3">
-            {products.map((product) => (
+            {filtered.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

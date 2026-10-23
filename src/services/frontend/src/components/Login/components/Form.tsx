@@ -18,11 +18,8 @@ type Error = {
   status: number
   error: string
 }
-async function SendData(
-  submit: UserLoginInput,
-): PromiseResult<Valid, Error> {
+async function SendData(submit: UserLoginInput): PromiseResult<Valid, Error> {
   try {
-    await new Promise((res) => setTimeout(res, 5000))
     const res = await fetch(`${env.VITE_BACK_BASE}/auth/login`, {
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +68,9 @@ export default function Form({ children, ...rest }: FormProps) {
       const { success: wasCreated, error: errorCreating } = await SendData(data)
       if (wasCreated) {
         await queryClient.invalidateQueries({ queryKey: ['me'] })
-        toast.success('Login de usuario satisfactorio', { position: 'bottom-center' })
+        toast.success('Login de usuario satisfactorio', {
+          position: 'bottom-center',
+        })
         navigate({ to: '/' })
       } else if ([400, 401, 404].includes(errorCreating.status)) {
         changeErros({
@@ -93,10 +92,7 @@ export default function Form({ children, ...rest }: FormProps) {
       {...rest}
       noValidate
       onSubmit={handleSubmit}
-      className={cn(
-        rest.className,
-        'flex flex-col justify-center gap-y-3',
-      )}
+      className={cn(rest.className, 'flex flex-col justify-center gap-y-3')}
     >
       {children}
     </form>

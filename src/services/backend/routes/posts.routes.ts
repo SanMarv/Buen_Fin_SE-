@@ -136,7 +136,7 @@ postsRouter.put(
   refreshEditMode,
   refreshEditModePost,
   inputValidationMiddleware(categoriesProductSchema, "newCategories"),
-  async (req, res) => {
+  async (req, res: Response) => {
     const { success: isValidId, data: productId } = checkRequestParameter(
       "productId",
       req.params,
@@ -163,7 +163,6 @@ postsRouter.get("/products", async (req: Request, res: Response) => {
   }
 
   const query_data = parsed_query.data;
-
   const {
     success,
     data: products,

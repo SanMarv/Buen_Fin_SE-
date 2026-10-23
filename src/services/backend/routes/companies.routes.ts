@@ -84,10 +84,10 @@ app.put(
   },
 );
 
-app.get("edit/:companyId", protectRoute, editModeCompany);
+app.get("/edit/:companyId", protectRoute, editModeCompany);
 
 app.put(
-  "edit/:companyId",
+  "/edit/:companyId",
   protectRoute,
   refreshEditMode,
   async (req: Request, res: Response) => {
@@ -114,7 +114,7 @@ app.put(
 );
 
 app.delete(
-  "delete/:companyId",
+  "/delete/:companyId",
   protectRoute,
   refreshEditMode,
   async (req: Request, res: Response) => {

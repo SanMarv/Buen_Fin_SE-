@@ -29,7 +29,7 @@ export function ProductCardCompany({ product, ...rest }: Props) {
         <img
           src={product.images[0].url}
           alt={product.images[0].alt}
-          className="aspect-square w-full rounded-xl bg-card"
+          className="aspect-square w-full rounded-xl bg-card object-cover"
         />
       ) : (
         <div className="aspect-square w-full rounded-xl bg-card" />

@@ -14,7 +14,7 @@ export type GetProductQueryOne = Promise<
 export interface GetProductInput {
   page: number;
   sort: "asc" | "desc";
-  category?: string[];
+  categories?: string[];
   company?: string;
 }
 

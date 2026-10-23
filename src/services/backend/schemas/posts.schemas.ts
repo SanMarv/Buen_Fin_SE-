@@ -3,7 +3,7 @@ import z from "zod";
 export const getProduct = z.object({
   page: z.coerce.number().int().min(1).default(1),
   sort: z.enum(["desc", "asc"]).default("desc"),
-  category: z
+  categories: z
     .string()
     .transform((s) =>
       s

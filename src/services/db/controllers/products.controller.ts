@@ -44,7 +44,9 @@ export class ProductsController {
           newPrice: true,
         },
         where: {
-          ...(data.category && { categories: { name: { in: data.category } } }),
+          ...(data.categories && {
+            categories: { name: { in: data.categories } },
+          }),
           ...(data.company && { company: { name: data.company } }),
           visibility: "PUBLIC",
         },
