@@ -1,4 +1,4 @@
-import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, redirect, useNavigate } from '@tanstack/react-router'
 import { fetchCompany, fetchDrafts, fetchIsOwner } from '#/lib/fetch'
 import { CompanyDetail } from '#/sections/CompanyDetail'
 import { HorizontalScroll } from '#/components/ui/Horizontalscroll'
@@ -6,7 +6,7 @@ import {
   JobCardCompany,
   ProductCardCompany,
 } from '#/components/ProductCardCompany'
-import { Ticket } from 'lucide-react'
+import { ShieldAlert, Ticket , BadgeCheck} from 'lucide-react'
 import { SectionHeader } from '#/components/EditPage/SectionHeader'
 import { MoreBtn } from '#/components/EditPage/MoreBtn'
 import { useEditProduct } from '#/components/EditPage/useEdtiProduct'
@@ -61,6 +61,22 @@ function BusinessProfile() {
             <Ticket className="size-4 text-primary" />
             Ha participado 3 veces en el sorteo
           </p>
+          {company.isValidated ? (
+                        <p className='inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-xs font-bold'>
+                          <BadgeCheck className='size-4 text-primary' />
+                          Empresa Verificada
+                        </p>
+                      ) : (
+                         (
+                            <Link to='/verification-company'
+                              className='inline-flex items-center gap-2
+                              rounded-full border border-primary px-3 py-1.5
+                              text-xs font-bold text-primary hover:bg-primary
+                              hover:text-primary-foreground'>
+                              <ShieldAlert className='size-4'/>
+                              Verificar empresa</Link>
+                          )
+                      )}
         </div>
       </section>
       <div className="px-4 flex flex-col gap-y-8 py-4">

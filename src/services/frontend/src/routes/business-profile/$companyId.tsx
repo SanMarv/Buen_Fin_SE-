@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { fetchCompany, fetchIsOwner } from '#/lib/fetch'
 import { CompanyDetail } from '#/sections/CompanyDetail'
 import { GoEdit } from '#/components/ui/GoEdit'
-import { Ticket } from 'lucide-react'
+import { BadgeCheck, Ticket } from 'lucide-react'
 import { HorizontalScrollWithTitle } from '#/components/ui/Horizontalscroll'
 import {
   JobCardCompany,
@@ -56,6 +56,13 @@ function BusinessProfile() {
             <Ticket className="size-4 text-primary" />
             Ha participado 3 veces en el sorteo
           </p>
+          {
+            company.isValidated &&
+            <p className='inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-xs font-bold'>
+              <BadgeCheck className='size-4 text-primary' />
+              Empresa Verificada
+            </p>
+          }
         </div>
       </section>
 

@@ -15,7 +15,8 @@ import { CITIES, errorSchema, validateJobInput } from 'lib/schemas'
 import type { NewJob, State } from 'lib/schemas'
 import { env } from '#/config/env'
 import { Toaster } from '#/components/ui/sonner'
-import { noContentError, successNoContent, type NoContentResult } from '../../../../lib/types/generics'
+import { noContentError, successNoContent } from 'lib/types'
+import type { NoContentResult } from 'lib/types'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/register-job')({
