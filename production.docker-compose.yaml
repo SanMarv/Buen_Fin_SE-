@@ -55,6 +55,7 @@ services:
     environment:
       S3_URL: http://host.docker.internal:9000
       DB_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db-postgres:5432/${DB_NAME}
+      DOMAIN: https://nicolas-amaya.dev
     networks:
       - backend
       - db
