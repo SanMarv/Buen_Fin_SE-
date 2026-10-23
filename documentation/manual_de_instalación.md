@@ -33,9 +33,9 @@ El servicio de imágenes necesita un almacenamiento compatible con S3. Para desa
 Añade al `.env` de la raíz la dirección y las credenciales usando los nombres de variables definidos en `.env.example`:
 
 ```env
-S3_URL=<URL_DEL_ALMACENAMIENTO>
-S3_ACCESS_KEY=<CLAVE_DE_ACCESO>
-S3_PRIVATE_KEY=<CLAVE_SECRETA>
+S3_URL=<url_del_almacenamiento>
+S3_ACCESS_KEY=<clave_de_acceso>
+S3_PRIVATE_KEY=<clave_secreta>
 ```
 
 Configura también las variables `S3_BUCKET_*` con los nombres de buckets esperados por el proyecto. Se utilizan buckets para distintos tipos de archivos, como imágenes de productos, imágenes de empresas y documentos de verificación.
