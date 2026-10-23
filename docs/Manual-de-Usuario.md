@@ -25,7 +25,10 @@ Se puede consultar la mayor parte del contenido sin una cuenta, pero no se puede
 
 ## 2. ¿Cómo moverse por el sitio?
 
+
 Todas las pantallas excepto las de registro tienen una estructura similar. Contiene una parte superior que incluye el logo del Buen Fin (que lleva a la página de inicio) y el botón de menú (tres rayas en la esquina superior derecha).
+
+![Landing Page](imgs/landing_page.png)
 
 En el centro se encuentra el contenido de la pantalla.
 
@@ -40,11 +43,15 @@ Al hacer click en las **tres rayas** en la esquina superior derecha de la pantal
 - Productos (búsqueda de productos participantes)
 - Preguntas frecuentes
 
+![Menú lateral](imgs/menu.png)
+
 Abajo se encuentran los botones de cuenta (iniciar sesión y crear cuenta de usuario). Estos botones cambian según tu estado: sin sesión, con sesión sin verificar, o con sesión y cuenta verificada.
 
 La única manera de obtener una cuenta verificada es dentro de una cuenta de usuario. Si se abre el menú lateral dentro de una cuenta de usuario los botones cambian a verificar cuenta o cerrar sesión.
 
 ## 3. Modo claro y oscuro
+
+![Modo Oscuro](imgs/modo_osc.png)
 
 Para cambiar entre modo claro y oscuro se debe dar click en el ícono de sol o luna en la esquina inferior de el menú lateral. Cuando el usuario se encuentra en el modo claro el símbolo es una luna. En el modo oscuro el símbolo es un sol.
 
@@ -54,19 +61,30 @@ Para crear una cuenta dar click en el botón crear cuenta de usuario en el menú
 
 Para ingresar a una cuenta previamente generada hacer click a el botón iniciar sesión. Esto debe ser en el modo sin sesión.
 
-En cualquier momento se puede visualizar la contraseña al darle click al ícono del ojo en los campos de contraseña.
+
+LLenar los campos con la información correspondiente En cualquier momento se puede visualizar la contraseña al darle click al ícono del ojo en los campos de contraseña.
+
+![Registro](imgs/registrar.png)
 
 ## 5. Verificación de cuenta y creación de empresa
 
-Para verificar una cuenta se debe dar click en el ícono de lineas en la esquina superior derecha para abrir el menú. Ahí debe aparecer un botón en la parte inferior titulado "verificar cuenta".
+Para verificar una cuenta se debe dar click en el ícono de lineas en la esquina superior derecha para abrir el menú. Ahí debe aparecer un botón en la parte inferior titulado "verificar cuenta". 
+![versión del menú](imgs/menu-ver.png)
+Solo aparece si ya contamos con una cuenta de usuario y estamos dentro de ella.
 
 Al darle click abre una pantalla donde el sistema solicita la contraseña efiel (e.firma) y documentos para verificar la cuenta. Estos documentos deben ser un documento .key y un documento .cer que aseguren la identidad del usuario. En otras etapas cuando se intente crear o registrar una empresa el sistema comparará los datos proporcionados en esta porción.
+
+![verificar](imgs/verificar.png)
 
 Si su información es aceptada el sistema redirige al cliente a la página de inicio.
 
 Ahora al abrir al menú lateral es posible visualizar un nuevo botón "crear una compañía" en lugar de "verificar cuenta".
 
+![versión del menú](imgs/menu-ver2.png)
+
 Para registrar una compañía se debe dar click a el botón titulado "crear compañía" en el menú lateral. Esto abre una pantalla titulada "registrar empresa".
+
+![versión del menú](imgs/compañia.png)
 
 En esta pantalla se deben llenar los campos:
 
