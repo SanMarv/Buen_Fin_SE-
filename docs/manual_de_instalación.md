@@ -2,7 +2,7 @@
 
 ## 1. Requisitos
 
-- Node.js
+- Node.js 24
 - npm
 - Docker y Docker Compose
 - Almacenamiento compatible con S3
